@@ -18,20 +18,26 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
  * @author a
  */
-public class EquipmentTypes extends JPanel implements ActionListener, ListSelectionListener {
+public class Devices extends JPanel implements ActionListener, ListSelectionListener {
 
-    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY Pavadinimas";
-    static final String DELETE = "DELETE FROM IrangosTipai WHERE ID = ";
-    static final String INSERT = "INSERT INTO IrangosTipai (ID, Pavadinimas) VALUES (";
-    static final String UPDATE_START = "UPDATE IrangosTipai SET Pavadinimas = '";
-    static final String UPDATE_MIDDLE = "' WHERE ID = ";
-    static final String UPDATE_FINISH = "' WHERE ID = ";
+    static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID ORDER BY i.Sistema";
+    static final String DELETE = "DELETE FROM Irenginiai WHERE ID = ";
+    static final String INSERT = "INSERT INTO Irenginiai (ID, IT, Nr, Pavadinimas, Sistema) VALUES ('";
+    static final String UPDATE_0 = "UPDATE Irenginiai SET IT = '";
+    static final String UPDATE_NR = "', Nr = '";
+    static final String UPDATE_PAVADINIMAS = "', Pavadinimas = '";
+    static final String UPDATE_SISTEMA = "', Sistema = ";
+    static final String UPDATE_FINISH = " WHERE ID = ";
+    static final String ID = "ID";
+    static final String IT = "IT";
+    static final String NR = "Nr";
+    static final String PAVADINIMAS = "Pavadinimas";
+    static final String SISTEMA = "Sistema";
 
     ConnectionEquipment connection;
     DefaultTableModel tableModel;
@@ -42,7 +48,7 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
     JRadioButton radioButton1;
 
 
-    public EquipmentTypes(ConnectionEquipment the_connection) {
+    public Devices(ConnectionEquipment the_connection) {
 	connection = the_connection;
 	init();
     }
@@ -82,30 +88,28 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 
    
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
+	tableModel = new DefaultTableModel(new Object[]{ID, IT, NR, PAVADINIMAS, SISTEMA}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
-	setztSpaltenbreiten();
+//	setztSpaltenbreiten();
 //	setzt_dieUeberschriften();
 	scrollpane = new JScrollPane(table);
     }
 
-        private void setztSpaltenbreiten() {
-	TableColumn dieSpalte;
-	dieSpalte = null;
-	    for (int i = 0; i < table.getColumnCount(); i++) {
-		dieSpalte = table.getColumnModel().getColumn(i);
-		switch (i) {
-		    case 0:
-			dieSpalte.setPreferredWidth(20);
-			break;
-		    case 1:
-			dieSpalte.setPreferredWidth(800);
-			break;
-		}
-	    }
-    }
+//        private void setztSpaltenbreiten() {
+//	TableColumn column;
+//	column = null;
+//	    for (int i = 0; i < table.getColumnCount(); i++) {
+//		column = table.getColumnModel().getColumn(i);
+//                if (tableModel.getColumnName(i).equalsIgnoreCase(ID)) {
+//                    column.setPreferredWidth(10);
+//                } else if (tableModel.getColumnName(i).equals(PASTABOS)) {
+//                    column.setPreferredWidth(300);
+//                } else
+//                    column.setPreferredWidth(50);
+//	    }
+//    }
 	
 //    private void setzt_dieUeberschriften(){
 //	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));
@@ -144,8 +148,12 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 	StringBuilder statement;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    statement = new StringBuilder(UPDATE_START);
-	    statement.append(table.getValueAt(row, 1)).append(UPDATE_MIDDLE).append(table.getValueAt(row, 0));
+	    statement = new StringBuilder(UPDATE_0);
+	    statement.append(table.getValueAt(row, 1)).
+                    append(UPDATE_NR).append(table.getValueAt(row, 2)).
+                    append(UPDATE_PAVADINIMAS).append(table.getValueAt(row, 3)).
+//                    append(UPDATE_SISTEMA).append(table.getValueAt(row, 4)).
+                    append(UPDATE_FINISH).append(table.getValueAt(row, 0));
 	    try {
 		if (connection.executeUpdate(statement.toString()) == 1) {
 		    filter(SELECT_ALL);
@@ -164,7 +172,10 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 	row = table.getSelectedRow();
 	if (row >= 0) {
 	    statement = new StringBuilder(INSERT);
-	    statement.append(table.getValueAt(row, 0)).append(", '").append(table.getValueAt(row, 1)).append("')");
+	    statement.append(table.getValueAt(row, 1)).append("', '").
+                    append(table.getValueAt(row, 2)).append("', '").
+                    append(table.getValueAt(row, 3)).append("', ").
+                    append(table.getValueAt(row, 4)).append(")");
 	    try {
 		if (connection.executeUpdate(statement.toString()) == 1) {
 		    filter(SELECT_ALL);

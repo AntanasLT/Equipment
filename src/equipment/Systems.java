@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -27,8 +26,6 @@ import javax.swing.table.TableColumn;
 public class Systems extends JPanel implements ActionListener, ListSelectionListener {
 
     static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas";
-    static final String DIE_ABFRAGE_AB = "SELECT KID, KDatum, KFettPr, KMuskelPr, KWasserPr, KKnochenM, KMasse, KEnergie0, KEnergie1, KBauch, KOberarm, KUnteram, KOberschenkel, KUnterschenkel, KBrust FROM Koerperdaten WHERE KDatum >= '";
-    static final String DIE_ABFRAGE_DATUM = "SELECT KID, KDatum, KFettPr, KMuskelPr, KWasserPr, KKnochenM, KMasse, KEnergie0, KEnergie1, KBauch, KOberarm, KUnteram, KOberschenkel, KUnterschenkel, KBrust FROM Koerperdaten WHERE KDatum LIKE '%";
     static final String DELETE = "DELETE FROM Sistemos WHERE ID = ";
     static final String INSERT = "INSERT INTO Sistemos (ID, Pavadinimas) VALUES (";
     static final String UPDATE_START = "UPDATE Sistemos SET Pavadinimas = '";
@@ -41,7 +38,6 @@ public class Systems extends JPanel implements ActionListener, ListSelectionList
     JPanel panel;
     JScrollPane scrollpane;
     JTable table;
-    JRadioButton radioButton1;
 
 
     public Systems(ConnectionEquipment the_connection) {

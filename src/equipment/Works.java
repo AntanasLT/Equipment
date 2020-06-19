@@ -24,14 +24,23 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class EquipmentTypes extends JPanel implements ActionListener, ListSelectionListener {
+public class Works extends JPanel implements ActionListener, ListSelectionListener {
 
-    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY Pavadinimas";
-    static final String DELETE = "DELETE FROM IrangosTipai WHERE ID = ";
-    static final String INSERT = "INSERT INTO IrangosTipai (ID, Pavadinimas) VALUES (";
-    static final String UPDATE_START = "UPDATE IrangosTipai SET Pavadinimas = '";
-    static final String UPDATE_MIDDLE = "' WHERE ID = ";
+    static final String SELECT_ALL = "SELECT d.ID, d.Data, sist.Pavadinimas, i.Pavadinimas, dt.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID  ORDER BY Data";
+    static final String DELETE = "DELETE FROM Darbai WHERE ID = ";
+    static final String INSERT = "INSERT INTO Darbai (Data, Sistema, Irenginys, Darbas, Pastabos) VALUES ('";
+    static final String UPDATE_0DATA = "UPDATE Darbai SET Data = '";
+    static final String UPDATE_SISTEMA = "', Sistema = ";
+    static final String UPDATE_IRENGINYS = ", Irenginys = ";
+    static final String UPDATE_DARBAS = ", Darbas = ";
+    static final String UPDATE_PASTABOS = ", Pastabos = '";
     static final String UPDATE_FINISH = "' WHERE ID = ";
+    static final String ID = "ID";
+    static final String DATA = "Data";
+    static final String SISTEMA = "Sistema";
+    static final String IRENGINYS = "Irenginys";
+    static final String DARBAS = "Darbas";
+    static final String PASTABOS = "Pastabos";
 
     ConnectionEquipment connection;
     DefaultTableModel tableModel;
@@ -42,7 +51,7 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
     JRadioButton radioButton1;
 
 
-    public EquipmentTypes(ConnectionEquipment the_connection) {
+    public Works(ConnectionEquipment the_connection) {
 	connection = the_connection;
 	init();
     }
@@ -82,7 +91,7 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 
    
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
+	tableModel = new DefaultTableModel(new Object[]{ID, DATA, SISTEMA, IRENGINYS, DARBAS, PASTABOS}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
@@ -92,18 +101,16 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
     }
 
         private void setztSpaltenbreiten() {
-	TableColumn dieSpalte;
-	dieSpalte = null;
+	TableColumn column;
+	column = null;
 	    for (int i = 0; i < table.getColumnCount(); i++) {
-		dieSpalte = table.getColumnModel().getColumn(i);
-		switch (i) {
-		    case 0:
-			dieSpalte.setPreferredWidth(20);
-			break;
-		    case 1:
-			dieSpalte.setPreferredWidth(800);
-			break;
-		}
+		column = table.getColumnModel().getColumn(i);
+                if (tableModel.getColumnName(i).equalsIgnoreCase(ID)) {
+                    column.setPreferredWidth(10);
+                } else if (tableModel.getColumnName(i).equals(PASTABOS)) {
+                    column.setPreferredWidth(300);
+                } else
+                    column.setPreferredWidth(50);
 	    }
     }
 	
@@ -144,8 +151,13 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 	StringBuilder statement;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    statement = new StringBuilder(UPDATE_START);
-	    statement.append(table.getValueAt(row, 1)).append(UPDATE_MIDDLE).append(table.getValueAt(row, 0));
+	    statement = new StringBuilder(UPDATE_0DATA);
+	    statement.append(table.getValueAt(row, 1)).
+                    append(UPDATE_SISTEMA).append(table.getValueAt(row, 2)).
+                    append(UPDATE_IRENGINYS).append(table.getValueAt(row, 3)).
+                    append(UPDATE_DARBAS).append(table.getValueAt(row, 4)).
+                    append(UPDATE_PASTABOS).append(table.getValueAt(row, 5)).
+                    append(UPDATE_FINISH).append(table.getValueAt(row, 0));
 	    try {
 		if (connection.executeUpdate(statement.toString()) == 1) {
 		    filter(SELECT_ALL);
@@ -164,7 +176,11 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 	row = table.getSelectedRow();
 	if (row >= 0) {
 	    statement = new StringBuilder(INSERT);
-	    statement.append(table.getValueAt(row, 0)).append(", '").append(table.getValueAt(row, 1)).append("')");
+	    statement.append(table.getValueAt(row, 1)).append("', ").
+                    append(table.getValueAt(row, 2)).append(", ").
+                    append(table.getValueAt(row, 3)).append(", ").
+                    append(table.getValueAt(row, 4)).append(", '").
+                    append(table.getValueAt(row, 5)).append("')");
 	    try {
 		if (connection.executeUpdate(statement.toString()) == 1) {
 		    filter(SELECT_ALL);

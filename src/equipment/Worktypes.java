@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -24,12 +23,12 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class EquipmentTypes extends JPanel implements ActionListener, ListSelectionListener {
+public class Worktypes extends JPanel implements ActionListener, ListSelectionListener {
 
-    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY Pavadinimas";
-    static final String DELETE = "DELETE FROM IrangosTipai WHERE ID = ";
-    static final String INSERT = "INSERT INTO IrangosTipai (ID, Pavadinimas) VALUES (";
-    static final String UPDATE_START = "UPDATE IrangosTipai SET Pavadinimas = '";
+    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas";
+    static final String DELETE = "DELETE FROM Darbotipis WHERE ID = ";
+    static final String INSERT = "INSERT INTO Darbotipis (ID, Pavadinimas) VALUES (";
+    static final String UPDATE_START = "UPDATE Darbotipis SET Pavadinimas = '";
     static final String UPDATE_MIDDLE = "' WHERE ID = ";
     static final String UPDATE_FINISH = "' WHERE ID = ";
 
@@ -39,10 +38,9 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
     JPanel panel;
     JScrollPane scrollpane;
     JTable table;
-    JRadioButton radioButton1;
 
 
-    public EquipmentTypes(ConnectionEquipment the_connection) {
+    public Worktypes(ConnectionEquipment the_connection) {
 	connection = the_connection;
 	init();
     }

@@ -45,6 +45,9 @@ public class MainFrame extends JFrame implements ActionListener{
     Accounts panelOutlays;
     EquipmentTypes panelEquipmentTypes;
     Systems panelSystems;
+    Worktypes panelWorktypes;
+    Works panelWorks;
+    Devices panelDevices;
     
 // –––––––––––––––––––––––   
     JMenuBar menu_bar;
@@ -119,7 +122,7 @@ public class MainFrame extends JFrame implements ActionListener{
         menuItemWorks.addActionListener(this);
         menuItemWorks.setActionCommand("works");
         menuData.add(menuItemWorks);
-        menuItemWorktypes = new JMyCheckBoxMenuItem("Darbo pobūdis");
+        menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys");
         menuItemWorktypes.addActionListener(this);
         menuItemWorktypes.setActionCommand("worktypes");
         menuData.add(menuItemWorktypes);
@@ -302,7 +305,41 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
     
+    private void showWorks() {
+	if (panelWorks == null & menuItemWorks.isSelected()) {
+	    panelWorks = new Works(connection);
+	    tabbedpane.addTab("Darbai", panelWorks);
+	}
+	if (panelWorks != null & !menuItemWorks.isSelected()) {
+	    tabbedpane.remove(panelWorks);
+	    panelWorks = null;
+	}
+    }
+    
+    private void showWorktypes() {
+	if (panelWorktypes == null & menuItemWorktypes.isSelected()) {
+	    panelWorktypes = new Worktypes(connection);
+	    tabbedpane.addTab("Darbų rūšys", panelWorktypes);
+	}
+	if (panelWorktypes != null & !menuItemWorktypes.isSelected()) {
+	    tabbedpane.remove(panelWorktypes);
+	    panelWorktypes = null;
+	}
+    }
 
+    private void showDevices() {
+	if (panelDevices == null & menuItemDevices.isSelected()) {
+	    panelDevices = new Devices(connection);
+	    tabbedpane.addTab("Įrenginiai", panelDevices);
+	}
+	if (panelDevices != null & !menuItemDevices.isSelected()) {
+	    tabbedpane.remove(panelDevices);
+	    panelDevices = null;
+	}
+    }
+    
+    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 	String command;
@@ -318,7 +355,19 @@ public class MainFrame extends JFrame implements ActionListener{
 		connect_Equipment();
 		showSystems();
 		break;		
-	    case "equipmenttypes":
+	    case "worktypes":
+		connect_Equipment();
+		showWorktypes();
+		break;		
+	    case "works":
+		connect_Equipment();
+		showWorks();
+		break;		
+	    case "devices":
+		connect_Equipment();
+		showDevices();
+		break;		
+            case "equipmenttypes":
 		connect_Equipment();
 		showEquipmentTypes();
 		break;
