@@ -69,7 +69,8 @@ public class MainFrame extends JFrame implements ActionListener{
     public MainFrame() {
 	connection = null;
 	tabbedpane = new JMyTabbedPane();
-	panelOutlays = new Accounts(connection);
+        panelWorks = new Works(connection);
+//	panelOutlays = new Accounts(connection);
 	init();
     }
 	
@@ -78,7 +79,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	username = "";
 	setLayout(new BorderLayout());
 	labelMessage = new JLabelLeft();
-	tabbedpane.addTab("Sąskaitos", panelOutlays);
+	tabbedpane.addTab("Darbai", panelWorks);
 	add(tabbedpane, BorderLayout.CENTER);
 	add(labelMessage, BorderLayout.SOUTH);
 	addWindowListener(new WindowAdapter() {
@@ -114,10 +115,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	menuItemDevices.addActionListener(this);
 	menuItemDevices.setActionCommand("devices");
 	menuData.add(menuItemDevices);
-	menuItemBudget = new JMyCheckBoxMenuItem("Biudžetas");
-	menuItemBudget.addActionListener(this);
-	menuItemBudget.setActionCommand("budget");
-	menuData.add(menuItemBudget);
+//	menuItemBudget = new JMyCheckBoxMenuItem("Biudžetas");
+//	menuItemBudget.addActionListener(this);
+//	menuItemBudget.setActionCommand("budget");
+//	menuData.add(menuItemBudget);
         menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
         menuItemWorks.addActionListener(this);
         menuItemWorks.setActionCommand("works");
@@ -130,22 +131,22 @@ public class MainFrame extends JFrame implements ActionListener{
         menuItemEquipmentTypes.addActionListener(this);
         menuItemEquipmentTypes.setActionCommand("equipmenttypes");
         menuData.add(menuItemEquipmentTypes);
-        menuItemPartners = new JMyCheckBoxMenuItem("Kontrahentai");
-        menuItemPartners.addActionListener(this);
-        menuItemPartners.setActionCommand("partners");
-        menuData.add(menuItemPartners);
-        menuItemAccounts = new JMyCheckBoxMenuItem("Sąskaitos");
-        menuItemAccounts.addActionListener(this);
-        menuItemAccounts.setActionCommand("accounts");
-        menuData.add(menuItemAccounts);
-        menuItemContracts = new JMyCheckBoxMenuItem("Sutartys");
-        menuItemContracts.addActionListener(this);
-        menuItemContracts.setActionCommand("works");
-        menuData.add(menuItemContracts);
-        menuItemOrders = new JMyCheckBoxMenuItem("Užsakymai");
-        menuItemOrders.addActionListener(this);
-        menuItemOrders.setActionCommand("orders");
-        menuData.add(menuItemOrders);
+//        menuItemPartners = new JMyCheckBoxMenuItem("Kontrahentai");
+//        menuItemPartners.addActionListener(this);
+//        menuItemPartners.setActionCommand("partners");
+//        menuData.add(menuItemPartners);
+//        menuItemAccounts = new JMyCheckBoxMenuItem("Sąskaitos");
+//        menuItemAccounts.addActionListener(this);
+//        menuItemAccounts.setActionCommand("accounts");
+//        menuData.add(menuItemAccounts);
+//        menuItemContracts = new JMyCheckBoxMenuItem("Sutartys");
+//        menuItemContracts.addActionListener(this);
+//        menuItemContracts.setActionCommand("works");
+//        menuData.add(menuItemContracts);
+//        menuItemOrders = new JMyCheckBoxMenuItem("Užsakymai");
+//        menuItemOrders.addActionListener(this);
+//        menuItemOrders.setActionCommand("orders");
+//        menuData.add(menuItemOrders);
 	menu_bar.add(menuData);
 
 	return menu_bar;
@@ -182,7 +183,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	    connection = null;
 	    password = "";
 //	    dialogPassword.dispose();
-	    panelOutlays.disconnect();
+//	    panelOutlays.disconnect();
+            
 	} else {
 	    labelMessage.setText("Es gibt keine Anbindung");
 	}
@@ -207,7 +209,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (connection == null) {
 	    connection = connect("Equipment");
 	}
-	panelOutlays.setConnection(connection);
+	panelWorks.setConnection(connection);
 //	renewTypes();
     }
 

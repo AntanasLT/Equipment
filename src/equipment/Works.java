@@ -89,6 +89,14 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	panel.add(buttonDelete);
     }
 
+    public void setConnection(ConnectionEquipment the_connection) {
+	connection = the_connection;
+    }
+    
+    public void disconnect() {
+	connection = null;
+    }
+    
    
     private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{ID, DATA, SISTEMA, IRENGINYS, DARBAS, PASTABOS}, 0);

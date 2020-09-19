@@ -5,9 +5,7 @@
  */
 package equipment;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -15,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -23,7 +20,7 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Systems extends JPanel implements ActionListener, ListSelectionListener {
+public class Systems extends Devices {
 
     static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas";
     static final String DELETE = "DELETE FROM Sistemos WHERE ID = ";
@@ -32,54 +29,24 @@ public class Systems extends JPanel implements ActionListener, ListSelectionList
     static final String UPDATE_MIDDLE = "' WHERE ID = ";
     static final String UPDATE_FINISH = "' WHERE ID = ";
 
-    ConnectionEquipment connection;
+//    ConnectionEquipment connection;
     DefaultTableModel tableModel;
     JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
     JPanel panel;
     JScrollPane scrollpane;
     JTable table;
 
-
-    public Systems(ConnectionEquipment the_connection) {
-	connection = the_connection;
+    /**
+     *
+     * @param the_connection
+     */
+    public Systems(ConnectionEquipment connection) {
+	super(connection);
 	init();
+        createTable();
     }
 
-    private void init() {
-//	if (connection != null) {
-	setLayout(new BorderLayout());
-	createTable();
-	createButtons();
-	add(panel, BorderLayout.NORTH);
-	add(scrollpane, BorderLayout.CENTER);
-	setVisible(true);
-//	} else {
-//	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
-//        }
-    }
-
-    private void createButtons() {
-	panel = new JPanel();
-	buttonChange = new JMyButton("Išsaugoti");
-	buttonChange.setActionCommand("update");
-	buttonChange.addActionListener(this);
-	buttonAdd = new JMyButton("Pridėti");
-	buttonAdd.setActionCommand("insert");
-	buttonAdd.addActionListener(this);
-	buttonDelete = new JMyButton("Pašalinti");
-	buttonDelete.setActionCommand("delete");
-	buttonDelete.addActionListener(this);
-	buttonFilter = new JMyButton("Filtruoti");
-	buttonFilter.setActionCommand("filter");
-	buttonFilter.addActionListener(this);
-	panel.add(buttonFilter);
-	panel.add(buttonChange);
-	panel.add(buttonAdd);
-	panel.add(buttonDelete);
-    }
-
-   
-    private void createTable() {
+   private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
@@ -89,21 +56,21 @@ public class Systems extends JPanel implements ActionListener, ListSelectionList
 	scrollpane = new JScrollPane(table);
     }
 
-        private void setztSpaltenbreiten() {
-	TableColumn dieSpalte;
-	dieSpalte = null;
-	    for (int i = 0; i < table.getColumnCount(); i++) {
-		dieSpalte = table.getColumnModel().getColumn(i);
-		switch (i) {
-		    case 0:
-			dieSpalte.setPreferredWidth(20);
-			break;
-		    case 1:
-			dieSpalte.setPreferredWidth(800);
-			break;
-		}
-	    }
-    }
+    private void setztSpaltenbreiten() {
+    TableColumn dieSpalte;
+    dieSpalte = null;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            dieSpalte = table.getColumnModel().getColumn(i);
+            switch (i) {
+                case 0:
+                    dieSpalte.setPreferredWidth(20);
+                    break;
+                case 1:
+                    dieSpalte.setPreferredWidth(800);
+                    break;
+            }
+        }
+}
 	
 //    private void setzt_dieUeberschriften(){
 //	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));

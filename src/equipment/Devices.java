@@ -48,15 +48,16 @@ public class Devices extends JPanel implements ActionListener, ListSelectionList
     JRadioButton radioButton1;
 
 
-    public Devices(ConnectionEquipment the_connection) {
+    protected Devices(ConnectionEquipment the_connection) {
 	connection = the_connection;
 	init();
+        createTable();
     }
 
-    private void init() {
+    protected void init() {
 //	if (connection != null) {
 	setLayout(new BorderLayout());
-	createTable();
+//	createTable();
 	createButtons();
 	add(panel, BorderLayout.NORTH);
 	add(scrollpane, BorderLayout.CENTER);
