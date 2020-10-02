@@ -5,11 +5,11 @@
  */
 package equipment;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -20,40 +20,50 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Systems extends Devices {
+public class Systems extends Works {
 
-    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas";
-    static final String DELETE = "DELETE FROM Sistemos WHERE ID = ";
-    static final String INSERT = "INSERT INTO Sistemos (ID, Pavadinimas) VALUES (";
-    static final String UPDATE_START = "UPDATE Sistemos SET Pavadinimas = '";
-    static final String UPDATE_MIDDLE = "' WHERE ID = ";
-    static final String UPDATE_FINISH = "' WHERE ID = ";
+    private static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas";
+    private static final String DELETE = "DELETE FROM Sistemos WHERE ID = ";
+    private static final String INSERT = "INSERT INTO Sistemos (ID, Pavadinimas) VALUES (";
+    private static final String UPDATE_START = "UPDATE Sistemos SET Pavadinimas = '";
+    private static final String UPDATE_MIDDLE = "' WHERE ID = ";
+    private static final String UPDATE_FINISH = "' WHERE ID = ";
 
 //    ConnectionEquipment connection;
-    DefaultTableModel tableModel;
-    JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
-    JPanel panel;
-    JScrollPane scrollpane;
-    JTable table;
+    private DefaultTableModel tableModel;
+//    JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
+//    JPanel panel;
+//    JScrollPane scrollpane;
+//    JTable table;
 
-    /**
-     *
-     * @param the_connection
-     */
     public Systems(ConnectionEquipment connection) {
 	super(connection);
 	init();
-        createTable();
+//        createTable();
     }
 
-   private void createTable() {
+    private void init() {
+	if (connection != null) {
+	setLayout(new BorderLayout());
+	createTable();
+	createPanelButtons();
+	add(pButtons, BorderLayout.NORTH);
+	add(sPaneTable, BorderLayout.CENTER);
+	setVisible(true);
+	} else {
+	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    
+    private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
 	setztSpaltenbreiten();
 //	setzt_dieUeberschriften();
-	scrollpane = new JScrollPane(table);
+	sPaneTable = new JScrollPane(table);
     }
 
     private void setztSpaltenbreiten() {
@@ -78,19 +88,19 @@ public class Systems extends Devices {
 //    }
 	
 
-    private void filter(String query){
-        Object[] row;
+    protected void filter(String query) {
+	Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
-        ResultSet resultset;
+	ResultSet resultset;
 	try {
-            resultset = connection.executeQuery(query);
+	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
 //            System.out.println(colcount);
 	    row = new Object[colcount];
-	    while( resultset.next() ){
+	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-//                    System.out.print(i); 
+//                    System.out.print(i);
 		    row[i] = resultset.getObject(i + 1);
 //                    System.out.println(row[i]);
 		}
@@ -140,30 +150,30 @@ public class Systems extends Devices {
 	}
     }
 
-    private void delete() {
-	int [] rows;
-        int l, i;
-	StringBuilder statement;
-	rows = table.getSelectedRows();
-        l = rows.length;
-	if (l >= 0) {
-	    statement = new StringBuilder(DELETE);	    
-            for (i = 1; i <= l; i++) {
-                statement.append(table.getValueAt(rows[i-1], 0));
-                if (i < l) {
-                    statement.append(" OR ID = ");
-                }
-            }
-	    try {
-		if (connection.executeUpdate(statement.toString()) == 1) {
-		    filter(SELECT_ALL);
-                    System.out.println();
-		};
-	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
-    }
+//    private void delete() {
+//	int [] rows;
+//        int l, i;
+//	StringBuilder statement;
+//	rows = table.getSelectedRows();
+//        l = rows.length;
+//	if (l >= 0) {
+//	    statement = new StringBuilder(DELETE);	    
+//            for (i = 1; i <= l; i++) {
+//                statement.append(table.getValueAt(rows[i-1], 0));
+//                if (i < l) {
+//                    statement.append(" OR ID = ");
+//                }
+//            }
+//	    try {
+//		if (connection.executeUpdate(statement.toString()) == 1) {
+//		    filter(SELECT_ALL);
+//                    System.out.println();
+//		};
+//	    } catch (SQLException ex) {
+//		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+//	    }
+//	}
+//    }
 
     
     @Override

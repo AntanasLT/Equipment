@@ -14,7 +14,12 @@ import javax.swing.JComboBox;
  */
 public class JMyComboBox extends JComboBox {
     public JMyComboBox(){
-        setFont(new Font("Arial", Font.PLAIN, 12));
-        
+	setFont(new Font("Arial", Font.PLAIN, 12));
     }
+    
+    public JMyComboBox(Object[] o) {
+	super(o);
+	setFont(new Font("Arial", Font.PLAIN, 12));
+    }
+       
 }

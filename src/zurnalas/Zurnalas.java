@@ -4,15 +4,16 @@
  * and open the template in the editor.
  */
 
-package equipment;
+package zurnalas;
 
+import equipment.Works;
 import java.awt.Toolkit;
 
 /**
  *
  * @author a
  */
-public class Equipment {
+public class Zurnalas {
 
 	/**
 	 * @param args the command line arguments

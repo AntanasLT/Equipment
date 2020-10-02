@@ -19,18 +19,20 @@ public class ConnectionEquipment {
 
     private Connection myConnection;
     private Statement statement;
-    private final String the_database, the_username;
+    private final String the_host, the_database, the_username;
     
 //    private final String the_database, the_username, derDateiname, derDateiname1, derDateiname_d, dieTabelle, dieGerichtstabelle, derGruppenID, derGruppenname, dieAusfuhrfelder;
 
     /**
      *
+     * @param host
      * @param db databasename
      * @param un useraname
      */
-    public ConnectionEquipment(String db, String un) {
+    public ConnectionEquipment(String host, String db, String un) {
 	the_database = db;
 	the_username = un;
+        the_host = host;
     }
     
 //    public MyConnection(String db, String einDateiname, String einDateiname1, String einDateiname_d, String eineTabelle, String eineGerichtstabelle, String eineGruppenID, String einGruppenname, String un, String Ausfuhrfelder) {
@@ -47,10 +49,6 @@ public class ConnectionEquipment {
 //    }    
 
     /**
-     * @param dasKennwort dasKennwort
-     * @return <i>derBenutzer</i> ist an <i>dieDatenbank</i> angebunden
-     */
-    /**
      *
      * @param password password
      * @return <i>the_username</i> ist an <i>the_database</i> angebunden
@@ -62,10 +60,10 @@ public class ConnectionEquipment {
     public String connect(String password) throws ClassNotFoundException, InstantiationException, SQLException, IllegalAccessException {
 	String res;
 	Class.forName("com.mysql.jdbc.Driver").newInstance();
-	myConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"
+	myConnection = DriverManager.getConnection("jdbc:mysql://" + the_host + ":3306/"
 		+ the_database + "?characterEncoding=utf8", the_username, password);
 	statement = myConnection.createStatement();
-	res = the_username.concat(" is connected to ").concat(the_database);
+	res = the_username.concat(" prisijungė prie duombazės").concat(the_database).concat(" serveryje ").concat(the_host);
 	return res;
     }
 
@@ -75,7 +73,7 @@ public class ConnectionEquipment {
 	if (myConnection != null) {
 	    try {
 		myConnection.close();
-		res = "Disconnected from ".concat(the_database);
+		res = "Atsijungta nuo duombazės";
 	    } catch (SQLException e) {
 		res = e.toString();
 	    }
@@ -89,6 +87,10 @@ public class ConnectionEquipment {
 	}
 
 	return res;
+    }
+
+    public String get_username() {
+	return the_username;
     }
 
     /**
@@ -113,6 +115,44 @@ public class ConnectionEquipment {
 	}
 	return result;
     }
+
+    public String[][] getSystems() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][10];
+	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+    }
+
+    public String[][] getWorkTypes() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][10];
+	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+    }
+
+
 
     public String[][] getEquipment(String sortFeldname) throws SQLException {
 	int i;

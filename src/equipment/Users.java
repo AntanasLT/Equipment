@@ -14,38 +14,29 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
  * @author a
  */
-public class Devices extends Works {
+public class Users extends Works {
 
-    private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID ORDER BY i.Sistema";
-    private static final String DELETE = "DELETE FROM Irenginiai WHERE ID = ";
-    private static final String INSERT = "INSERT INTO Irenginiai (ID, IT, Nr, Pavadinimas, Sistema) VALUES ('";
-    private static final String UPDATE_0 = "UPDATE Irenginiai SET IT = '";
-    private static final String UPDATE_NR = "', Nr = '";
-    private static final String UPDATE_PAVADINIMAS = "', Pavadinimas = '";
-    private static final String UPDATE_SISTEMA = "', Sistema = ";
-    private static final String UPDATE_FINISH = " WHERE ID = ";
-    private static final String ID = "ID";
-    private static final String IT = "IT";
-    private static final String NR = "Nr";
-    private static final String PAVADINIMAS = "Pavadinimas";
-    private static final String SISTEMA = "Sistema";
+    private static final String SELECT_ALL = "SELECT ID, Vardas FROM Vartotojai ORDER BY Vardas";
+    private static final String DELETE = "DELETE FROM Vartotojai WHERE ID = ";
+    private static final String INSERT = "INSERT INTO Vartotojai (ID, Vardas) VALUES (";
+    private static final String UPDATE_START = "UPDATE Vartotojai SET Vardas = '";
+    private static final String UPDATE_MIDDLE = "' WHERE ID = ";
+    private static final String UPDATE_FINISH = "' WHERE ID = ";
 
-    private DefaultTableModel tableModel;
 //    ConnectionEquipment connection;
-//    DefaultTableModel tableModel;
+    private DefaultTableModel tableModel;
 //    JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
 //    JPanel panel;
 //    JScrollPane scrollpane;
 //    JTable table;
-//    JRadioButton radioButton1;
 
-
-    protected Devices(ConnectionEquipment connection) {
+    public Users(ConnectionEquipment connection) {
 	super(connection);
 	init();
 //        createTable();
@@ -64,50 +55,33 @@ public class Devices extends Works {
         }
     }
 
-//    private void createButtons() {
-//	panel = new JPanel();
-//	buttonChange = new JMyButton("Išsaugoti");
-//	buttonChange.setActionCommand("update");
-//	buttonChange.addActionListener(this);
-//	buttonAdd = new JMyButton("Pridėti");
-//	buttonAdd.setActionCommand("insert");
-//	buttonAdd.addActionListener(this);
-//	buttonDelete = new JMyButton("Pašalinti");
-//	buttonDelete.setActionCommand("delete");
-//	buttonDelete.addActionListener(this);
-//	buttonFilter = new JMyButton("Filtruoti");
-//	buttonFilter.setActionCommand("filter");
-//	buttonFilter.addActionListener(this);
-//	panel.add(buttonFilter);
-//	panel.add(buttonChange);
-//	panel.add(buttonAdd);
-//	panel.add(buttonDelete);
-//    }
-
-   
+    
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{ID, IT, NR, PAVADINIMAS, SISTEMA}, 0);
+	tableModel = new DefaultTableModel(new Object[]{"ID", "Vardas"}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
-//	setztSpaltenbreiten();
+	setztSpaltenbreiten();
+	tableModel.setRowCount(1);
 //	setzt_dieUeberschriften();
 	sPaneTable = new JScrollPane(table);
     }
 
-//        private void setztSpaltenbreiten() {
-//	TableColumn column;
-//	column = null;
-//	    for (int i = 0; i < table.getColumnCount(); i++) {
-//		column = table.getColumnModel().getColumn(i);
-//                if (tableModel.getColumnName(i).equalsIgnoreCase(ID)) {
-//                    column.setPreferredWidth(10);
-//                } else if (tableModel.getColumnName(i).equals(PASTABOS)) {
-//                    column.setPreferredWidth(300);
-//                } else
-//                    column.setPreferredWidth(50);
-//	    }
-//    }
+    private void setztSpaltenbreiten() {
+    TableColumn dieSpalte;
+    dieSpalte = null;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            dieSpalte = table.getColumnModel().getColumn(i);
+            switch (i) {
+                case 0:
+                    dieSpalte.setPreferredWidth(20);
+                    break;
+                case 1:
+                    dieSpalte.setPreferredWidth(800);
+                    break;
+            }
+        }
+}
 	
 //    private void setzt_dieUeberschriften(){
 //	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));
@@ -115,30 +89,30 @@ public class Devices extends Works {
 //    }
 	
 
-//    private void filter(String query){
-//        Object[] row;
-//	int i, colcount;
-//	tableModel.setRowCount(0);
-//        ResultSet resultset;
-//	try {
-//            resultset = connection.executeQuery(query);
-//	    colcount = tableModel.getColumnCount();
-////            System.out.println(colcount);
-//	    row = new Object[colcount];
-//	    while( resultset.next() ){
-//		for (i = 0; i <= colcount - 1; i++) {
-////                    System.out.print(i);
-//		    row[i] = resultset.getObject(i + 1);
-////                    System.out.println(row[i]);
-//		}
-//		tableModel.addRow(row);
-//	    }
-//	    resultset.close();
-//	} catch (SQLException ex) {
-//	    JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!", JOptionPane.ERROR_MESSAGE);
-//	}
-//
-//    }
+    protected void filter(String query) {
+	Object[] row;
+	int i, colcount;
+	tableModel.setRowCount(0);
+	ResultSet resultset;
+	try {
+	    resultset = connection.executeQuery(query);
+	    colcount = tableModel.getColumnCount();
+//            System.out.println(colcount);
+	    row = new Object[colcount];
+	    while (resultset.next()) {
+		for (i = 0; i <= colcount - 1; i++) {
+//                    System.out.print(i);
+		    row[i] = resultset.getObject(i + 1);
+//                    System.out.println(row[i]);
+		}
+		tableModel.addRow(row);
+	    }
+	    resultset.close();
+	} catch (SQLException ex) {
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+	}
+
+    }
 	
     
     private void update() {
@@ -146,18 +120,14 @@ public class Devices extends Works {
 	StringBuilder statement;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    statement = new StringBuilder(UPDATE_0);
-	    statement.append(table.getValueAt(row, 1)).
-                    append(UPDATE_NR).append(table.getValueAt(row, 2)).
-                    append(UPDATE_PAVADINIMAS).append(table.getValueAt(row, 3)).
-//                    append(UPDATE_SISTEMA).append(table.getValueAt(row, 4)).
-                    append(UPDATE_FINISH).append(table.getValueAt(row, 0));
+	    statement = new StringBuilder(UPDATE_START);
+	    statement.append(table.getValueAt(row, 1)).append(UPDATE_MIDDLE).append(table.getValueAt(row, 0));
 	    try {
 		if (connection.executeUpdate(statement.toString()) == 1) {
 		    filter(SELECT_ALL);
 		};
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }
@@ -170,10 +140,7 @@ public class Devices extends Works {
 	row = table.getSelectedRow();
 	if (row >= 0) {
 	    statement = new StringBuilder(INSERT);
-	    statement.append(table.getValueAt(row, 1)).append("', '").
-                    append(table.getValueAt(row, 2)).append("', '").
-                    append(table.getValueAt(row, 3)).append("', ").
-                    append(table.getValueAt(row, 4)).append(")");
+	    statement.append(table.getValueAt(row, 0)).append(", '").append(table.getValueAt(row, 1)).append("')");
 	    try {
 		if (connection.executeUpdate(statement.toString()) == 1) {
 		    filter(SELECT_ALL);

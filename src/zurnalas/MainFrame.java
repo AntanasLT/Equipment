@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package equipment;
+package zurnalas;
 
+import equipment.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,8 +45,7 @@ public class MainFrame extends JFrame implements ActionListener{
     JTabbedPane tabbedpane;
     Accounts panelOutlays;
     EquipmentTypes panelEquipmentTypes;
-    Systems panelSystems;
-    Users panelUsers;
+//    Systems panelSystems;
     Worktypes panelWorktypes;
     Works panelWorks;
     Devices panelDevices;
@@ -58,7 +58,7 @@ public class MainFrame extends JFrame implements ActionListener{
 // –––––––––––––––––––––––
     JMyMenu menuData;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
-    JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemDevices, menuItemBudget, menuItemWorks, 
+    JMyCheckBoxMenuItem menuItemSystems, menuItemDevices, menuItemBudget, menuItemWorks, 
             menuItemWorktypes, menuItemEquipmentTypes, menuItemContracts, menuItemAccounts,
             menuItemPartners, menuItemOrders;
 // –––––––––––––––––––––––
@@ -107,36 +107,32 @@ public class MainFrame extends JFrame implements ActionListener{
 	menuDatabase.add(menuItem_connect);
 	menuDatabase.add(menItem_disconnect);
 	menu_bar.add(menuDatabase);
-//	menuData.addSeparator();
-	menuData = new JMyMenu("Lentelės");
-	menuItemUsers = new JMyCheckBoxMenuItem("Vartotojai");
-	menuItemUsers.addActionListener(this);
-	menuItemUsers.setActionCommand("users");
-	menuData.add(menuItemUsers);	
-	menuItemSystems = new JMyCheckBoxMenuItem("Sistemos");
-	menuItemSystems.addActionListener(this);
-	menuItemSystems.setActionCommand("systems");
-	menuData.add(menuItemSystems);
-	menuItemDevices = new JMyCheckBoxMenuItem("Įrenginiai");
-	menuItemDevices.addActionListener(this);
-	menuItemDevices.setActionCommand("devices");
-	menuData.add(menuItemDevices);
-//	menuItemBudget = new JMyCheckBoxMenuItem("Biudžetas");
-//	menuItemBudget.addActionListener(this);
-//	menuItemBudget.setActionCommand("budget");
-//	menuData.add(menuItemBudget);
-//        menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
-//        menuItemWorks.addActionListener(this);
-//        menuItemWorks.setActionCommand("works");
-//        menuData.add(menuItemWorks);
-        menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys");
-        menuItemWorktypes.addActionListener(this);
-        menuItemWorktypes.setActionCommand("worktypes");
-        menuData.add(menuItemWorktypes);
-        menuItemEquipmentTypes = new JMyCheckBoxMenuItem("Įrangos tipai");
-        menuItemEquipmentTypes.addActionListener(this);
-        menuItemEquipmentTypes.setActionCommand("equipmenttypes");
-        menuData.add(menuItemEquipmentTypes);
+////	menuData.addSeparator();
+//	menuData = new JMyMenu("Lentelės");
+//	menuItemSystems = new JMyCheckBoxMenuItem("Sistemos");
+//	menuItemSystems.addActionListener(this);
+//	menuItemSystems.setActionCommand("systems");
+//	menuData.add(menuItemSystems);
+//	menuItemDevices = new JMyCheckBoxMenuItem("Įrenginiai");
+//	menuItemDevices.addActionListener(this);
+//	menuItemDevices.setActionCommand("devices");
+//	menuData.add(menuItemDevices);
+////	menuItemBudget = new JMyCheckBoxMenuItem("Biudžetas");
+////	menuItemBudget.addActionListener(this);
+////	menuItemBudget.setActionCommand("budget");
+////	menuData.add(menuItemBudget);
+////        menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
+////        menuItemWorks.addActionListener(this);
+////        menuItemWorks.setActionCommand("works");
+////        menuData.add(menuItemWorks);
+//        menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys");
+//        menuItemWorktypes.addActionListener(this);
+//        menuItemWorktypes.setActionCommand("worktypes");
+//        menuData.add(menuItemWorktypes);
+//        menuItemEquipmentTypes = new JMyCheckBoxMenuItem("Įrangos tipai");
+//        menuItemEquipmentTypes.addActionListener(this);
+//        menuItemEquipmentTypes.setActionCommand("equipmenttypes");
+//        menuData.add(menuItemEquipmentTypes);
 //        menuItemPartners = new JMyCheckBoxMenuItem("Kontrahentai");
 //        menuItemPartners.addActionListener(this);
 //        menuItemPartners.setActionCommand("partners");
@@ -153,7 +149,7 @@ public class MainFrame extends JFrame implements ActionListener{
 //        menuItemOrders.addActionListener(this);
 //        menuItemOrders.setActionCommand("orders");
 //        menuData.add(menuItemOrders);
-	menu_bar.add(menuData);
+//	menu_bar.add(menuData);
 
 	return menu_bar;
     }
@@ -219,114 +215,102 @@ public class MainFrame extends JFrame implements ActionListener{
 //	renewTypes();
     }
 
-    private void einpflegt_dieAuswahlGruppe() {
-	try {
-	    panelOutlays.renewTypes();
-	} catch (SQLException ex) {
-	    labelMessage.setText(ex.getMessage());
-	}
-    }
+//    private void einpflegt_dieAuswahlGruppe() {
+//	try {
+//	    panelOutlays.renewTypes();
+//	} catch (SQLException ex) {
+//	    labelMessage.setText(ex.getMessage());
+//	}
+//    }
     
-    private String bekommt_letztenDatensatz(String einDateiname) {
-	final int DIEZEILELZENGE = 64;
-	int gelesen;
-	String zk;
-	Path dieDatei;
-	FileChannel derDateiKanal;
-	ByteBuffer derBytePuffer;
-	zk = null;
-	derBytePuffer = ByteBuffer.allocate(DIEZEILELZENGE);
-	dieDatei = FileSystems.getDefault().getPath(einDateiname);
-	try {
-	    derDateiKanal = FileChannel.open(dieDatei, READ);
-	    derDateiKanal.position(derDateiKanal.size() - DIEZEILELZENGE);
-	    do {
-		gelesen = derDateiKanal.read(derBytePuffer);
-	    } while (gelesen != -1 && derBytePuffer.hasRemaining());
-	    zk = new String(derBytePuffer.array(), Charset.forName("UTF-8"));
-	    zk = zk.substring(zk.indexOf("\n") + 1);
-	} catch (IOException ex) {
-	    setzt_dieMeldung(labelMessage.getText().concat("; ").concat(ex.toString()));
-	}
-	return zk;
-    }
-    
-    private String bekommt_erstenDatensatz(String einDateiname) {
-	int x;
-	StringBuilder sb;
-	Reader r;
-	sb = new StringBuilder(einDateiname).append(": \n");
-	try {
-	    r = new FileReader(einDateiname);
-	    do {
-		x = r.read();
-		sb.append((char) x);
-	    } while (x != -1 && x != 10);
-	} catch (FileNotFoundException ex) {
-	    zeigt_dieFehlermeldung(ex.toString());
-	} catch (IOException ex) {
-	    zeigt_dieFehlermeldung(ex.toString());
-	}
-	return sb.toString();
-    }
+//    private String bekommt_letztenDatensatz(String einDateiname) {
+//	final int DIEZEILELZENGE = 64;
+//	int gelesen;
+//	String zk;
+//	Path dieDatei;
+//	FileChannel derDateiKanal;
+//	ByteBuffer derBytePuffer;
+//	zk = null;
+//	derBytePuffer = ByteBuffer.allocate(DIEZEILELZENGE);
+//	dieDatei = FileSystems.getDefault().getPath(einDateiname);
+//	try {
+//	    derDateiKanal = FileChannel.open(dieDatei, READ);
+//	    derDateiKanal.position(derDateiKanal.size() - DIEZEILELZENGE);
+//	    do {
+//		gelesen = derDateiKanal.read(derBytePuffer);
+//	    } while (gelesen != -1 && derBytePuffer.hasRemaining());
+//	    zk = new String(derBytePuffer.array(), Charset.forName("UTF-8"));
+//	    zk = zk.substring(zk.indexOf("\n") + 1);
+//	} catch (IOException ex) {
+//	    setzt_dieMeldung(labelMessage.getText().concat("; ").concat(ex.toString()));
+//	}
+//	return zk;
+//    }
+//
+//    private String bekommt_erstenDatensatz(String einDateiname) {
+//	int x;
+//	StringBuilder sb;
+//	Reader r;
+//	sb = new StringBuilder(einDateiname).append(": \n");
+//	try {
+//	    r = new FileReader(einDateiname);
+//	    do {
+//		x = r.read();
+//		sb.append((char) x);
+//	    } while (x != -1 && x != 10);
+//	} catch (FileNotFoundException ex) {
+//	    zeigt_dieFehlermeldung(ex.toString());
+//	} catch (IOException ex) {
+//	    zeigt_dieFehlermeldung(ex.toString());
+//	}
+//	return sb.toString();
+//    }
     
     private void zeigt_dieFehlermeldung(String dieMeldung) {
 	JOptionPane.showMessageDialog(this, dieMeldung, "Klaida!", JOptionPane.ERROR_MESSAGE);
     }
 
     
-    private void loescht_dat(String einDateiname) {
-        int loeschen;
-        Path dieDatei;
-        dieDatei = Paths.get(einDateiname);
-	if (Files.exists(dieDatei)) {
-            loeschen = JOptionPane.showConfirmDialog(this, einDateiname.concat(" šalinti?"));
-            if (loeschen == JOptionPane.YES_OPTION) {
-                try {
-                    Files.delete(dieDatei);
-                } catch (IOException ex) {
-                    zeigt_dieFehlermeldung(ex.toString());
-                }
-            }
-	}
-    }
+//    private void loescht_dat(String einDateiname) {
+//        int loeschen;
+//        Path dieDatei;
+//        dieDatei = Paths.get(einDateiname);
+//	if (Files.exists(dieDatei)) {
+//            loeschen = JOptionPane.showConfirmDialog(this, einDateiname.concat(" šalinti?"));
+//            if (loeschen == JOptionPane.YES_OPTION) {
+//                try {
+//                    Files.delete(dieDatei);
+//                } catch (IOException ex) {
+//                    zeigt_dieFehlermeldung(ex.toString());
+//                }
+//            }
+//	}
+//    }
     
-    private void showEquipmentTypes() {
-	if (panelEquipmentTypes == null & menuItemEquipmentTypes.isSelected()) {
-	    panelEquipmentTypes = new EquipmentTypes(connection);
-	    tabbedpane.addTab("Įrangos tipai", panelEquipmentTypes);
-            tabbedpane.setSelectedIndex(1);
-	}
-	if (panelEquipmentTypes != null & !menuItemEquipmentTypes.isSelected()) {
-	    tabbedpane.remove(panelEquipmentTypes);
-	    panelEquipmentTypes = null;
-	}
-    }
+//    private void showEquipmentTypes() {
+//	if (panelEquipmentTypes == null & menuItemEquipmentTypes.isSelected()) {
+//	    panelEquipmentTypes = new EquipmentTypes(connection);
+//	    tabbedpane.addTab("Įrangos tipai", panelEquipmentTypes);
+//            tabbedpane.setSelectedIndex(1);
+//	}
+//	if (panelEquipmentTypes != null & !menuItemEquipmentTypes.isSelected()) {
+//	    tabbedpane.remove(panelEquipmentTypes);
+//	    panelEquipmentTypes = null;
+//	}
+//    }
     
-    private void showSystems() {
-	if (panelSystems == null & menuItemSystems.isSelected()) {
-	    panelSystems = new Systems(connection);
-	    tabbedpane.addTab("Sistemos", panelSystems);
-            tabbedpane.setSelectedIndex(1);
-	}
-	if (panelSystems != null & !menuItemSystems.isSelected()) {
-	    tabbedpane.remove(panelSystems);
-	    panelSystems = null;
-	}
-    }
-
-    private void showUsers() {
-	if (panelUsers == null & menuItemUsers.isSelected()) {
-	    panelUsers = new Users(connection);
-	    tabbedpane.addTab("Sistemos", panelUsers);
-	    tabbedpane.setSelectedIndex(1);
-	}
-	if (panelUsers != null & !menuItemUsers.isSelected()) {
-	    tabbedpane.remove(panelUsers);
-	    panelUsers = null;
-	}
-    }
-
+//    private void showSystems() {
+//	if (panelSystems == null & menuItemSystems.isSelected()) {
+//	    panelSystems = new Systems(connection);
+//	    tabbedpane.addTab("Sistemos", panelSystems);
+//            tabbedpane.setSelectedIndex(1);
+//	}
+//	if (panelSystems != null & !menuItemSystems.isSelected()) {
+//	    tabbedpane.remove(panelSystems);
+//	    panelSystems = null;
+//	}
+//    }
+    
     private void showWorks() {
 	if (panelWorks == null & menuItemWorks.isSelected()) {
 	    panelWorks = new Works(connection);
@@ -339,29 +323,29 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
     
-    private void showWorktypes() {
-	if (panelWorktypes == null & menuItemWorktypes.isSelected()) {
-	    panelWorktypes = new Worktypes(connection);
-	    tabbedpane.addTab("Darbų rūšys", panelWorktypes);
-            tabbedpane.setSelectedIndex(1);
-	}
-	if (panelWorktypes != null & !menuItemWorktypes.isSelected()) {
-	    tabbedpane.remove(panelWorktypes);
-	    panelWorktypes = null;
-	}
-    }
-
-    private void showDevices() {
-	if (panelDevices == null & menuItemDevices.isSelected()) {
-	    panelDevices = new Devices(connection);
-	    tabbedpane.addTab("Įrenginiai", panelDevices);
-            tabbedpane.setSelectedIndex(1);
-	}
-	if (panelDevices != null & !menuItemDevices.isSelected()) {
-	    tabbedpane.remove(panelDevices);
-	    panelDevices = null;
-	}
-    }
+//    private void showWorktypes() {
+//	if (panelWorktypes == null & menuItemWorktypes.isSelected()) {
+//	    panelWorktypes = new Worktypes(connection);
+//	    tabbedpane.addTab("Darbų rūšys", panelWorktypes);
+//            tabbedpane.setSelectedIndex(1);
+//	}
+//	if (panelWorktypes != null & !menuItemWorktypes.isSelected()) {
+//	    tabbedpane.remove(panelWorktypes);
+//	    panelWorktypes = null;
+//	}
+//    }
+//
+//    private void showDevices() {
+//	if (panelDevices == null & menuItemDevices.isSelected()) {
+//	    panelDevices = new Devices(connection);
+//	    tabbedpane.addTab("Įrenginiai", panelDevices);
+//            tabbedpane.setSelectedIndex(1);
+//	}
+//	if (panelDevices != null & !menuItemDevices.isSelected()) {
+//	    tabbedpane.remove(panelDevices);
+//	    panelDevices = null;
+//	}
+//    }
     
     
     
@@ -376,30 +360,26 @@ public class MainFrame extends JFrame implements ActionListener{
 	    case "disconnect":
 		disconnect();
 		break;
-	    case "users":
-		connect_Equipment();
-		showUsers();
-		break;
-	    case "systems":
-		connect_Equipment();
-		showSystems();
-		break;		
-	    case "worktypes":
-		connect_Equipment();
-		showWorktypes();
-		break;		
-	    case "works":
-		connect_Equipment();
-		showWorks();
-		break;		
-	    case "devices":
-		connect_Equipment();
-		showDevices();
-		break;		
-            case "equipmenttypes":
-		connect_Equipment();
-		showEquipmentTypes();
-		break;
+//	    case "systems":
+//		connect_Equipment();
+//		showSystems();
+//		break;
+//	    case "worktypes":
+//		connect_Equipment();
+//		showWorktypes();
+//		break;
+//	    case "works":
+//		connect_Equipment();
+//		showWorks();
+//		break;
+//	    case "devices":
+//		connect_Equipment();
+//		showDevices();
+//		break;
+//            case "equipmenttypes":
+//		connect_Equipment();
+//		showEquipmentTypes();
+//		break;
 	}
     }
 
