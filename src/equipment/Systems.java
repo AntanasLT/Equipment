@@ -44,15 +44,15 @@ public class Systems extends Works {
 
     private void init() {
 	if (connection != null) {
-	setLayout(new BorderLayout());
-	createTable();
-	createPanelButtons();
-	add(pButtons, BorderLayout.NORTH);
-	add(sPaneTable, BorderLayout.CENTER);
-	setVisible(true);
+	    setLayout(new BorderLayout());
+	    createTable();
+	    createPanelButtons();
+	    add(pButtons, BorderLayout.NORTH);
+	    add(sPaneTable, BorderLayout.CENTER);
+	    setVisible(true);
 	} else {
 	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
-        }
+	}
     }
 
     
@@ -61,12 +61,12 @@ public class Systems extends Works {
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
-	setztSpaltenbreiten();
+	setColumnsWidths();
 //	setzt_dieUeberschriften();
 	sPaneTable = new JScrollPane(table);
     }
 
-    private void setztSpaltenbreiten() {
+    private void setColumnsWidths() {
     TableColumn dieSpalte;
     dieSpalte = null;
         for (int i = 0; i < table.getColumnCount(); i++) {
@@ -88,7 +88,7 @@ public class Systems extends Works {
 //    }
 	
 
-    protected void filter(String query) {
+    private void filter(String query) {
 	Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
@@ -150,30 +150,30 @@ public class Systems extends Works {
 	}
     }
 
-//    private void delete() {
-//	int [] rows;
-//        int l, i;
-//	StringBuilder statement;
-//	rows = table.getSelectedRows();
-//        l = rows.length;
-//	if (l >= 0) {
-//	    statement = new StringBuilder(DELETE);	    
-//            for (i = 1; i <= l; i++) {
-//                statement.append(table.getValueAt(rows[i-1], 0));
-//                if (i < l) {
-//                    statement.append(" OR ID = ");
-//                }
-//            }
-//	    try {
-//		if (connection.executeUpdate(statement.toString()) == 1) {
-//		    filter(SELECT_ALL);
-//                    System.out.println();
-//		};
-//	    } catch (SQLException ex) {
-//		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
-//	    }
-//	}
-//    }
+    private void delete() {
+	int[] rows;
+	int l, i;
+	StringBuilder statement;
+	rows = table.getSelectedRows();
+	l = rows.length;
+	if (l >= 0) {
+	    statement = new StringBuilder(DELETE);
+	    for (i = 1; i <= l; i++) {
+		statement.append(table.getValueAt(rows[i - 1], 0));
+		if (i < l) {
+		    statement.append(" OR ID = ");
+		}
+	    }
+	    try {
+		if (connection.executeUpdate(statement.toString()) == 1) {
+		    filter(SELECT_ALL);
+		    System.out.println();
+		};
+	    } catch (SQLException ex) {
+		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
+    }
 
     
     @Override

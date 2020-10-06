@@ -92,6 +92,25 @@ public class ConnectionEquipment {
     public String get_username() {
 	return the_username;
     }
+    
+    public String[][] get_users() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][get_count("Vartotojai")];
+	    resultSet = statement.executeQuery("SELECT ID, Vardas FROM Vartotojai ORDER BY Vardas");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+	
+    }
 
     /**
      *
@@ -104,7 +123,7 @@ public class ConnectionEquipment {
 	ResultSet resultSet;
 	result = null;
 	if (myConnection != null) {
-	    result = new String[2][get_type_count()];
+	    result = new String[2][get_count("IrangosTipai")];
 	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY Pavadinimas");
 	    i = 0;
 	    while (resultSet.next()) {
@@ -122,7 +141,7 @@ public class ConnectionEquipment {
 	ResultSet resultSet;
 	result = null;
 	if (myConnection != null) {
-	    result = new String[2][10];
+	    result = new String[2][get_count("Sistemos")];
 	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas");
 	    i = 0;
 	    while (resultSet.next()) {
@@ -140,7 +159,7 @@ public class ConnectionEquipment {
 	ResultSet resultSet;
 	result = null;
 	if (myConnection != null) {
-	    result = new String[2][10];
+	    result = new String[2][get_count("Darbotipis")];
 	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas");
 	    i = 0;
 	    while (resultSet.next()) {
@@ -160,7 +179,7 @@ public class ConnectionEquipment {
 	ResultSet resultSet;
 	result = null;
 	if (myConnection != null) {
-	    result = new String[4][get_type_count()];
+	    result = new String[4][get_count("Irenginiai")];
 	    resultSet = statement.executeQuery("SELECT * FROM Equipment ORDER BY ".concat(sortFeldname));
 	    i = 0;
 	    while (resultSet.next()) {
@@ -296,19 +315,19 @@ public class ConnectionEquipment {
 //	return eingefuehrt;
 //    }
 
-    private int get_type_count() {
+    private int get_count(String table) {
 	int n;
 	ResultSet rs;
 	n = 0;
-//	try {
-//	    resultSet = statement.executeQuery("SELECT COUNT(*) FROM ".concat(dieGerichtstabelle));
-//	    if (resultSet.next()) {
-//		n = resultSet.getInt(1);
-//	    }
-//	    resultSet.close();
-//	} catch (SQLException | NullPointerException ex) {
-//	    n = 0;
-//	}
+	try {
+	    rs = statement.executeQuery("SELECT COUNT(*) FROM ".concat(table));
+	    if (rs.next()) {
+		n = rs.getInt(1);
+	    }
+	    rs.close();
+	} catch (SQLException | NullPointerException ex) {
+	    n = 0;
+	}
 	return n;
     }
 

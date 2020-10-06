@@ -7,15 +7,12 @@ package equipment;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -23,7 +20,7 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Worktypes extends JPanel implements ActionListener, ListSelectionListener {
+public class Worktypes extends Works {
 
     static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas";
     static final String DELETE = "DELETE FROM Darbotipis WHERE ID = ";
@@ -32,64 +29,44 @@ public class Worktypes extends JPanel implements ActionListener, ListSelectionLi
     static final String UPDATE_MIDDLE = "' WHERE ID = ";
     static final String UPDATE_FINISH = "' WHERE ID = ";
 
-    ConnectionEquipment connection;
-    DefaultTableModel tableModel;
-    JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
-    JPanel panel;
-    JScrollPane scrollpane;
-    JTable table;
+//    ConnectionEquipment connection;
+    private DefaultTableModel tableModel;
+//    JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
+//    JPanel panel;
+//    JScrollPane scrollpane;
+//    JTable table;
 
 
-    public Worktypes(ConnectionEquipment the_connection) {
-	connection = the_connection;
+    public Worktypes(ConnectionEquipment connection) {
+	super(connection);
 	init();
     }
 
     private void init() {
-//	if (connection != null) {
-	setLayout(new BorderLayout());
-	createTable();
-	createButtons();
-	add(panel, BorderLayout.NORTH);
-	add(scrollpane, BorderLayout.CENTER);
-	setVisible(true);
-//	} else {
-//	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
-//        }
+	if (connection != null) {
+	    setLayout(new BorderLayout());
+	    createTable();
+	    createPanelButtons();
+	    add(pButtons, BorderLayout.NORTH);
+	    add(sPaneTable, BorderLayout.CENTER);
+	    setVisible(true);
+	} else {
+	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
+	}
     }
 
-    private void createButtons() {
-	panel = new JPanel();
-	buttonChange = new JMyButton("Išsaugoti");
-	buttonChange.setActionCommand("update");
-	buttonChange.addActionListener(this);
-	buttonAdd = new JMyButton("Pridėti");
-	buttonAdd.setActionCommand("insert");
-	buttonAdd.addActionListener(this);
-	buttonDelete = new JMyButton("Pašalinti");
-	buttonDelete.setActionCommand("delete");
-	buttonDelete.addActionListener(this);
-	buttonFilter = new JMyButton("Filtruoti");
-	buttonFilter.setActionCommand("filter");
-	buttonFilter.addActionListener(this);
-	panel.add(buttonFilter);
-	panel.add(buttonChange);
-	panel.add(buttonAdd);
-	panel.add(buttonDelete);
-    }
-
-   
     private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
-	setztSpaltenbreiten();
+	setColumnsWidths();
+	tableModel.setRowCount(1);
 //	setzt_dieUeberschriften();
-	scrollpane = new JScrollPane(table);
+	sPaneTable = new JScrollPane(table);
     }
 
-        private void setztSpaltenbreiten() {
+    private void setColumnsWidths() {
 	TableColumn dieSpalte;
 	dieSpalte = null;
 	    for (int i = 0; i < table.getColumnCount(); i++) {
@@ -111,7 +88,7 @@ public class Worktypes extends JPanel implements ActionListener, ListSelectionLi
 //    }
 	
 
-    private void filter(String query){
+    private void filter(String query) {
         Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
@@ -131,7 +108,7 @@ public class Worktypes extends JPanel implements ActionListener, ListSelectionLi
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!", JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
 
     }
@@ -149,7 +126,7 @@ public class Worktypes extends JPanel implements ActionListener, ListSelectionLi
 		    filter(SELECT_ALL);
 		};
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }
@@ -168,7 +145,7 @@ public class Worktypes extends JPanel implements ActionListener, ListSelectionLi
 		    filter(SELECT_ALL);
 		};
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }
@@ -193,7 +170,7 @@ public class Worktypes extends JPanel implements ActionListener, ListSelectionLi
                     System.out.println();
 		};
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }

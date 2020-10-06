@@ -6,7 +6,6 @@
 
 package zurnalas;
 
-import equipment.Works;
 import java.awt.Toolkit;
 
 /**
@@ -40,8 +39,8 @@ public class Zurnalas {
 //			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 //			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 //		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {		}
-			MainFrame mainFrame = new MainFrame(args[0]);
-	    mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
+	    MainFrame_Z mainFrame = new MainFrame_Z(args[0]);
+	    mainFrame.setDefaultCloseOperation(MainFrame_Z.EXIT_ON_CLOSE);
 	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
 //	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();

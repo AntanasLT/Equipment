@@ -7,16 +7,12 @@ package equipment;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -24,7 +20,7 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class EquipmentTypes extends JPanel implements ActionListener, ListSelectionListener {
+public class EquipmentTypes extends Works {
 
     static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY Pavadinimas";
     static final String DELETE = "DELETE FROM IrangosTipai WHERE ID = ";
@@ -33,65 +29,39 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
     static final String UPDATE_MIDDLE = "' WHERE ID = ";
     static final String UPDATE_FINISH = "' WHERE ID = ";
 
-    ConnectionEquipment connection;
-    DefaultTableModel tableModel;
-    JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
-    JPanel panel;
-    JScrollPane scrollpane;
-    JTable table;
-    JRadioButton radioButton1;
+    private DefaultTableModel tableModel;
 
 
-    public EquipmentTypes(ConnectionEquipment the_connection) {
-	connection = the_connection;
+    public EquipmentTypes(ConnectionEquipment connection) {
+	super(connection);
 	init();
     }
 
     private void init() {
-//	if (connection != null) {
-	setLayout(new BorderLayout());
-	createTable();
-	createButtons();
-	add(panel, BorderLayout.NORTH);
-	add(scrollpane, BorderLayout.CENTER);
-	setVisible(true);
-//	} else {
-//	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
-//        }
+	if (connection != null) {
+	    setLayout(new BorderLayout());
+	    createTable();
+	    createPanelButtons();
+	    add(pButtons, BorderLayout.NORTH);
+	    add(sPaneTable, BorderLayout.CENTER);
+	    setVisible(true);
+	} else {
+	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
+	}
     }
 
-    private void createButtons() {
-	panel = new JPanel();
-	buttonChange = new JMyButton("Išsaugoti");
-	buttonChange.setActionCommand("update");
-	buttonChange.addActionListener(this);
-	buttonAdd = new JMyButton("Pridėti");
-	buttonAdd.setActionCommand("insert");
-	buttonAdd.addActionListener(this);
-	buttonDelete = new JMyButton("Pašalinti");
-	buttonDelete.setActionCommand("delete");
-	buttonDelete.addActionListener(this);
-	buttonFilter = new JMyButton("Filtruoti");
-	buttonFilter.setActionCommand("filter");
-	buttonFilter.addActionListener(this);
-	panel.add(buttonFilter);
-	panel.add(buttonChange);
-	panel.add(buttonAdd);
-	panel.add(buttonDelete);
-    }
-
-   
     private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
-	setztSpaltenbreiten();
+	setColumnsWidths();
+	tableModel.setRowCount(1);
 //	setzt_dieUeberschriften();
-	scrollpane = new JScrollPane(table);
+	sPaneTable = new JScrollPane(table);
     }
 
-        private void setztSpaltenbreiten() {
+    private void setColumnsWidths() {
 	TableColumn dieSpalte;
 	dieSpalte = null;
 	    for (int i = 0; i < table.getColumnCount(); i++) {
@@ -113,7 +83,7 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 //    }
 	
 
-    private void filter(String query){
+    protected void filter(String query) {
         Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
@@ -133,9 +103,8 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!", JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
-
     }
 	
     
@@ -151,7 +120,7 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 		    filter(SELECT_ALL);
 		};
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }
@@ -170,7 +139,7 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
 		    filter(SELECT_ALL);
 		};
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }
@@ -195,7 +164,7 @@ public class EquipmentTypes extends JPanel implements ActionListener, ListSelect
                     System.out.println();
 		};
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }

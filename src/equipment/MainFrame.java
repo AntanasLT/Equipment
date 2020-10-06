@@ -38,10 +38,10 @@ public class MainFrame extends JFrame implements ActionListener{
 
     String the_host, password, username;
 
-    ConnectionEquipment connection;
+    public ConnectionEquipment connection;
     Message message;
 
-    JTabbedPane tabbedpane;
+    public JTabbedPane tabbedpane;
     Accounts panelOutlays;
     EquipmentTypes panelEquipmentTypes;
     Systems panelSystems;
@@ -51,10 +51,10 @@ public class MainFrame extends JFrame implements ActionListener{
     Devices panelDevices;
     
 // –––––––––––––––––––––––   
-    JMenuBar menu_bar;
+    public JMenuBar menu_bar;
 // –––––––––––––––––––––––   
-    JMyMenu menuDatabase;
-    JMyMenuItem menuItem_connect, menItem_disconnect;
+    public JMyMenu menuDatabase;
+    public JMyMenuItem menuItem_connect, menItem_disconnect;
 // –––––––––––––––––––––––
     JMyMenu menuData;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
@@ -64,16 +64,16 @@ public class MainFrame extends JFrame implements ActionListener{
 // –––––––––––––––––––––––
     
     DialogPassword dialogPassword;
-    JLabelLeft labelMessage;
+    protected JLabelLeft labelMessage;
 // –––––––––––––––––––––––
 
-    public MainFrame(String host) {
+    protected MainFrame(String host) {
         the_host = host;
 	connection = null;
 	tabbedpane = new JMyTabbedPane();
 	init();
-        panelWorks = new Works(connection);
-	tabbedpane.addTab("Darbai", panelWorks);
+//        panelWorks = new Works(connection);
+//	tabbedpane.addTab("Darbai", panelWorks);
 	add(tabbedpane, BorderLayout.CENTER);
 	add(labelMessage, BorderLayout.SOUTH);
 //	panelOutlays = new Accounts(connection);
@@ -94,7 +94,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	connect_Equipment();
     }
 	
-    public JMenuBar menuBar() {
+    protected JMenuBar menuBar() {
 	menu_bar = new JMenuBar();
 
 	menuDatabase = new JMyMenu("Duombazė");
@@ -159,7 +159,7 @@ public class MainFrame extends JFrame implements ActionListener{
     }
 
 // Gemeinsamme Verfahren
-    private ConnectionEquipment connect(String database) {
+    protected ConnectionEquipment connect(String database) {
 	if (password.equals("") || connection == null) {
 	    if (dialogPassword != null) {
 		dialogPassword.dispose();
@@ -183,11 +183,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	return connection;
     }
 
-    private void disconnect() {
+    protected void disconnect() {
 	if (connection != null) {
 	    labelMessage.setText(connection.disconnect());
 	    connection = null;
-	    password = "";
+	    if (panelWorks != null) {
+		panelWorks.disconnect();
+	    }
+//	    password = "";
 //	    dialogPassword.dispose();
 //	    panelOutlays.disconnect();
             
@@ -200,22 +203,29 @@ public class MainFrame extends JFrame implements ActionListener{
 	labelMessage.setText(dieMeldung);
     }
 
-    /**
-     * Es wird an die Haushaltsdatenbank (biudzetas8) angebunden.
-     * @param eineDatenbank der Name der Datenbank
-     * @param einDateiname der Pfad zu die Aus-/Einfuhrdatei
-     * @param eineTabelle der Name der Haupttabelle
-     * @param eineGruppentabelle der Name der Tabelle, die Gruppen enthält
-     * @param eineGruppenID der Name des Gruppen ID Feldes
-     * @param einGruppenname der Name des Gruppennamenfeldes
-     * @param einID
-     * @param Ausfuhrfelder
-     */
-    private void connect_Equipment() {
+    protected void connect_Equipment() {
 	if (connection == null) {
 	    connection = connect("Equipment");
 	}
-//	panelWorks.setConnection(connection);
+	if (panelDevices != null) {
+	    panelDevices.setConnection(connection);
+	}
+	if (panelEquipmentTypes != null) {
+	    panelEquipmentTypes.setConnection(connection);
+	}
+	if (panelSystems != null) {
+	    panelSystems.setConnection(connection);
+	}
+	if (panelUsers != null) {
+	    panelUsers.setConnection(connection);
+	}
+	if (panelWorktypes != null) {
+	    panelWorktypes.setConnection(connection);
+	}
+	if (panelWorks != null) {
+	    panelWorks.setConnection(connection);
+	}
+
 //	renewTypes();
     }
 
@@ -295,7 +305,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (panelEquipmentTypes == null & menuItemEquipmentTypes.isSelected()) {
 	    panelEquipmentTypes = new EquipmentTypes(connection);
 	    tabbedpane.addTab("Įrangos tipai", panelEquipmentTypes);
-            tabbedpane.setSelectedIndex(1);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
 	if (panelEquipmentTypes != null & !menuItemEquipmentTypes.isSelected()) {
 	    tabbedpane.remove(panelEquipmentTypes);
@@ -307,7 +317,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (panelSystems == null & menuItemSystems.isSelected()) {
 	    panelSystems = new Systems(connection);
 	    tabbedpane.addTab("Sistemos", panelSystems);
-            tabbedpane.setSelectedIndex(1);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
 	if (panelSystems != null & !menuItemSystems.isSelected()) {
 	    tabbedpane.remove(panelSystems);
@@ -318,8 +328,8 @@ public class MainFrame extends JFrame implements ActionListener{
     private void showUsers() {
 	if (panelUsers == null & menuItemUsers.isSelected()) {
 	    panelUsers = new Users(connection);
-	    tabbedpane.addTab("Sistemos", panelUsers);
-	    tabbedpane.setSelectedIndex(1);
+	    tabbedpane.addTab("Vartotojai", panelUsers);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
 	if (panelUsers != null & !menuItemUsers.isSelected()) {
 	    tabbedpane.remove(panelUsers);
@@ -331,7 +341,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (panelWorks == null & menuItemWorks.isSelected()) {
 	    panelWorks = new Works(connection);
 	    tabbedpane.addTab("Darbai", panelWorks);
-            tabbedpane.setSelectedIndex(1);
+//            tabbedpane.setSelectedIndex(1);
 	}
 	if (panelWorks != null & !menuItemWorks.isSelected()) {
 	    tabbedpane.remove(panelWorks);
@@ -343,7 +353,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (panelWorktypes == null & menuItemWorktypes.isSelected()) {
 	    panelWorktypes = new Worktypes(connection);
 	    tabbedpane.addTab("Darbų rūšys", panelWorktypes);
-            tabbedpane.setSelectedIndex(1);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
 	if (panelWorktypes != null & !menuItemWorktypes.isSelected()) {
 	    tabbedpane.remove(panelWorktypes);
@@ -355,7 +365,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (panelDevices == null & menuItemDevices.isSelected()) {
 	    panelDevices = new Devices(connection);
 	    tabbedpane.addTab("Įrenginiai", panelDevices);
-            tabbedpane.setSelectedIndex(1);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
 	if (panelDevices != null & !menuItemDevices.isSelected()) {
 	    tabbedpane.remove(panelDevices);
