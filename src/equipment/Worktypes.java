@@ -7,6 +7,7 @@ package equipment;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -20,21 +21,15 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Worktypes extends Works {
+public class Worktypes extends Systems {
 
     static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas";
-    static final String DELETE = "DELETE FROM Darbotipis WHERE ID = ";
-    static final String INSERT = "INSERT INTO Darbotipis (ID, Pavadinimas) VALUES (";
-    static final String UPDATE_START = "UPDATE Darbotipis SET Pavadinimas = '";
-    static final String UPDATE_MIDDLE = "' WHERE ID = ";
-    static final String UPDATE_FINISH = "' WHERE ID = ";
+    static final String PREPARE_DELETE = "DELETE FROM Darbotipis WHERE ID = ?";
+    static final String PREPARE_INSERT = "INSERT INTO Darbotipis (Pavadinimas) VALUES (?)";
+    static final String PREPARE_UPDATE = "UPDATE Darbotipis SET Pavadinimas = ? WHERE ID = ?";
 
-//    ConnectionEquipment connection;
     private DefaultTableModel tableModel;
-//    JMyButton buttonDelete, buttonAdd, buttonChange, buttonFilter;
-//    JPanel panel;
-//    JScrollPane scrollpane;
-//    JTable table;
+    private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
 
 
     public Worktypes(ConnectionEquipment connection) {
@@ -50,13 +45,14 @@ public class Worktypes extends Works {
 	    add(pButtons, BorderLayout.NORTH);
 	    add(sPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
+	    filter();
 	} else {
 	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
+	tableModel = new DefaultTableModel(new Object[]{"ID (auto)", "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
@@ -88,13 +84,13 @@ public class Worktypes extends Works {
 //    }
 	
 
-    private void filter(String query) {
+    private void filter() {
         Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
 	try {
-            resultset = connection.executeQuery(query);
+            resultset = connection.executeQuery(SELECT_ALL);
 	    colcount = tableModel.getColumnCount();
 //            System.out.println(colcount);
 	    row = new Object[colcount];
@@ -114,67 +110,69 @@ public class Worktypes extends Works {
     }
 	
     
-    private void update() {
+   private void update() {
 	int row;
-	StringBuilder statement;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    statement = new StringBuilder(UPDATE_START);
-	    statement.append(table.getValueAt(row, 1)).append(UPDATE_MIDDLE).append(table.getValueAt(row, 0));
 	    try {
-		if (connection.executeUpdate(statement.toString()) == 1) {
-		    filter(SELECT_ALL);
-		};
+		if (preparedUpdate == null) {
+		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
+		}
+// IT, Nr, Pavadinimas, Sistema, ID
+		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
+		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
+		if (preparedUpdate.executeUpdate() == 1) {
+		    filter();
+		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
+	} else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-    
-    
-    
+
     private void insert() {
 	int row;
-	StringBuilder statement;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    statement = new StringBuilder(INSERT);
-	    statement.append(table.getValueAt(row, 0)).append(", '").append(table.getValueAt(row, 1)).append("')");
 	    try {
-		if (connection.executeUpdate(statement.toString()) == 1) {
-		    filter(SELECT_ALL);
-		};
+		if (preparedInsert == null) {
+		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
+		}
+		// ID, Pavadinimas
+		preparedInsert.setString(1, (String) table.getValueAt(row, 1));
+		if (preparedInsert.executeUpdate() == 1) {
+		    filter();
+		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
+	} else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
     private void delete() {
-	int [] rows;
-        int l, i;
-	StringBuilder statement;
-	rows = table.getSelectedRows();
-        l = rows.length;
-	if (l >= 0) {
-	    statement = new StringBuilder(DELETE);	    
-            for (i = 1; i <= l; i++) {
-                statement.append(table.getValueAt(rows[i-1], 0));
-                if (i < l) {
-                    statement.append(" OR ID = ");
-                }
-            }
+	int row;
+	row = table.getSelectedRow();
+	if (row >= 0) {
 	    try {
-		if (connection.executeUpdate(statement.toString()) == 1) {
-		    filter(SELECT_ALL);
-                    System.out.println();
-		};
+		if (preparedDelete == null) {
+		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
+		}
+// ID, Pavadinimas
+		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
+		if (preparedDelete.execute()) {
+		    filter();
+		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
+	} else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -185,14 +183,14 @@ public class Worktypes extends Works {
 		update();
 		break;	
 	    case "filter":
-		filter(SELECT_ALL);
+		filter();
 		break;
 	    case "insert":
 		insert();
 		break;	
 	    case "delete":
 		delete();
-		filter(SELECT_ALL);
+		filter();
 		break;	
 	}
 	

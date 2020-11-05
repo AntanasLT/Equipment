@@ -7,6 +7,7 @@ package equipment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -63,7 +64,7 @@ public class ConnectionEquipment {
 	myConnection = DriverManager.getConnection("jdbc:mysql://" + the_host + ":3306/"
 		+ the_database + "?characterEncoding=utf8", the_username, password);
 	statement = myConnection.createStatement();
-	res = the_username.concat(" prisijungė prie duombazės").concat(the_database).concat(" serveryje ").concat(the_host);
+	res = the_username.concat(" prisijungė prie duombazės „").concat(the_database).concat("“ serveryje ").concat(the_host);
 	return res;
     }
 
@@ -87,6 +88,11 @@ public class ConnectionEquipment {
 	}
 
 	return res;
+    }
+    
+    public PreparedStatement prepareStatement(String statement) throws SQLException {
+	PreparedStatement ps = myConnection.prepareStatement(statement);
+	return ps;
     }
 
     public String get_username() {
@@ -171,6 +177,23 @@ public class ConnectionEquipment {
 	return result;
     }
 
+    public String[][] getStates() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][get_count("Busenos")];
+	    resultSet = statement.executeQuery("SELECT ID, Busena FROM Busenos ORDER BY Busena");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+    }
 
 
     public String[][] getEquipment(String sortFeldname) throws SQLException {

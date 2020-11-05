@@ -1,4 +1,4 @@
-package zurnalas;
+package zurnalasP;
 
 import equipment.*;
 import javax.swing.JMenuBar;
@@ -7,13 +7,13 @@ import javax.swing.JMenuBar;
  *
  * @author a
  */
-public class MainFrame_Z extends MainFrame {
+public class MainFrameP extends MainFrame {
 
-    Works_Z panelWorks;
+    WorksP panelWorks;
 
-    protected MainFrame_Z(String host) {
+    protected MainFrameP(String host) {
 	super(host);
-	panelWorks = new Works_Z(connection);
+	panelWorks = new WorksP(connection);
 	tabbedpane.addTab("Darbai", panelWorks);
 
     }
@@ -23,9 +23,14 @@ public class MainFrame_Z extends MainFrame {
 	if (connection == null) {
 	    connection = connect("Equipment");
 	}
-	if (panelWorks != null) {
-	    panelWorks.setConnection(connection);
+	if (panelWorks == null) {
+	    panelWorks = new WorksP(connection);
 	}
+	
+//	if (panelWorks != null & connection != null) {
+//	    panelWorks.setConnection(connection);
+//	    panelWorks.init_components();
+//	}
 //	renewTypes();
     }
 
@@ -36,11 +41,11 @@ public class MainFrame_Z extends MainFrame {
 	    connection = null;
 	    if (panelWorks != null) {
 		panelWorks.disconnect();
+		tabbedpane.remove(panelWorks);
 	    }
 //	    password = "";
 //	    dialogPassword.dispose();
 //	    panelOutlays.disconnect();
-
 	} else {
 	    labelMessage.setText("Nuo duomenų bazės atsijungta");
 	}
@@ -61,6 +66,23 @@ public class MainFrame_Z extends MainFrame {
 	menuDatabase.add(menuItem_connect);
 	menuDatabase.add(menItem_disconnect);
 	menu_bar.add(menuDatabase);
+        
+	menuData = new JMyMenu("Kortelės");
+	menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
+	menuItemWorks.addActionListener(this);
+	menuItemWorks.setActionCommand("works");
+	menuItemWorks.setSelected(true);
+	menuData.add(menuItemWorks);
+	menu_bar.add(menuData);
+        
+        menuHelp = new JMyMenu("Pagalba");
+        menuItemHelp = new JMyMenuItem("Aprašymas");
+        menuItemHelp.addActionListener(this);
+        menuItemHelp.setActionCommand("help");
+        menuHelp.add(menuItemHelp);
+        menu_bar.add(menuHelp);
+        
+        
 	return menu_bar;
     }
 

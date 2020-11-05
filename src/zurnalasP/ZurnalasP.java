@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package equipment;
+package zurnalasP;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -13,7 +13,7 @@ import java.awt.Toolkit;
  *
  * @author a
  */
-public class Equipment {
+public class ZurnalasP {
 
 	/**
 	 * @param args the command line arguments
@@ -40,9 +40,9 @@ public class Equipment {
 //			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 //			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 //		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {		}
-			MainFrame mainFrame = new MainFrame(args[0]);
-	    mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
-//	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+	    MainFrameP mainFrame = new MainFrameP(args[0]);
+	    mainFrame.setDefaultCloseOperation(MainFrameP.EXIT_ON_CLOSE);
+	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
 //	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 //            l = l > 1600 ? 1600 : l;
@@ -50,7 +50,6 @@ public class Equipment {
 	    h1 = 1000;
 	    mainFrame.setSize(l, h1);
 	    mainFrame.setMinimumSize(new Dimension(l, h1));
-//	    mainFrame.setMinimumSize(new Dimension(1040, 600));
 	    mainFrame.setJMenuBar(mainFrame.menuBar());
 	    mainFrame.setTitle("Žurnalas");
 	    mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("/home/a/Programme/java/berufliche/Equipment/zurnalas.png"));

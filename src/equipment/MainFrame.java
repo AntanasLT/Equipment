@@ -28,6 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import zurnalasP.Help;
 
 /**
  *
@@ -49,6 +50,8 @@ public class MainFrame extends JFrame implements ActionListener{
     Worktypes panelWorktypes;
     Works panelWorks;
     Devices panelDevices;
+    States panelStates;
+    Help frHelp;
     
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
@@ -56,11 +59,14 @@ public class MainFrame extends JFrame implements ActionListener{
     public JMyMenu menuDatabase;
     public JMyMenuItem menuItem_connect, menItem_disconnect;
 // –––––––––––––––––––––––
-    JMyMenu menuData;
+    public JMyMenu menuData;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
-    JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemDevices, menuItemBudget, menuItemWorks, 
+    public JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemDevices, menuItemBudget, menuItemWorks, menuItemStates,
             menuItemWorktypes, menuItemEquipmentTypes, menuItemContracts, menuItemAccounts,
             menuItemPartners, menuItemOrders;
+// –––––––––––––––––––––––
+    public JMyMenu menuHelp;
+    public JMyMenuItem menuItemHelp;
 // –––––––––––––––––––––––
     
     DialogPassword dialogPassword;
@@ -108,7 +114,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	menuDatabase.add(menItem_disconnect);
 	menu_bar.add(menuDatabase);
 //	menuData.addSeparator();
-	menuData = new JMyMenu("Lentelės");
+
+	menuData = new JMyMenu("Kortelės");
+        menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
+	menuItemWorks.addActionListener(this);
+	menuItemWorks.setActionCommand("works");
+	menuData.add(menuItemWorks);
 	menuItemUsers = new JMyCheckBoxMenuItem("Vartotojai");
 	menuItemUsers.addActionListener(this);
 	menuItemUsers.setActionCommand("users");
@@ -121,14 +132,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	menuItemDevices.addActionListener(this);
 	menuItemDevices.setActionCommand("devices");
 	menuData.add(menuItemDevices);
-//	menuItemBudget = new JMyCheckBoxMenuItem("Biudžetas");
-//	menuItemBudget.addActionListener(this);
-//	menuItemBudget.setActionCommand("budget");
-//	menuData.add(menuItemBudget);
-//        menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
-//        menuItemWorks.addActionListener(this);
-//        menuItemWorks.setActionCommand("works");
-//        menuData.add(menuItemWorks);
         menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys");
         menuItemWorktypes.addActionListener(this);
         menuItemWorktypes.setActionCommand("worktypes");
@@ -137,6 +140,25 @@ public class MainFrame extends JFrame implements ActionListener{
         menuItemEquipmentTypes.addActionListener(this);
         menuItemEquipmentTypes.setActionCommand("equipmenttypes");
         menuData.add(menuItemEquipmentTypes);
+        menuItemStates = new JMyCheckBoxMenuItem("Būsenos");
+        menuItemStates.addActionListener(this);
+        menuItemStates.setActionCommand("states");
+        menuData.add(menuItemStates);
+	menu_bar.add(menuData);
+        
+        menuHelp = new JMyMenu("Pagalba");
+        menuItemHelp = new JMyMenuItem("Aprašymas");
+        menuItemHelp.addActionListener(this);
+        menuItemHelp.setActionCommand("help");
+        menuHelp.add(menuItemHelp);
+        menu_bar.add(menuHelp);
+
+	return menu_bar;
+    }
+//	menuItemBudget = new JMyCheckBoxMenuItem("Biudžetas");
+//	menuItemBudget.addActionListener(this);
+//	menuItemBudget.setActionCommand("budget");
+//	menuData.add(menuItemBudget);
 //        menuItemPartners = new JMyCheckBoxMenuItem("Kontrahentai");
 //        menuItemPartners.addActionListener(this);
 //        menuItemPartners.setActionCommand("partners");
@@ -153,24 +175,20 @@ public class MainFrame extends JFrame implements ActionListener{
 //        menuItemOrders.addActionListener(this);
 //        menuItemOrders.setActionCommand("orders");
 //        menuData.add(menuItemOrders);
-	menu_bar.add(menuData);
-
-	return menu_bar;
-    }
 
 // Gemeinsamme Verfahren
     protected ConnectionEquipment connect(String database) {
-	if (password.equals("") || connection == null) {
+	if (password.equals("") || connection == null) { 
 	    if (dialogPassword != null) {
 		dialogPassword.dispose();
 	    }
-//	    dialogPassword = new DialogPassword(this);
-//	    dialogPassword.pack();
-//	    dialogPassword.setVisible(true);
-	    password = "i--Logic15325";
-	    username = "ak";
-//	    password = dialogPassword.bekommeKennwort()[1];
-//	    username = dialogPassword.bekommeKennwort()[0];
+	    dialogPassword = new DialogPassword(this);
+	    dialogPassword.pack();
+	    dialogPassword.setVisible(true);
+//	    password = "i--Logic15325";
+//	    username = "Antanas";
+	    password = dialogPassword.bekommeKennwort()[1];
+	    username = dialogPassword.bekommeKennwort()[0];
 	}
 	connection = new ConnectionEquipment(the_host, database, username);
 	try {
@@ -187,16 +205,56 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (connection != null) {
 	    labelMessage.setText(connection.disconnect());
 	    connection = null;
-	    if (panelWorks != null) {
-		panelWorks.disconnect();
-	    }
-//	    password = "";
-//	    dialogPassword.dispose();
-//	    panelOutlays.disconnect();
-            
 	} else {
 	    labelMessage.setText("Nuo duomenų bazės atsijungta");
 	}
+	if (panelWorks != null) {
+	    panelWorks.disconnect();
+	    menuItemWorks.setSelected(false);
+	    tabbedpane.remove(panelWorks);
+	    showWorks();
+	}
+	if (panelDevices != null) {
+	    panelDevices.disconnect();
+	    menuItemDevices.setSelected(false);
+	    tabbedpane.remove(panelDevices);
+	    showDevices();
+	}
+	if (panelEquipmentTypes != null) {
+	    panelEquipmentTypes.disconnect();
+	    menuItemEquipmentTypes.setSelected(false);
+	    tabbedpane.remove(panelEquipmentTypes);
+	    showEquipmentTypes();
+	}
+	if (panelSystems != null) {
+	    panelSystems.disconnect();
+	    menuItemSystems.setSelected(false);
+	    tabbedpane.remove(panelSystems);
+	    showSystems();
+	}
+	if (panelUsers != null) {
+	    panelUsers.disconnect();
+	    menuItemUsers.setSelected(false);
+	    tabbedpane.remove(panelUsers);
+	    showUsers();
+	}
+	if (panelStates != null) {
+	    panelStates.disconnect();
+	    menuItemStates.setSelected(false);
+	    tabbedpane.remove(panelStates);
+	    showSystems();
+	}
+	if (panelWorktypes != null) {
+	    panelWorktypes.disconnect();
+	    menuItemWorktypes.setSelected(false);
+	    tabbedpane.remove(panelWorktypes);
+	    showWorktypes();
+	}
+	menuData.setVisible(false);
+	password = "";
+//	    dialogPassword.dispose();
+//	    panelOutlays.disconnect();
+            
     }
 
     public void setzt_dieMeldung(String dieMeldung) {
@@ -204,6 +262,9 @@ public class MainFrame extends JFrame implements ActionListener{
     }
 
     protected void connect_Equipment() {
+	if (menuData != null) {
+	    menuData.setVisible(true);
+	}
 	if (connection == null) {
 	    connection = connect("Equipment");
 	}
@@ -224,6 +285,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	if (panelWorks != null) {
 	    panelWorks.setConnection(connection);
+	}
+	if (panelWorktypes != null) {
+	    panelWorktypes.setConnection(connection);
 	}
 
 //	renewTypes();
@@ -325,6 +389,18 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
 
+    private void showStates() {
+	if (panelStates == null & menuItemStates.isSelected()) {
+	    panelStates = new States(connection);
+	    tabbedpane.addTab("Būsenos", panelStates);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+	}
+	if (panelStates != null & !menuItemStates.isSelected()) {
+	    tabbedpane.remove(panelStates);
+	    panelStates = null;
+	}
+    }
+    
     private void showUsers() {
 	if (panelUsers == null & menuItemUsers.isSelected()) {
 	    panelUsers = new Users(connection);
@@ -337,11 +413,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
 
-    private void showWorks() {
+    protected void showWorks() {
 	if (panelWorks == null & menuItemWorks.isSelected()) {
 	    panelWorks = new Works(connection);
 	    tabbedpane.addTab("Darbai", panelWorks);
-//            tabbedpane.setSelectedIndex(1);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
 	if (panelWorks != null & !menuItemWorks.isSelected()) {
 	    tabbedpane.remove(panelWorks);
@@ -373,7 +449,15 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
     
-    
+    private void showHelp() {
+	if (frHelp == null) {
+	    frHelp = new Help();
+            frHelp.setSize(600, 800);
+	}
+	else {
+	    frHelp.setVisible(true);
+	}        
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -394,6 +478,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		connect_Equipment();
 		showSystems();
 		break;		
+	    case "states":
+		connect_Equipment();
+		showStates();
+		break;		
 	    case "worktypes":
 		connect_Equipment();
 		showWorktypes();
@@ -410,6 +498,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		connect_Equipment();
 		showEquipmentTypes();
 		break;
+	    case "help":
+		showHelp();
+		break;		
 	}
     }
 

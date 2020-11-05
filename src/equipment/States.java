@@ -21,26 +21,26 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Users extends Systems {
+public class States extends Systems {
 
-    private static final String SELECT_ALL = "SELECT ID, Vardas FROM Vartotojai ORDER BY ID";
-    private static final String PREPARE_DELETE = "DELETE FROM Vartotojai WHERE ID = ?";
-    private static final String PREPARE_INSERT = "INSERT INTO Vartotojai (ID, Vardas) VALUES (?, ?)";
-    private static final String PREPARE_UPDATE = "UPDATE Vartotojai SET Vardas = ? WHERE ID = ?";
+    static final String SELECT_ALL = "SELECT ID, Busena FROM Busenos ORDER BY ID";
+    private static final String PREPARE_INSERT = "INSERT INTO Busenos (ID, Busena) VALUES (?, ?)";
+    private static final String PREPARE_UPDATE = "UPDATE Busenos SET Busena = ? WHERE ID = ?";
+    private static final String PREPARE_DELETE = "DELETE FROM Busenos WHERE ID = ?";
 
     private DefaultTableModel tableModel;
-    private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
+    private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete;
 
-    public Users(ConnectionEquipment connection) {
+
+    public States(ConnectionEquipment connection) {
 	super(connection);
 	init();
-//        createTable();
     }
 
     private void init() {
 	if (connection != null) {
-	setLayout(new BorderLayout());
-	createTable();
+	    setLayout(new BorderLayout());
+	    createTable();
 	    createPanelButtons();
 	    add(pButtons, BorderLayout.NORTH);
 	    add(sPaneTable, BorderLayout.CENTER);
@@ -48,12 +48,11 @@ public class Users extends Systems {
 	    filter();
 	} else {
 	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
-        }
+	}
     }
 
-    
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID", "Vardas"}, 0);
+	tableModel = new DefaultTableModel(new Object[]{"ID", "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
@@ -64,20 +63,20 @@ public class Users extends Systems {
     }
 
     private void setColumnsWidths() {
-    TableColumn dieSpalte;
-    dieSpalte = null;
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            dieSpalte = table.getColumnModel().getColumn(i);
-            switch (i) {
-                case 0:
-                    dieSpalte.setPreferredWidth(20);
-                    break;
-                case 1:
-                    dieSpalte.setPreferredWidth(800);
-                    break;
-            }
-        }
-}
+	TableColumn dieSpalte;
+	dieSpalte = null;
+	    for (int i = 0; i < table.getColumnCount(); i++) {
+		dieSpalte = table.getColumnModel().getColumn(i);
+		switch (i) {
+		    case 0:
+			dieSpalte.setPreferredWidth(20);
+			break;
+		    case 1:
+			dieSpalte.setPreferredWidth(800);
+			break;
+		}
+	    }
+    }
 	
 //    private void setzt_dieUeberschriften(){
 //	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));
@@ -85,21 +84,18 @@ public class Users extends Systems {
 //    }
 	
 
-    private void filter() {
-	Object[] row;
+    protected void filter() {
+        Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
-	ResultSet resultset;
+        ResultSet resultset;
 	try {
 	    resultset = connection.executeQuery(SELECT_ALL);
 	    colcount = tableModel.getColumnCount();
-//            System.out.println(colcount);
 	    row = new Object[colcount];
-	    while (resultset.next()) {
+	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-//                    System.out.print(i);
 		    row[i] = resultset.getObject(i + 1);
-//                    System.out.println(row[i]);
 		}
 		tableModel.addRow(row);
 	    }
@@ -107,10 +103,8 @@ public class Users extends Systems {
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
-
     }
 	
-    
     private void update() {
 	int row;
 	row = table.getSelectedRow();
@@ -141,14 +135,14 @@ public class Users extends Systems {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 		}
-		// ID, Vardas
+		// IT, Nr, Pavadinimas, Sistema
 		preparedInsert.setInt(1, Integer.valueOf((String) table.getValueAt(row, 0)));
 		preparedInsert.setString(2, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();
 		}
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	} else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -163,7 +157,7 @@ public class Users extends Systems {
 		if (preparedDelete == null) {
 		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
 		}
-// ID, Pavadinimas
+// ID, IT, Nr, Pavadinimas, Sistema
 		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
 		if (preparedDelete.execute()) {
 		    filter();
@@ -190,10 +184,10 @@ public class Users extends Systems {
 	    case "insert":
 		insert();
 		break;	
-//	    case "delete":
-//		delete();
-//		filter();
-//		break;
+	    case "delete":
+		delete();
+		filter();
+		break;	
 	}
 	
     }

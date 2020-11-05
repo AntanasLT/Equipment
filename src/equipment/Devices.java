@@ -7,6 +7,7 @@ package equipment;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -20,24 +21,20 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Devices extends Works {
+public class Devices extends Systems {
 
-    private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID ORDER BY i.Sistema";
-    private static final String DELETE = "DELETE FROM Irenginiai WHERE ID = ";
-    private static final String INSERT = "INSERT INTO Irenginiai (ID, IT, Nr, Pavadinimas, Sistema) VALUES ('";
-    private static final String UPDATE_0 = "UPDATE Irenginiai SET IT = '";
-    private static final String UPDATE_NR = "', Nr = '";
-    private static final String UPDATE_PAVADINIMAS = "', Pavadinimas = '";
-    private static final String UPDATE_SISTEMA = "', Sistema = ";
-    private static final String UPDATE_FINISH = " WHERE ID = ";
-    private static final String ID = "ID";
+    private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID ORDER BY i.ID";
+    private static final String PREPARE_INSERT = "INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema) VALUES (?, ?, ?, ?)";
+    private static final String PREPARE_UPDATE = "UPDATE Irenginiai SET IT = ?, Nr = ?, Pavadinimas = ?, Sistema = ? WHERE ID = ?";
+    private static final String PREPARE_DELETE = "DELETE FROM Irenginiai WHERE ID = ?";
+    private static final String ID = "ID (auto)";
     private static final String IT = "IT";
     private static final String NR = "Nr";
     private static final String PAVADINIMAS = "Pavadinimas";
     private static final String SISTEMA = "Sistema";
 
     private DefaultTableModel tableModel;
-
+    private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete;
     protected Devices(ConnectionEquipment connection) {
 	super(connection);
 	init();
@@ -51,6 +48,7 @@ public class Devices extends Works {
 	    add(pButtons, BorderLayout.NORTH);
 	    add(sPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
+	    filter();
 	} else {
 	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -87,21 +85,38 @@ public class Devices extends Works {
 //	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));
 //        table.getColumnModel().getColumn(1).setHeaderValue("<html>Der<br>Typ</html>");
 //    }
-    protected void filter(String query) {
+    private int getSystemID(String system) {
+	int i, n, id;
+	boolean found;
+	i = 0;
+	id = -1;
+	found = false;
+	n = systems.length;
+	while (i <= n & !found) {
+	    if (systems[1][i].equals(system)) {
+		found = true;
+		id = Integer.valueOf(systems[0][i]);
+	    } 
+	    else {
+		i++;
+	    }
+	}
+	return id;
+	
+    }
+    
+    protected void filter() {
 	Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
 	try {
-	    resultset = connection.executeQuery(query);
+	    resultset = connection.executeQuery(SELECT_ALL);
 	    colcount = tableModel.getColumnCount();
-//            System.out.println(colcount);
 	    row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-//                    System.out.print(i);
 		    row[i] = resultset.getObject(i + 1);
-//                    System.out.println(row[i]);
 		}
 		tableModel.addRow(row);
 	    }
@@ -112,74 +127,85 @@ public class Devices extends Works {
     }
 
     private void update() {
-	int row;
-	StringBuilder statement;
+	int row, systems_id;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    statement = new StringBuilder(UPDATE_0);
-	    statement.append(table.getValueAt(row, 1)).
-                    append(UPDATE_NR).append(table.getValueAt(row, 2)).
-                    append(UPDATE_PAVADINIMAS).append(table.getValueAt(row, 3)).
-//                    append(UPDATE_SISTEMA).append(table.getValueAt(row, 4)).
-                    append(UPDATE_FINISH).append(table.getValueAt(row, 0));
-	    try {
-		if (connection.executeUpdate(statement.toString()) == 1) {
-		    filter(SELECT_ALL);
-		};
-	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-	    }
+	    systems_id = getSystemID((String) table.getValueAt(row, 4));	    
+	    if (systems_id >= 0) {
+		try {
+		    if (preparedUpdate == null) {
+			preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
+		    }
+    // IT, Nr, Pavadinimas, Sistema, ID
+		    preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
+		    preparedUpdate.setString(2, (String) table.getValueAt(row, 2));
+		    preparedUpdate.setString(3, (String) table.getValueAt(row, 3));
+		    preparedUpdate.setInt(4, systems_id);
+		    preparedUpdate.setInt(5, (int) table.getValueAt(row, 0));
+		    if (preparedUpdate.executeUpdate() == 1) {
+			filter();
+		    }
+		} catch (SQLException ex) {
+		    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+		}
+	    } else {
+		JOptionPane.showMessageDialog(this, "Nėra tokios sistemos.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    }   
+	} else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-    
-    
-    
+
     private void insert() {
-	int row;
-	StringBuilder statement;
+	int row, systems_id;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    statement = new StringBuilder(INSERT);
-	    statement.append(table.getValueAt(row, 1)).append("', '").
-                    append(table.getValueAt(row, 2)).append("', '").
-                    append(table.getValueAt(row, 3)).append("', ").
-                    append(table.getValueAt(row, 4)).append(")");
-	    try {
-		if (connection.executeUpdate(statement.toString()) == 1) {
-		    filter(SELECT_ALL);
-		};
-	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    }
+	    systems_id = getSystemID((String) table.getValueAt(row, 4));	    
+	    if (systems_id >= 0) {
+		try {
+		    if (preparedInsert == null) {
+			preparedInsert = connection.prepareStatement(PREPARE_INSERT);
+		    }
+		    // IT, Nr, Pavadinimas, Sistema
+		    preparedInsert.setString(1, table.getValueAt(row, 1).toString());
+		    preparedInsert.setString(2, table.getValueAt(row, 2).toString());
+		    preparedInsert.setString(3, table.getValueAt(row, 3).toString());
+		    preparedInsert.setInt(4, systems_id);
+		    if (preparedInsert.executeUpdate() == 1) {
+			filter();
+		    }
+		} catch (SQLException ex) {
+		    JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+		}
+	    } else {
+		JOptionPane.showMessageDialog(this, "Nėra tokios sistemos.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    } 
+	}  else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
 	}
     }
 
     private void delete() {
-	int[] rows;
-	int l, i;
-	StringBuilder statement;
-	rows = table.getSelectedRows();
-	l = rows.length;
-	if (l >= 0) {
-	    statement = new StringBuilder(DELETE);
-	    for (i = 1; i <= l; i++) {
-		statement.append(table.getValueAt(rows[i - 1], 0));
-		if (i < l) {
-		    statement.append(" OR ID = ");
-		}
-	    }
+	int row;
+	row = table.getSelectedRow();
+	if (row >= 0) {
 	    try {
-		if (connection.executeUpdate(statement.toString()) == 1) {
-		    filter(SELECT_ALL);
-		    System.out.println();
-		};
+		if (preparedDelete == null) {
+		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
+		}
+// ID, IT, Nr, Pavadinimas, Sistema
+		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
+		if (preparedDelete.execute()) {
+		    filter();
+		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
-	}
+	}  else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
+	}       
     }
 
-    
     @Override
     public void actionPerformed(ActionEvent e) {
 	String derBefehl;
@@ -189,14 +215,14 @@ public class Devices extends Works {
 		update();
 		break;	
 	    case "filter":
-		filter(SELECT_ALL);
+		filter();
 		break;
 	    case "insert":
 		insert();
 		break;	
 	    case "delete":
 		delete();
-		filter(SELECT_ALL);
+		filter();
 		break;	
 	}
 	
