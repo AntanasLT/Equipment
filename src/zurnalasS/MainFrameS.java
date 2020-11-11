@@ -116,6 +116,11 @@ public class MainFrameS extends MainFrame {
 	menuItemHelp.addActionListener(this);
 	menuItemHelp.setActionCommand("help");
 	menuHelp.add(menuItemHelp);
+	menuItemAbout = new JMyMenuItem("Versija");
+	menuItemAbout.addActionListener(this);
+	menuItemAbout.setActionCommand("about");
+	menuHelp.add(menuItemAbout);
+
 	menu_bar.add(menuHelp);
 
 	return menu_bar;

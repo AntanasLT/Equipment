@@ -46,6 +46,10 @@ and open the template in the editor.
 		Tai ypač patogu, kai sąrašas ilgas. Pvz.: nuo datos lauko klavišu Tab perėjus į sistemų sąrašą renkame „pri“: iškart sąraše išrenkamas elementas „Priešgaisrinė sign.“.</li>
 		</ul>
         
+		<h3>Lentelė</h3>
+	<p>Paspaudus mygtukuką „Naujausieji“, lentelėje parodoma 50 paskutiniųjų įrašų, surikiuotų pagal ID. Jei reikia daugiau įrašų, tai naudojame mygtuką „Filtruoti“ (detalesnis aprašymas žemiau, skyrelyje „Laukai ir mygtukai“). Jei norime tiesiog peržvelgti įrašus, galime naudoti filtravimą pagal datą, pvz.: 2020-10-% arba 2020-10% rodys visus spalio mėn. įrašus, 2020-10-0% – visus įrašus nuo spalio 1 iki 9 d. ir t.t. (nepamiršti įjungti datos filtro, pažymint langelį po datos lauku!) </p>
+	<p>Dukart sprangelėjus ant eilutės, kurios „Tąsa“ nelygi 0, išfiltruojami visi su tuo įrašu susiję įrašai.</p>
+
 		<h3>Laukai ir mygtukai</h3>
 		<ul>
 		<li>Laukas „<b>Data</b>“. Paleidus programą, į lauką automatiškai įrašoma šiandienos data. 
@@ -68,7 +72,7 @@ and open the template in the editor.
 		<li><!-- <form><input type="submit" name="όνομα" value="Nebaigti" disabled="true"></form> --><b>Nebaigtieji</b> skirtas parodyti įrašams, kurių būsena nėra „Baigas“ arba „Susipažinau“, t.y. „Nepradėta“, „Pradėta“, „Tęsiama“. <br>
 		<i>Jei laukas „Tąsa“ nėra tuščias, tai papildomai filtruojama pagal jo reikšmę: tik tie įrašai, kurių „ID“ arba „Tąsa“ lygūs tai reikšmei.</i></li>
 		<li><!-- <form><input type="submit" name="όνομα" value="Info" disabled="true"></form> --><b>Info</b> skirtas parodyti įrašams, kurių laukas „Darbas“ yra „Informacija“. </li>
-		<li><form><!-- <input type="submit" name="όνομα" value="Filtruoti" disabled="true"></form> --><b>Filtruoti</b> skirtas filtruoti įrašams pagal laukus „Data“, „Sistema“, „Įrenginys“, „Darbas“, „Būsena“, „Tąsa“.
+		<li><form><!-- <input type="submit" name="όνομα" value="Filtruoti" disabled="true"></form> --><a name="Filtruoti"><b>Filtruoti</b> skirtas filtruoti įrašams pagal laukus „Data“, „Sistema“, „Įrenginys“, „Darbas“, „Būsena“, „Tąsa“.
 		<p>Minėtųjų laukų filtrai įjungiami, pažymint reikiamus filtrų langelius, esančius po šiais laukais. Jei pažymėta keletas langelių, tai naudojama loginė sąlyga IR. Spragtelėjus ant žodžio „Filtrai“ visi filtrai išjungiami.</p>
 		<p>Laukams „Data“ ir „Įrenginys“ galioja pakaitos simbolis %. <u>Pvz.</u>, įrašius 2020-10% ir įjungus šį filtrą, pažymint langelį po šiuo lauku bei paspaudus „Filtruoti“ bus parodyti 2020 m. spalio mėn. įrašai.<b> Atkreipkite dėmesį, ar yra tuščias laukas „Tąsa“: jei jis netuščias, tai papildomai bus filtruojama pagal jo reikšmę.</b></p>
 		<u>Pavyzdys</u> su pakaitos simboliu laukui „Įrenginys“: %ptin%. Jei laukas „Tąsa“ tuščias bus parodyti visi įrašai, kurių lauke „Įrenginys“ yra teksto fragmentas „ptin“: ir „Perimetro optinis ryšys" ir „Perimeto Optika “. <b>Didžiosios ir mažosios raidės turi reikšmę!</b></li>

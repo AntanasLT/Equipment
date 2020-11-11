@@ -37,13 +37,13 @@ public class States extends Systems {
 	init();
     }
 
-    private void init() {
+    protected void init() {
 	if (connection != null) {
 	    setLayout(new BorderLayout());
 	    createTable();
 	    createPanelButtons();
 	    add(pButtons, BorderLayout.NORTH);
-	    add(sPaneTable, BorderLayout.CENTER);
+	    add(scrPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
 	    filter();
 	} else {
@@ -59,7 +59,7 @@ public class States extends Systems {
 	setColumnsWidths();
 	tableModel.setRowCount(1);
 //	setzt_dieUeberschriften();
-	sPaneTable = new JScrollPane(table);
+	scrPaneTable = new JScrollPane(table);
     }
 
     private void setColumnsWidths() {

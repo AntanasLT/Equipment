@@ -35,10 +35,10 @@ public class Help extends JFrame {
         editorPane = new JEditorPane();
         editorPane.setEditable(false);
         helpUrl =  Help.class.getResource("Aprasymas.html");
-//        System.out.println(helpUrl);
+        editorPane.setContentType("text/html;charset=UTF-8");
         if (helpUrl != null) {
             try {
-                editorPane.setPage(helpUrl);
+                editorPane.setPage(helpUrl); 
             } catch (IOException e) {
                 System.out.println("Attempted to read a bad URL: " + helpUrl);
             }

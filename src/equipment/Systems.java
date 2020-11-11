@@ -45,7 +45,7 @@ public class Systems extends Works {
 	    createTable();
 	    createPanelButtons();
 	    add(pButtons, BorderLayout.NORTH);
-	    add(sPaneTable, BorderLayout.CENTER);
+	    add(scrPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
 	    filter();
 	} else {
@@ -76,7 +76,7 @@ public class Systems extends Works {
 	table.getSelectionModel().addListSelectionListener(this);
 	setColumnsWidths();
 //	setzt_dieUeberschriften();
-	sPaneTable = new JScrollPane(table);
+	scrPaneTable = new JScrollPane(table);
     }
 
     private void setColumnsWidths() {

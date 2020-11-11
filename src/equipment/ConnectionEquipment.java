@@ -376,6 +376,24 @@ public class ConnectionEquipment {
 	return rs;
     }
 
+    String[][] getTPtypes() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][get_count("TPrusys")];
+	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM TPrusys ORDER BY ID");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+    }
+
 //    private String die_anzahl_der_tage(String dasdatum, String dieTabelle) {
 //	return "SELECT COUNT( DISTINCT DATE_FORMAT( VdieZeit, '%Y-%m-%d' )) FROM " + dieTabelle + " WHERE VdieZeit LIKE '" + dasdatum + "%'";
 //    }

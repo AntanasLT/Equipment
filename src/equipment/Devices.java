@@ -46,7 +46,7 @@ public class Devices extends Systems {
 	    createTable();
 	    createPanelButtons();
 	    add(pButtons, BorderLayout.NORTH);
-	    add(sPaneTable, BorderLayout.CENTER);
+	    add(scrPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
 	    filter();
 	} else {
@@ -62,7 +62,7 @@ public class Devices extends Systems {
 	setColumnsWidths();
 	tableModel.setRowCount(1);
 //	setzt_dieUeberschriften();
-	sPaneTable = new JScrollPane(table);
+	scrPaneTable = new JScrollPane(table);
     }
 
     private void setColumnsWidths() {

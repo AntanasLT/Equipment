@@ -50,8 +50,10 @@ public class MainFrame extends JFrame implements ActionListener{
     Worktypes panelWorktypes;
     Works panelWorks;
     Devices panelDevices;
+    TP panelTP;
     States panelStates;
     Help frHelp;
+    About frAbout;
     
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
@@ -61,12 +63,13 @@ public class MainFrame extends JFrame implements ActionListener{
 // –––––––––––––––––––––––
     public JMyMenu menuData;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
-    public JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemDevices, menuItemBudget, menuItemWorks, menuItemStates,
-            menuItemWorktypes, menuItemEquipmentTypes, menuItemContracts, menuItemAccounts,
-            menuItemPartners, menuItemOrders;
+    public JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemDevices, menuItemWorks, menuItemStates, menuItemWorktypes, menuItemEquipmentTypes, menuItemTP,
+	    
+	    menuItemContracts, menuItemAccounts,
+            menuItemPartners, menuItemBudget, menuItemOrders;
 // –––––––––––––––––––––––
     public JMyMenu menuHelp;
-    public JMyMenuItem menuItemHelp;
+    public JMyMenuItem menuItemHelp, menuItemAbout;
 // –––––––––––––––––––––––
     
     DialogPassword dialogPassword;
@@ -143,7 +146,14 @@ public class MainFrame extends JFrame implements ActionListener{
         menuItemStates = new JMyCheckBoxMenuItem("Būsenos");
         menuItemStates.addActionListener(this);
         menuItemStates.setActionCommand("states");
-        menuData.add(menuItemStates);
+	menuData.add(menuItemStates);
+// _____________________________
+	menuData.addSeparator();
+        menuItemTP = new JMyCheckBoxMenuItem("TP");
+        menuItemTP.addActionListener(this);
+        menuItemTP.setActionCommand("tp");
+        menuData.add(menuItemTP);
+	
 	menu_bar.add(menuData);
         
         menuHelp = new JMyMenu("Pagalba");
@@ -151,6 +161,11 @@ public class MainFrame extends JFrame implements ActionListener{
         menuItemHelp.addActionListener(this);
         menuItemHelp.setActionCommand("help");
         menuHelp.add(menuItemHelp);
+        menuItemAbout = new JMyMenuItem("Versija");
+        menuItemAbout.addActionListener(this);
+        menuItemAbout.setActionCommand("about");
+        menuHelp.add(menuItemAbout);
+
         menu_bar.add(menuHelp);
 
 	return menu_bar;
@@ -449,14 +464,41 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
     
+    private void showTP() {
+	if (panelTP == null & menuItemTP.isSelected()) {
+	    panelTP = new TP(connection);
+	    tabbedpane.addTab("TP", panelTP);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+	}
+	if (panelTP != null & !menuItemTP.isSelected()) {
+	    tabbedpane.remove(panelTP);
+	    panelTP = null;
+	}
+    }
+    
+    
     private void showHelp() {
 	if (frHelp == null) {
 	    frHelp = new Help();
-            frHelp.setSize(600, 800);
+	    frHelp.setSize(600, 800);
+	    frHelp.setTitle("Aprašymas");
 	}
 	else {
 	    frHelp.setVisible(true);
 	}        
+    }
+    
+    private void showAbout() {
+	if (frAbout == null) {
+	    frAbout = new About();
+	    frAbout.setSize(200, 100);
+	    frAbout.setTitle("Apie");
+	    frAbout.setResizable(false);
+	    frAbout.setLocation(100, 100);
+	}
+	else {
+	    frAbout.setVisible(true);
+	}
     }
     
     @Override
@@ -498,9 +540,16 @@ public class MainFrame extends JFrame implements ActionListener{
 		connect_Equipment();
 		showEquipmentTypes();
 		break;
+	    case "tp":
+		connect_Equipment();
+		showTP();
+		break;		
 	    case "help":
 		showHelp();
-		break;		
+		break;
+	    case "about":
+		showAbout();
+		break;
 	}
     }
 

@@ -18,8 +18,6 @@ import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -73,10 +71,10 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
     protected JMyButton bDelete, bAdd, btChange, btAcknowl, btFilter, btUnfinished, btAll, btInfo;
     JMyComboBox cbSystem, cbWorkType, cbState;
     protected JPanel pInput, pnFIlterButtons, pFields;
-    private JPanel pEditButtons;
+    protected JPanel pEditButtons;
     private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete, preparedFilter, preparedUpdateFinish;
     JRadioButton radioButton1;
-    JScrollPane sPaneTable, sPaneMessage;
+    JScrollPane scrPaneTable, scrPaneMessage;
     JTable table;
     JTextField tfDate, tfEquipment, tfIDpr, tfID;
     JTextArea taMessage;
@@ -107,7 +105,7 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	}
     }
     
-    public void init_components() {
+    protected void init_components() {
 	setLayout(new BorderLayout());
 	getSystems();
 	getWorktypes();
@@ -115,7 +113,7 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	createTable();
 	createPanelInput();
 	add(pInput, BorderLayout.NORTH);
-	add(sPaneTable, BorderLayout.CENTER);
+	add(scrPaneTable, BorderLayout.CENTER);
 	add(lMessage, BorderLayout.SOUTH);
 	setVisible(true);
     }
@@ -215,7 +213,7 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 //
 	gbc.gridx = 6;
 	gbc.weightx = 0;
-        lWorkType = new JLabelRechts("Darbas");
+	lWorkType = new JLabelRechts("Darbas");
 	pFields.add(lWorkType, gbc);
 
 	gbc.gridx = 7;
@@ -225,7 +223,7 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 //
 	gbc.gridx = 8;
 	gbc.weightx = 0;
-        lWorkType = new JLabelRechts("Būsena");
+	lWorkType = new JLabelRechts("Būsena");
 	pFields.add(lWorkType, gbc);
 
 	gbc.gridx = 9;
@@ -302,8 +300,8 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	taMessage.setLineWrap(true);
 	taMessage.setWrapStyleWord(true);
         taMessage.setToolTipText("Dvigubas spragtelėjimas ištrina tekstą iš šio lauko");
-        sPaneMessage = new JScrollPane(taMessage);
-	pFields.add(sPaneMessage, gbc);
+	scrPaneMessage = new JScrollPane(taMessage);
+	pFields.add(scrPaneMessage, gbc);
 	
 	gbc.gridx = 12;
 	gbc.gridwidth = 2;
@@ -366,11 +364,13 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	tableModel = new DefaultTableModel(new Object[]{ID, ID_PR, USER, DATA, SISTEMA, IRENGINYS, DARBAS, BUSENA, APRASYMAS}, 0);
 	table = new JTable(tableModel);
 	table.setDefaultEditor(Object.class, null);
+        table.addMouseListener(this);
+        table.setToolTipText("Dvigubas spragtelėjimas išfiltruoja susijusius įrašus");
 //	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
 	setColumnsWidths();
 //	setzt_dieUeberschriften();
-	sPaneTable = new JScrollPane(table);
+	scrPaneTable = new JScrollPane(table);
     }
 
     private void setColumnsWidths() {
@@ -527,46 +527,53 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 //SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID
     private StringBuilder prepareFilter() {
 	StringBuilder sb;
-	boolean id_isblank;
-	id_isblank = tfIDpr.getText().isBlank();
-        if (!id_isblank) {
-            id_isblank = Integer.valueOf((String) tfIDpr.getText()) <= 0; 
-        }
- 	sb = new StringBuilder(PREPARE_SELECT);
-	if (chDate.isSelected() || chDevice.isSelected() || chState.isSelected() || chSystem.isSelected() || chWorktype.isSelected() || !id_isblank) {
+	sb = new StringBuilder(PREPARE_SELECT);
+	if (chDate.isSelected() || chDevice.isSelected() || chState.isSelected() || chSystem.isSelected() || chWorktype.isSelected()) {
 	    sb.append(" WHERE");
-	}	
-	if (chDate.isSelected()) {
-	    sb.append(" d.Data LIKE ?");
-	}
-	if (chSystem.isSelected()) {
-	    appendAND(sb);
-	    sb.append(" d.Sistema = ?");
-	}
-	if (chDevice.isSelected()) {
-	    appendAND(sb);
-	    sb.append(" d.Irenginys LIKE ?");
-	}
-	if (chWorktype.isSelected()) {
-	    appendAND(sb);
-	    sb.append(" d.Darbas = ?");
-	}
-	if (chState.isSelected()) {
-	    appendAND(sb);
-	    sb.append(" d.Busena = ?");
-	}
-	if (!id_isblank) {
-            appendAND(sb);
-            sb.append(" d.ID = ? OR d.IDpr = ?");
- 	}
+            if (chDate.isSelected()) {
+                sb.append(" d.Data LIKE ?");
+            }
+            if (chSystem.isSelected()) {
+                appendAND(sb);
+                sb.append(" d.Sistema = ?");
+            }
+            if (chDevice.isSelected()) {
+                appendAND(sb);
+                sb.append(" d.Irenginys LIKE ?");
+            }
+            if (chWorktype.isSelected()) {
+                appendAND(sb);
+                sb.append(" d.Darbas = ?");
+            }
+            if (chState.isSelected()) {
+                appendAND(sb);
+                sb.append(" d.Busena = ?");
+            }
+	} else {
+            if (!tfIDpr.getText().isEmpty()) {
+                sb.append(" WHERE d.ID = ? OR d.IDpr = ?");                      
+            } else {
+                sb.append(" WHERE d.Sistema != 0");
+            }         
+        }
 	sb.append(" ORDER BY d.ID");
 //	System.out.println(sb.toString());
 	return sb;
     }
     
     private void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
-	int i, n;
+	int i, n, idpr, id;
 	n = 0;
+        if (!tfIDpr.getText().isEmpty()) {
+            idpr = Integer.valueOf((String) tfIDpr.getText()); 
+        } else {
+            idpr = 0;
+        }
+        if (!tfID.getText().isEmpty()) {
+            id = Integer.valueOf((String) tfID.getText()); 
+        } else {
+            id = 0;
+        }
 	i = sb.indexOf(" d.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
@@ -585,7 +592,7 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	i = sb.indexOf(" d.Darbas = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(worktypes[0][cbWorkType.getSelectedIndex()]));	    
+	    preparedFilter.setInt(n, Integer.valueOf(worktypes[0][cbWorkType.getSelectedIndex()]));
 	}
 	i = sb.indexOf(" d.Busena = ?");
 	if (i >= 0) {
@@ -594,10 +601,16 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	}
 	i = sb.indexOf(" d.ID = ?");
 	if (i >= 0) {
-	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf((String) tfIDpr.getText()));	 
-	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf((String) tfIDpr.getText()));	    
+ 	    n++;
+            if (idpr > 0) {
+                preparedFilter.setInt(n, idpr);	                
+                n++;
+                preparedFilter.setInt(n, idpr);
+            } else {
+                preparedFilter.setInt(n, id);
+                n++;
+                preparedFilter.setInt(n, id);
+            }
 	}
 	
     }
@@ -668,11 +681,11 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
             JOptionPane.showMessageDialog(this, "Tokio vartotojo nėra.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
 	try {
-	    idpr = get_int(tfIDpr.getText());
+	    idpr = get_int(tfID.getText(), tfIDpr.getText());
 	    if (preparedInsert == null) {
 		preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 	    }
-//    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pastabos)
+//(IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Busena, Pastabos, Baigta)
 	    preparedInsert.setInt(1, get_int(tfID.getText()));
 	    preparedInsert.setInt(2, id);
 	    preparedInsert.setString(3, date.heutigesDatum());
@@ -750,6 +763,19 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	    return Integer.valueOf(str);
 	}
     }
+    
+    private int get_int(String idstr, String idtasastr) {
+	int id, idtasa;
+	if (idtasastr.isEmpty()) {
+	    idtasa = 0;
+	} else {
+	    idtasa = Integer.valueOf(idtasastr);
+	}
+	id = Integer.valueOf(idstr);
+	id = idtasa > 0 ? idtasa : id;
+	return id;
+    }
+    
 
     private void delete() {
 	int row;
@@ -954,6 +980,10 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
  	if (me.getComponent().equals(taMessage) & me.getClickCount() == 2) {
 	    taMessage.setText("");
 	}
+	if (me.getComponent().equals(table) & me.getClickCount() == 2) {
+	    filter();
+        }	
+        
     }
 
     @Override
