@@ -31,7 +31,7 @@ import javax.swing.table.TableColumn;
  */
 public class TP extends Works {
 
-    private static final String SELECT_ALL = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID ORDER BY tp.Data LIMIT 100";
+    private static final String SELECT_ALL = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID ORDER BY tp.Data DESC LIMIT 100";
     private static final String PREPARE_INSERT = "INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)";
     private static final String PREPARE_UPDATE = "UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?";
 //    private static final String PREPARE_DELETE = "DELETE FROM Irenginiai WHERE ID = ?";
@@ -314,31 +314,26 @@ public class TP extends Works {
 	}
     }
 
+//UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?
     private void update() {
-	int row, systems_id;
+	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    systems_id = getSystemID((String) table.getValueAt(row, 4));	    
-	    if (systems_id >= 0) {
-		try {
-		    if (preparedUpdate == null) {
-			preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
-		    }
-    // IT, Nr, Pavadinimas, Sistema, ID
-		    preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
-		    preparedUpdate.setString(2, (String) table.getValueAt(row, 2));
-		    preparedUpdate.setString(3, (String) table.getValueAt(row, 3));
-		    preparedUpdate.setInt(4, systems_id);
-		    preparedUpdate.setInt(5, (int) table.getValueAt(row, 0));
-		    if (preparedUpdate.executeUpdate() == 1) {
-			filter();
-		    }
-		} catch (SQLException ex) {
-		    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-		}
-	    } else {
-		JOptionPane.showMessageDialog(this, "Nėra tokios sistemos.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    }   
+            try {
+                if (preparedUpdate == null) {
+                    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
+                }
+                preparedUpdate.setString(1, tfDate.getText());
+                preparedUpdate.setInt(2, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+                preparedUpdate.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+                preparedUpdate.setString(4, taMessage.getText());
+                preparedUpdate.setInt(5, (int) table.getValueAt(row, 0));
+                if (preparedUpdate.executeUpdate() == 1) {
+                    filter();
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+            }
 	} else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -417,12 +412,13 @@ public class TP extends Works {
 
     @Override
     public void valueChanged(ListSelectionEvent lse) {
-//	int zeile, spalte;
-//	zeile = table.getSelectedRow();
-//	spalte = table.getSelectedColumn();
-//	if (lse.getValueIsAdjusting()) {
-//	    table.setValueAt((String.valueOf(table.getValueAt(zeile, spalte)).replace(",", ".")), zeile, spalte);
-//	}
+	selectedRow = table.getSelectedRow();
+ 	if (selectedRow >= 0) {
+            tfDate.setText(table.getValueAt(selectedRow, 1).toString());
+	    setComboBoxItem(cbSystem, systems[1], (String) table.getValueAt(selectedRow, 2));
+	    setComboBoxItem(cbTPtype, tptypes[1], (String) table.getValueAt(selectedRow, 3));
+	    taMessage.setText((String) table.getValueAt(selectedRow, 4));
+	    }
     }
 
 
@@ -430,4 +426,12 @@ public class TP extends Works {
     
     
 }
+//	int zeile, spalte;
+//	zeile = table.getSelectedRow();
+//	spalte = table.getSelectedColumn();
+//	if (lse.getValueIsAdjusting()) {
+//	    table.setValueAt((String.valueOf(table.getValueAt(zeile, spalte)).replace(",", ".")), zeile, spalte);
+//	}
+
+
 //	tableModel = new DefaultTableModel(new Object[]{"", "Datum", "<html>Fett<br>%</hmtl>", "<html>Muskeln<br>%</html>", "<html>Wasser<br>%</html>", "<html>Knochen<br>kg</html>", "<html>Masse<br>kg</html>", "<html>Energie0<br>kcal</html>", "<html>Energie1<br>kcal</html>", "<html>Bauch<br>cm</html>", "<html>Oberarm<br>cm</html>", "<html>Unterarm<br>cm</html>", "<html>Ober-<br>schenkel<br>cm</html>", "<html>Unter-<br>schenkel<br>cm</html>", "<html>Brust<br>cm</html>", "<html>Fettmasse<br>kg</html>", "<html>Muskel-<br>masse<br>kg</html>"}, 0);

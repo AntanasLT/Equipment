@@ -38,7 +38,7 @@ import javax.swing.table.TableColumn;
  */
 public class Works extends JPanel implements ActionListener, ListSelectionListener, MouseListener {
 
-    private static final String PREPARE_SELECT_ALL = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ORDER BY d.ID LIMIT 50";
+    private static final String PREPARE_SELECT_ALL = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ORDER BY d.ID DESC LIMIT 50";
     private static final String PREPARE_SELECT = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID";
     private static final String PREPARE_INFO = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE dt.ID = 6 ORDER BY d.ID";
 //    private static final String PREPARE_INFO_ID = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Busena = 5 AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID";
@@ -830,7 +830,7 @@ public class Works extends JPanel implements ActionListener, ListSelectionListen
 	}
     }
 
-    private void setComboBoxItem(JComboBox cb, String[] s, String name) {
+    protected void setComboBoxItem(JComboBox cb, String[] s, String name) {
 	int i, n;
 	boolean found;
 	i = 0;
