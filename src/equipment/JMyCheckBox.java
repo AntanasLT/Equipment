@@ -13,8 +13,8 @@ import javax.swing.JCheckBox;
  * @author a
  */
 public class JMyCheckBox extends JCheckBox {
-    public JMyCheckBox(String text, boolean checked) {
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JMyCheckBox(String text, boolean checked, int size) {
+        setFont(new Font("Arial", Font.PLAIN, size));
         setText(text);
         setSelected(checked);
     }

@@ -14,14 +14,14 @@ import javax.swing.JLabel;
  */
 public class JLabelRechts extends JLabel {
 
-    public JLabelRechts(String derText) {
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JLabelRechts(String derText, int size) {
+        setFont(new Font("Arial", Font.PLAIN, size));
         setHorizontalAlignment(JLabel.RIGHT);
         setText(derText);
     }
     
-    public JLabelRechts() {
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JLabelRechts(int size) {
+        setFont(new Font("Arial", Font.PLAIN, size));
         setHorizontalAlignment(JLabel.RIGHT);
     }    
 }

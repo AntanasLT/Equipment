@@ -195,6 +195,41 @@ public class ConnectionEquipment {
 	return result;
     }
 
+    public String[][] getLocations() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][get_count("Vietos")];
+	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Vietos ORDER BY Pavadinimas");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+    }
+
+    public String[][] getCodes() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][get_count("Veiklos")];
+	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Veiklos ORDER BY Pavadinimas");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+    }
 
     public String[][] getEquipment(String sortFeldname) throws SQLException {
 	int i;

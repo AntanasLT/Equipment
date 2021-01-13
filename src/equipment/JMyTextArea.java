@@ -6,14 +6,19 @@
 package equipment;
 
 import java.awt.Font;
-import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author a
  */
-public class JMyTabbedPane extends JTabbedPane {
-    public JMyTabbedPane(int size){
-        setFont(new Font("Arial", Font.PLAIN, size));
+class JMyTextArea extends JTextArea {
+    
+    public JMyTextArea(int rows, int cols, int fontsize) {
+        setRows(rows);
+        setColumns(cols);
+        setFont(new Font("Arial", Font.PLAIN, fontsize));        
     }
+    
+    
 }

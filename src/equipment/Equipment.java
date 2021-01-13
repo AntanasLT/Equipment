@@ -15,12 +15,12 @@ import java.awt.Toolkit;
  */
 public class Equipment {
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String[] args) {
-	    int h, h1, l;
-		
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        int h, h1, l, size;
+
 //		try {
 //			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
 //				if ("Nimbus".equals(info.getName())){
@@ -40,21 +40,22 @@ public class Equipment {
 //			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 //			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 //		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {		}
-			MainFrame mainFrame = new MainFrame(args[0]);
-	    mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
+        size = Integer.valueOf(args[1]);
+        MainFrame mainFrame = new MainFrame(args[0], size);
+        mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
 //	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
 //	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 //            l = l > 1600 ? 1600 : l;
-	    l = 1024;
-	    h1 = 1000;
-	    mainFrame.setSize(l, h1);
-	    mainFrame.setMinimumSize(new Dimension(l, h1));
+        l = 1200;
+        h1 = 700;
+        mainFrame.setMinimumSize(new Dimension(850, h1/2));
+        mainFrame.setSize(l, h1);
 //	    mainFrame.setMinimumSize(new Dimension(1040, 600));
-	    mainFrame.setJMenuBar(mainFrame.menuBar());
-	    mainFrame.setTitle("Žurnalas");
-	    mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("/home/a/Programme/java/berufliche/Equipment/zurnalas.png"));
-	    mainFrame.setVisible(true);
-	}
+        mainFrame.setJMenuBar(mainFrame.menuBar());
+        mainFrame.setTitle("Žurnalas");
+        mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("/home/a/Programme/java/berufliche/Equipment/zurnalas.png"));
+        mainFrame.setVisible(true);
+    }
 	
 }

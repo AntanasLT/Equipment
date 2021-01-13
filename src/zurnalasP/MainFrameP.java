@@ -10,12 +10,27 @@ import javax.swing.JMenuBar;
 public class MainFrameP extends MainFrame {
 
     WorksP panelWorks;
-
-    protected MainFrameP(String host) {
-	super(host);
-	panelWorks = new WorksP(connection);
+    AboutP frAbout;
+    int fontsize;
+ 
+    protected MainFrameP(String host, int size) {
+	super(host, size);
+ 	panelWorks = new WorksP(connection, fontsize);
 	tabbedpane.addTab("Darbai", panelWorks);
+	frAbout = new AboutP();
+    }
 
+    @Override
+    protected void showAbout() {
+	if (frAbout == null) {
+	    frAbout = new AboutP();
+	    frAbout.setSize(200, 100);
+	    frAbout.setTitle("Apie");
+	    frAbout.setResizable(false);
+	    frAbout.setLocation(100, 100);
+	} else {
+	    frAbout.setVisible(true);
+	}
     }
 
     @Override
@@ -24,7 +39,7 @@ public class MainFrameP extends MainFrame {
 	    connection = connect("Equipment");
 	}
 	if (panelWorks == null) {
-	    panelWorks = new WorksP(connection);
+	    panelWorks = new WorksP(connection, fontsize);
 	}
 	
 //	if (panelWorks != null & connection != null) {
@@ -56,31 +71,31 @@ public class MainFrameP extends MainFrame {
     protected JMenuBar menuBar() {
 	menu_bar = new JMenuBar();
 
-	menuDatabase = new JMyMenu("Duombazė");
-	menuItem_connect = new JMyMenuItem("Prisijungti");
+	menuDatabase = new JMyMenu("Duombazė", fontsize);
+	menuItem_connect = new JMyMenuItem("Prisijungti", fontsize);
 	menuItem_connect.addActionListener(this);
 	menuItem_connect.setActionCommand("connect");
-	menItem_disconnect = new JMyMenuItem("Atsijungti");
+	menItem_disconnect = new JMyMenuItem("Atsijungti", fontsize);
 	menItem_disconnect.setActionCommand("disconnect");
 	menItem_disconnect.addActionListener(this);
 	menuDatabase.add(menuItem_connect);
 	menuDatabase.add(menItem_disconnect);
 	menu_bar.add(menuDatabase);
         
-	menuData = new JMyMenu("Kortelės");
-	menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
+	menuData = new JMyMenu("Kortelės", fontsize);
+	menuItemWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
 	menuItemWorks.addActionListener(this);
 	menuItemWorks.setActionCommand("works");
 	menuItemWorks.setSelected(true);
 	menuData.add(menuItemWorks);
 	menu_bar.add(menuData);
         
-        menuHelp = new JMyMenu("Pagalba");
-        menuItemHelp = new JMyMenuItem("Aprašymas");
+        menuHelp = new JMyMenu("Pagalba", fontsize);
+        menuItemHelp = new JMyMenuItem("Aprašymas", fontsize);
         menuItemHelp.addActionListener(this);
         menuItemHelp.setActionCommand("help");
         menuHelp.add(menuItemHelp);
-	menuItemAbout = new JMyMenuItem("Versija");
+	menuItemAbout = new JMyMenuItem("Versija", fontsize);
 	menuItemAbout.addActionListener(this);
 	menuItemAbout.setActionCommand("about");
 	menuHelp.add(menuItemAbout);

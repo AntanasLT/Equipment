@@ -13,8 +13,8 @@ import javax.swing.JMenuItem;
  * @author a
  */
 public class JMyMenuItem extends JMenuItem {
-    public JMyMenuItem(String derText){
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JMyMenuItem(String derText, int size){
+        setFont(new Font("Arial", Font.PLAIN, size));
         setText(derText);
         
     }

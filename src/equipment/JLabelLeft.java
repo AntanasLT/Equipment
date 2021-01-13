@@ -14,12 +14,12 @@ import javax.swing.JLabel;
  */
 public class JLabelLeft extends JLabel {
 
-    public JLabelLeft(String derText) {
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JLabelLeft(String derText, int size) {
+        setFont(new Font("Arial", Font.PLAIN, size));
         setText(derText);
     }
     
-    public JLabelLeft() {
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JLabelLeft(int size) {
+        setFont(new Font("Arial", Font.PLAIN, size));
     }    
 }

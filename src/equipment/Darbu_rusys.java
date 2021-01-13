@@ -21,7 +21,7 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Worktypes extends Systems {
+public class Darbu_rusys extends Sistemos {
 
     static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas";
     static final String PREPARE_DELETE = "DELETE FROM Darbotipis WHERE ID = ?";
@@ -32,8 +32,8 @@ public class Worktypes extends Systems {
     private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
 
 
-    public Worktypes(ConnectionEquipment connection) {
-	super(connection);
+    public Darbu_rusys(ConnectionEquipment connection, int size) {
+	super(connection, size);
 	init();
     }
 
@@ -54,6 +54,8 @@ public class Worktypes extends Systems {
     private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID (auto)", "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
+        table.setFont(font);
+        table.getTableHeader().setFont(font);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
 	setColumnsWidths();

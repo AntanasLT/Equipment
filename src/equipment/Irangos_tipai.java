@@ -21,22 +21,19 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Devices extends Systems {
+public class Irangos_tipai extends Sistemos {
 
-    private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID ORDER BY i.ID";
-    private static final String PREPARE_INSERT = "INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema) VALUES (?, ?, ?, ?)";
-    private static final String PREPARE_UPDATE = "UPDATE Irenginiai SET IT = ?, Nr = ?, Pavadinimas = ?, Sistema = ? WHERE ID = ?";
-    private static final String PREPARE_DELETE = "DELETE FROM Irenginiai WHERE ID = ?";
-    private static final String ID = "ID (auto)";
-    private static final String IT = "IT";
-    private static final String NR = "Nr";
-    private static final String PAVADINIMAS = "Pavadinimas";
-    private static final String SISTEMA = "Sistema";
+    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY ID";
+    private static final String PREPARE_INSERT = "INSERT INTO IrangosTipai (ID, Pavadinimas) VALUES (?, ?)";
+    private static final String PREPARE_UPDATE = "UPDATE IrangosTipai SET Pavadinimas = ? WHERE ID = ?";
+    private static final String PREPARE_DELETE = "DELETE FROM IrangosTipai WHERE ID = ?";
 
     private DefaultTableModel tableModel;
     private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete;
-    protected Devices(ConnectionEquipment connection) {
-	super(connection);
+
+
+    public Irangos_tipai(ConnectionEquipment connection, int size) {
+	super(connection, size);
 	init();
     }
 
@@ -50,13 +47,15 @@ public class Devices extends Systems {
 	    setVisible(true);
 	    filter();
 	} else {
-	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{ID, IT, NR, PAVADINIMAS, SISTEMA}, 0);
+	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
 	table = new JTable(tableModel);
+        table.setFont(font);
+        table.getTableHeader().setFont(font);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
 	setColumnsWidths();
@@ -68,53 +67,35 @@ public class Devices extends Systems {
     private void setColumnsWidths() {
 	TableColumn dieSpalte;
 	dieSpalte = null;
-	for (int i = 0; i < table.getColumnCount(); i++) {
-	    dieSpalte = table.getColumnModel().getColumn(i);
-	    switch (i) {
-		case 0:
-		    dieSpalte.setPreferredWidth(20);
-		    break;
-		case 3:
-		    dieSpalte.setPreferredWidth(500);
-		    break;
+	    for (int i = 0; i < table.getColumnCount(); i++) {
+		dieSpalte = table.getColumnModel().getColumn(i);
+		switch (i) {
+		    case 0:
+			dieSpalte.setPreferredWidth(20);
+			break;
+		    case 1:
+			dieSpalte.setPreferredWidth(800);
+			break;
+		}
 	    }
-	}
     }
-
+	
 //    private void setzt_dieUeberschriften(){
 //	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));
 //        table.getColumnModel().getColumn(1).setHeaderValue("<html>Der<br>Typ</html>");
 //    }
-    private int getSystemID(String system) {
-	int i, n, id;
-	boolean found;
-	i = 0;
-	id = -1;
-	found = false;
-	n = systems.length;
-	while (i <= n & !found) {
-	    if (systems[1][i].equals(system)) {
-		found = true;
-		id = Integer.valueOf(systems[0][i]);
-	    } 
-	    else {
-		i++;
-	    }
-	}
-	return id;
 	
-    }
-    
+
     protected void filter() {
-	Object[] row;
+        Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
-	ResultSet resultset;
+        ResultSet resultset;
 	try {
 	    resultset = connection.executeQuery(SELECT_ALL);
 	    colcount = tableModel.getColumnCount();
 	    row = new Object[colcount];
-	    while (resultset.next()) {
+	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
 		    row[i] = resultset.getObject(i + 1);
 		}
@@ -125,63 +106,48 @@ public class Devices extends Systems {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-
+	
     private void update() {
-	int row, systems_id;
+	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    systems_id = getSystemID((String) table.getValueAt(row, 4));	    
-	    if (systems_id >= 0) {
-		try {
-		    if (preparedUpdate == null) {
-			preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
-		    }
-    // IT, Nr, Pavadinimas, Sistema, ID
-		    preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
-		    preparedUpdate.setString(2, (String) table.getValueAt(row, 2));
-		    preparedUpdate.setString(3, (String) table.getValueAt(row, 3));
-		    preparedUpdate.setInt(4, systems_id);
-		    preparedUpdate.setInt(5, (int) table.getValueAt(row, 0));
-		    if (preparedUpdate.executeUpdate() == 1) {
-			filter();
-		    }
-		} catch (SQLException ex) {
-		    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    try {
+		if (preparedUpdate == null) {
+		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
 		}
-	    } else {
-		JOptionPane.showMessageDialog(this, "Nėra tokios sistemos.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    }   
+// IT, Nr, Pavadinimas, Sistema, ID
+		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
+		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
+		if (preparedUpdate.executeUpdate() == 1) {
+		    filter();
+		}
+	    } catch (SQLException ex) {
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    }
 	} else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
     private void insert() {
-	int row, systems_id;
+	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-	    systems_id = getSystemID((String) table.getValueAt(row, 4));	    
-	    if (systems_id >= 0) {
-		try {
-		    if (preparedInsert == null) {
-			preparedInsert = connection.prepareStatement(PREPARE_INSERT);
-		    }
-		    // IT, Nr, Pavadinimas, Sistema
-		    preparedInsert.setString(1, table.getValueAt(row, 1).toString());
-		    preparedInsert.setString(2, table.getValueAt(row, 2).toString());
-		    preparedInsert.setString(3, table.getValueAt(row, 3).toString());
-		    preparedInsert.setInt(4, systems_id);
-		    if (preparedInsert.executeUpdate() == 1) {
-			filter();
-		    }
-		} catch (SQLException ex) {
-		    JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    try {
+		if (preparedInsert == null) {
+		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 		}
-	    } else {
-		JOptionPane.showMessageDialog(this, "Nėra tokios sistemos.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    } 
-	}  else {
-	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
+		// IT, Nr, Pavadinimas, Sistema
+		preparedInsert.setInt(1, Integer.valueOf((String) table.getValueAt(row, 0)));
+		preparedInsert.setString(2, (String) table.getValueAt(row, 1));
+		if (preparedInsert.executeUpdate() == 1) {
+		    filter();
+		}
+	    } catch (SQLException ex) {
+		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    }
+	} else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
@@ -201,9 +167,9 @@ public class Devices extends Systems {
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
-	}  else {
-	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
-	}       
+	} else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	}
     }
 
     @Override

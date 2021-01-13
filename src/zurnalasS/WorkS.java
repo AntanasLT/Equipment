@@ -11,12 +11,12 @@ import equipment.*;
  *
  * @author a
  */
-public class WorkS extends Works {
+public class WorkS extends Darbai {
 
 //    private JPanel pEditButtons;
 
-    public WorkS(ConnectionEquipment connection) {
-	super(connection);
+    public WorkS(ConnectionEquipment connection, int size) {
+	super(connection, size);
     }
 
 //    private void createPanelInput(){

@@ -13,8 +13,8 @@ import javax.swing.JButton;
  * @author a
  */
 public class JMyButton extends JButton {
-    public JMyButton(String text) {
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JMyButton(String text, int size) {
+        setFont(new Font("Arial", Font.PLAIN, size));
         setText(text);
     }
     

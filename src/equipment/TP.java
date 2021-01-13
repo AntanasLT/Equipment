@@ -19,8 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -29,11 +27,12 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class TP extends Works {
+public class TP extends Darbai {
 
     private static final String SELECT_ALL = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID ORDER BY tp.Data DESC LIMIT 100";
-    private static final String PREPARE_INSERT = "INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)";
-    private static final String PREPARE_UPDATE = "UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?";
+    private static final String INSERT = "INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?";
+    private static final String SELECT = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID";
 //    private static final String PREPARE_DELETE = "DELETE FROM Irenginiai WHERE ID = ?";
     private static final String ID = "ID";
     private static final String DATE = "Data";
@@ -46,11 +45,13 @@ public class TP extends Works {
 
     private JMyComboBox cbTPtype;
     private JCheckBox chTPtype;
+    
+    private PreparedStatement preparedFilter;
 
     String[][] tptypes;
 
-    protected TP(ConnectionEquipment connection) {
-	super(connection);
+    protected TP(ConnectionEquipment connection, int size) {
+	super(connection, size);
 	init_components();
     }
 
@@ -77,6 +78,8 @@ public class TP extends Works {
     private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{ID, DATE, SYSTEM, TP, NOTE}, 0);
 	table = new JTable(tableModel);
+        table.setFont(font);
+        table.getTableHeader().setFont(font);
 	table.setAutoCreateRowSorter(false);
 	table.setDefaultEditor(Object.class, null);
         table.addMouseListener(this);
@@ -123,7 +126,7 @@ public class TP extends Works {
 	pInput.add(pFields, BorderLayout.NORTH);
 	createPanelFilterButtons();
 	pInput.add(pnFIlterButtons, BorderLayout.SOUTH);
-	lMessage = new JLabelRechts();
+	lMessage = new JLabelRechts(fontsize);
     }
 
     @Override
@@ -138,40 +141,41 @@ public class TP extends Works {
 	gbc.gridx = 0;
 	gbc.gridy = 0;
 //	gbc.weightx = 0;
-	lDate = new JLabelRechts("Data:");
+	lDate = new JLabelRechts("Data:", fontsize);
 	pFields.add(lDate, gbc);
 
 	gbc.gridx = 1;
 //	gbc.weightx = 0;
-	tfDate = new JTextField(date.heutigesDatum(), 10);
+	tfDate = new JMyTextField(date.getToday(), 10, fontsize);
 	tfDate.addMouseListener(this);
+        tfDate.setToolTipText(date.getWeekday());
 	pFields.add(tfDate, gbc);
 
 	gbc.gridx = 2;
 //	gbc.weightx = 0;
-	lSystem = new JLabelRechts("Sistema");
+	lSystem = new JLabelRechts("Sistema", fontsize);
 	pFields.add(lSystem, gbc);
 
 	gbc.gridx = 3;
 //	gbc.weightx = 0.5;
-	cbSystem = new JMyComboBox(systems[1]);
+	cbSystem = new JMyComboBox(systems[1], fontsize);
 	pFields.add(cbSystem, gbc);
 //
 	gbc.gridx = 4;
 //	gbc.weightx = 0;
-	lWorkType = new JLabelRechts("Darbas");
-	pFields.add(lWorkType, gbc);
+	lWork = new JLabelRechts("Darbas", fontsize);
+	pFields.add(lWork, gbc);
 
 	gbc.gridx = 5;
 //	gbc.weightx = 0.5;
-	cbTPtype = new JMyComboBox(tptypes[1]);
+	cbTPtype = new JMyComboBox(tptypes[1], fontsize);
 	pFields.add(cbTPtype, gbc);
 //
 // Η δεύτερη σειρά
 	gbc.gridy = 1;
 
 	gbc.gridx = 0;
-	lFilters = new JLabelRechts("Filtrai:");
+	lFilters = new JLabelRechts("Filtrai:", fontsize);
 	lFilters.addMouseListener(this);
 	pFields.add(lFilters, gbc);
 
@@ -191,13 +195,13 @@ public class TP extends Works {
 	gbc.gridy = 2;
 	gbc.gridx = 0;
 	gbc.weightx = 0;
-	lMessage = new JLabelRechts("Aprašymas");
-	pFields.add(lMessage, gbc);
+	createPanelMessages();
+	pFields.add(pMessage, gbc);
 
 	gbc.gridx = 1;
 	gbc.weightx = 0.5;
 	gbc.gridwidth = 4;
-	taMessage = new JTextArea(5, 30);
+	taMessage = new JMyTextArea(5, 30, fontsize);
 	taMessage.addMouseListener(this);
 	taMessage.setLineWrap(true);
 	taMessage.setWrapStyleWord(true);
@@ -216,10 +220,10 @@ public class TP extends Works {
     @Override
     protected void createPanelEditButtons() {
 	pEditButtons = new JPanel(new GridLayout(4, 1));
-	btChange = new JMyButton("Išsaugoti");
+	btChange = new JMyButton("Išsaugoti", fontsize);
 	btChange.setActionCommand("update");
 	btChange.addActionListener(this);
-	bAdd = new JMyButton("Naujas");
+	bAdd = new JMyButton("Naujas", fontsize);
 	bAdd.setActionCommand("insert");
 	bAdd.addActionListener(this);
 	pEditButtons.add(btChange);
@@ -235,14 +239,22 @@ public class TP extends Works {
     @Override
     protected void createPanelFilterButtons() {
 	pnFIlterButtons = new JPanel();
-	btAll = new JMyButton("Naujausieji");
+	btAll = new JMyButton("Naujausieji", fontsize);
 	btAll.setActionCommand("all");
 	btAll.addActionListener(this);
 	pnFIlterButtons.add(btAll);
-	btFilter = new JMyButton("Filtruoti");
+	btFilter = new JMyButton("Filtruoti", fontsize);
 	btFilter.setActionCommand("filter");
 	btFilter.addActionListener(this);
 	pnFIlterButtons.add(btFilter);
+    }
+
+    protected void createPanelMessages() {
+	pMessage = new JPanel(new GridLayout(2, 1));
+	lMessage = new JLabelRechts("Aprašymas", fontsize);
+	chMessage = new JCheckBox();
+	pMessage.add(lMessage);
+	pMessage.add(chMessage);
     }
 
     private int getSystemID(String system) {
@@ -297,6 +309,85 @@ public class TP extends Works {
 	Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
+	StringBuilder sb;
+	ResultSet resultset;
+	try {
+	    sb = prepareFilter();
+	    preparedFilter = connection.prepareStatement(sb.toString());
+	    preparedFilter_setPrepared(sb);
+	    resultset = preparedFilter.executeQuery();
+	    colcount = tableModel.getColumnCount();
+	    row = new Object[colcount];
+	    while (resultset.next()) {
+		for (i = 0; i <= colcount - 1; i++) {
+		    row[i] = resultset.getObject(i + 1);
+		}
+		tableModel.addRow(row);
+	    }
+	    resultset.close();
+	} catch (SQLException ex) {
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+	}
+    }
+
+// SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID
+    private StringBuilder prepareFilter() {
+	StringBuilder sb;
+	sb = new StringBuilder(SELECT);
+	if (chDate.isSelected() || chSystem.isSelected() || chTPtype.isSelected() || chMessage.isSelected()) {
+	    sb.append(" WHERE");
+            if (chDate.isSelected()) {
+		sb.append(" tp.Data LIKE ?");
+            }
+            if (chSystem.isSelected()) {
+                appendAND(sb);
+		sb.append(" tp.Sistema = ?");
+            }
+	    if (chTPtype.isSelected()) {
+                appendAND(sb);
+		sb.append(" tp.TP = ?");
+            }
+	    if (chMessage.isSelected()) {
+                appendAND(sb);
+		sb.append(" tp.Pastaba LIKE ?");
+            }
+	}
+	sb.append(" ORDER BY tp.Data DESC");
+//	System.out.println(sb.toString());
+	return sb;
+    }
+    
+    private void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
+	int i, n, idpr, id;
+	n = 0;
+	i = sb.indexOf(" tp.Data LIKE ?");
+	if (i >= 0) {
+	    n++;
+	    preparedFilter.setString(n, (String) tfDate.getText());
+	}
+	i = sb.indexOf(" tp.Sistema = ?");
+	if (i >= 0) {
+	    n++;
+	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));	    
+	}
+	i = sb.indexOf(" tp.TP = ?");
+	if (i >= 0) {
+	    n++;
+	    preparedFilter.setInt(n, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+	}
+	i = sb.indexOf(" tp.Pastaba LIKE ?");
+	if (i >= 0) {
+	    n++;
+	    preparedFilter.setString(n, (String) taMessage.getText());
+	}
+
+    }
+
+     
+    protected void filter_all() {
+        Object[] row;
+	int i, colcount;
+	tableModel.setRowCount(0);
 	ResultSet resultset;
 	try {
 	    resultset = connection.executeQuery(SELECT_ALL);
@@ -312,6 +403,7 @@ public class TP extends Works {
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
+
     }
 
 //UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?
@@ -321,7 +413,7 @@ public class TP extends Works {
 	if (row >= 0) {
             try {
                 if (preparedUpdate == null) {
-                    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
+                    preparedUpdate = connection.prepareStatement(UPDATE);
                 }
                 preparedUpdate.setString(1, tfDate.getText());
                 preparedUpdate.setInt(2, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
@@ -339,33 +431,31 @@ public class TP extends Works {
 	}
     }
 
+// INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)
     private void insert() {
-	int row, systems_id;
-	row = table.getSelectedRow();
-	if (row >= 0) {
-	    systems_id = getSystemID((String) table.getValueAt(row, 4));	    
-	    if (systems_id >= 0) {
-		try {
-		    if (preparedInsert == null) {
-			preparedInsert = connection.prepareStatement(PREPARE_INSERT);
-		    }
-		    // IT, Nr, Pavadinimas, Sistema
-		    preparedInsert.setString(1, table.getValueAt(row, 1).toString());
-		    preparedInsert.setString(2, table.getValueAt(row, 2).toString());
-		    preparedInsert.setString(3, table.getValueAt(row, 3).toString());
-		    preparedInsert.setInt(4, systems_id);
-		    if (preparedInsert.executeUpdate() == 1) {
-			filter();
-		    }
-		} catch (SQLException ex) {
-		    JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-		}
-	    } else {
-		JOptionPane.showMessageDialog(this, "Nėra tokios sistemos.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    } 
-	}  else {
-	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
-	}
+        try {
+            if (preparedInsert == null) {
+                preparedInsert = connection.prepareStatement(INSERT);
+            }
+            preparedInsert.setString(1, tfDate.getText());
+//             System.out.println(systems[0][1]);
+//           System.out.println(cbSystem.getSelectedIndex());
+            preparedInsert.setInt(2, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+            preparedInsert.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+            preparedInsert.setString(4, taMessage.getText());
+             if (preparedInsert.executeUpdate() == 1) {
+                filter();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void clearCheckboxes() {
+	chDate.setSelected(false);
+	chTPtype.setSelected(false);
+	chMessage.setSelected(false);
+	chSystem.setSelected(false);
     }
 
 //    private void delete() {
@@ -395,7 +485,7 @@ public class TP extends Works {
 	derBefehl = e.getActionCommand();
 	switch (derBefehl) {
 	    case "all":
-		filter();
+		filter_all();
 		break;
 	    case "update":
 		update();
@@ -418,7 +508,8 @@ public class TP extends Works {
 	    setComboBoxItem(cbSystem, systems[1], (String) table.getValueAt(selectedRow, 2));
 	    setComboBoxItem(cbTPtype, tptypes[1], (String) table.getValueAt(selectedRow, 3));
 	    taMessage.setText((String) table.getValueAt(selectedRow, 4));
-	    }
+            tfDate.setToolTipText(date.getWeekday(tfDate.getText())); //tfDate.repaint();
+        }
     }
 
 

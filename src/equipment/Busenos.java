@@ -21,7 +21,7 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class States extends Systems {
+public class Busenos extends Sistemos {
 
     static final String SELECT_ALL = "SELECT ID, Busena FROM Busenos ORDER BY ID";
     private static final String PREPARE_INSERT = "INSERT INTO Busenos (ID, Busena) VALUES (?, ?)";
@@ -32,12 +32,12 @@ public class States extends Systems {
     private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete;
 
 
-    public States(ConnectionEquipment connection) {
-	super(connection);
+    public Busenos(ConnectionEquipment connection, int size) {
+	super(connection, size);
 	init();
     }
 
-    protected void init() {
+    private void init() {
 	if (connection != null) {
 	    setLayout(new BorderLayout());
 	    createTable();
@@ -54,6 +54,8 @@ public class States extends Systems {
     private void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
+        table.setFont(font);
+        table.getTableHeader().setFont(font);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
 	setColumnsWidths();

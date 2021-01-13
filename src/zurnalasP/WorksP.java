@@ -11,10 +11,10 @@ import equipment.*;
  *
  * @author a
  */
-public class WorksP extends Works {
+public class WorksP extends Darbai {
 
-    public WorksP(ConnectionEquipment connection) {
-	super(connection);
+    public WorksP(ConnectionEquipment connection, int size) {
+	super(connection, size);
     }
 
 }

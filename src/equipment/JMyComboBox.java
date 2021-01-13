@@ -13,13 +13,13 @@ import javax.swing.JComboBox;
  * @author a
  */
 public class JMyComboBox extends JComboBox {
-    public JMyComboBox(){
-	setFont(new Font("Arial", Font.PLAIN, 12));
+    public JMyComboBox(int size){
+	setFont(new Font("Arial", Font.PLAIN, size));
     }
     
-    public JMyComboBox(Object[] o) {
+    public JMyComboBox(Object[] o, int size) {
 	super(o);
-	setFont(new Font("Arial", Font.PLAIN, 12));
+	setFont(new Font("Arial", Font.PLAIN, size));
     }
        
 }

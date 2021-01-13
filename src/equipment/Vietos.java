@@ -21,19 +21,19 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class EquipmentTypes extends Systems {
+public class Vietos extends Sistemos {
 
-    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY ID";
-    private static final String PREPARE_INSERT = "INSERT INTO IrangosTipai (ID, Pavadinimas) VALUES (?, ?)";
-    private static final String PREPARE_UPDATE = "UPDATE IrangosTipai SET Pavadinimas = ? WHERE ID = ?";
-    private static final String PREPARE_DELETE = "DELETE FROM IrangosTipai WHERE ID = ?";
+    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Vietos ORDER BY Pavadinimas";
+    static final String PREPARE_DELETE = "DELETE FROM Darbotipis WHERE ID = ?";
+    static final String PREPARE_INSERT = "INSERT INTO Vietos (Pavadinimas) VALUES (?)";
+    static final String PREPARE_UPDATE = "UPDATE Vietos SET Pavadinimas = ? WHERE ID = ?";
 
     private DefaultTableModel tableModel;
-    private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete;
+    private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
 
 
-    public EquipmentTypes(ConnectionEquipment connection) {
-	super(connection);
+    public Vietos(ConnectionEquipment connection, int size) {
+	super(connection, size);
 	init();
     }
 
@@ -52,8 +52,10 @@ public class EquipmentTypes extends Systems {
     }
 
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID", "Tipas"}, 0);
+	tableModel = new DefaultTableModel(new Object[]{"ID (auto)", "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
+        table.getTableHeader().setFont(font);
+        table.setFont(font);
 	table.setAutoCreateRowSorter(true);
 	table.getSelectionModel().addListSelectionListener(this);
 	setColumnsWidths();
@@ -69,11 +71,14 @@ public class EquipmentTypes extends Systems {
 		dieSpalte = table.getColumnModel().getColumn(i);
 		switch (i) {
 		    case 0:
-			dieSpalte.setPreferredWidth(20);
+			dieSpalte.setPreferredWidth(50);
 			break;
-		    case 1:
-			dieSpalte.setPreferredWidth(800);
+                    default:
+                        dieSpalte.setPreferredWidth(1000);
 			break;
+//		    case 1:
+//			dieSpalte.setPreferredWidth(800);
+//			break;
 		}
 	    }
     }
@@ -84,18 +89,21 @@ public class EquipmentTypes extends Systems {
 //    }
 	
 
-    protected void filter() {
+    private void filter() {
         Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
 	try {
-	    resultset = connection.executeQuery(SELECT_ALL);
+            resultset = connection.executeQuery(SELECT_ALL);
 	    colcount = tableModel.getColumnCount();
+//            System.out.println(colcount);
 	    row = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
+//                    System.out.print(i); 
 		    row[i] = resultset.getObject(i + 1);
+//                    System.out.println(row[i]);
 		}
 		tableModel.addRow(row);
 	    }
@@ -103,9 +111,11 @@ public class EquipmentTypes extends Systems {
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
+
     }
 	
-    private void update() {
+// UPDATE Vietos SET Pavadinimas = ? WHERE ID = ?
+   private void update() {
 	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
@@ -113,7 +123,7 @@ public class EquipmentTypes extends Systems {
 		if (preparedUpdate == null) {
 		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
 		}
-// IT, Nr, Pavadinimas, Sistema, ID
+// ID, Pavadinimas, Patalpa
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
 		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
@@ -135,31 +145,9 @@ public class EquipmentTypes extends Systems {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 		}
-		// IT, Nr, Pavadinimas, Sistema
-		preparedInsert.setInt(1, Integer.valueOf((String) table.getValueAt(row, 0)));
-		preparedInsert.setString(2, (String) table.getValueAt(row, 1));
+// ID, Pavadinimas, Patalpa
+		preparedInsert.setString(1, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
-		    filter();
-		}
-	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    }
-	} else {
-	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	}
-    }
-
-    private void delete() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
-	    try {
-		if (preparedDelete == null) {
-		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
-		}
-// ID, IT, Nr, Pavadinimas, Sistema
-		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
-		if (preparedDelete.execute()) {
 		    filter();
 		}
 	    } catch (SQLException ex) {
@@ -170,6 +158,27 @@ public class EquipmentTypes extends Systems {
 	}
     }
 
+//    private void delete() {
+//	int row;
+//	row = table.getSelectedRow();
+//	if (row >= 0) {
+//	    try {
+//		if (preparedDelete == null) {
+//		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
+//		}
+//// ID, Pavadinimas
+//		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
+//		if (preparedDelete.execute()) {
+//		    filter();
+//		}
+//	    } catch (SQLException ex) {
+//		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+//	    }
+//	} else {
+//	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
+//	}
+//    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 	String derBefehl;
@@ -177,6 +186,7 @@ public class EquipmentTypes extends Systems {
 	switch (derBefehl) {
 	    case "update":
 		update();
+		filter();
 		break;	
 	    case "filter":
 		filter();
@@ -184,10 +194,10 @@ public class EquipmentTypes extends Systems {
 	    case "insert":
 		insert();
 		break;	
-	    case "delete":
-		delete();
-		filter();
-		break;	
+//	    case "delete":
+//		delete();
+//		filter();
+//		break;	
 	}
 	
     }

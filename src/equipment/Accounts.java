@@ -47,7 +47,7 @@ public class Accounts extends JPanel implements ActionListener, MouseListener {
     String[][] equipment;
     boolean is_fromDB;
     int[] currentID;
-    int typeCount, equipmentCount;
+    int typeCount, equipmentCount, fontsize;
 
     JScrollPane scrollPane;
     JPanel panelInput, panelButtons, panelFields;
@@ -69,40 +69,41 @@ public class Accounts extends JPanel implements ActionListener, MouseListener {
     GridBagConstraints gbc;
     
 
-    public Accounts(ConnectionEquipment the_connection) {
+    public Accounts(ConnectionEquipment the_connection, int size) {
+        fontsize = size;
 	myConnection = the_connection;
 	panelInput = new JPanel(new BorderLayout());
 	panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         panelFields = new JPanel(new GridBagLayout());
 
-	labelMessage = new JLabelRechts();
+	labelMessage = new JLabelRechts(fontsize);
 	labelMessage.addMouseListener(this);
 	
-	labelAccount_date = new JLabelRechts("Ο Λογαριασμός:");
+	labelAccount_date = new JLabelRechts("Ο Λογαριασμός:", fontsize);
 	textFieldAccount = new JTextField(8);
 
-	labelDate = new JLabelRechts("Η ημερομηνία:");
+	labelDate = new JLabelRechts("Η ημερομηνία:", fontsize);
 	textFieldDate = new JTextField();
 	
-	labelSystem = new JLabelRechts("Ένα σύστημα:");
+	labelSystem = new JLabelRechts("Ένα σύστημα:", fontsize);
 	textFieldDate = new JTextField(8);
 	
-	labelAccount_getted = new JLabelRechts("Πήρα:");
+	labelAccount_getted = new JLabelRechts("Πήρα:", fontsize);
 	textField_getted = new JTextField(8);
 	
-	labelOutlays = new JLabelRechts("Σύνολο:");
+	labelOutlays = new JLabelRechts("Σύνολο:", fontsize);
 	textFieldOutlays = new JTextField();
 	
-	labelNotes = new JLabelRechts("Η σημείοση:");
+	labelNotes = new JLabelRechts("Η σημείοση:", fontsize);
 	textAreaNotes = new JTextArea(2, 60);
 
-	labelEquipment = new JLabelRechts("Το μηχάνημα:");
+	labelEquipment = new JLabelRechts("Το μηχάνημα:", fontsize);
 
-        comboBoxEquipment = new JMyComboBox();
+        comboBoxEquipment = new JMyComboBox(size);
         
-        comboBoxSystem = new JMyComboBox();
+        comboBoxSystem = new JMyComboBox(size);
         
-        comboBoxTypes = new JMyComboBox();
+        comboBoxTypes = new JMyComboBox(size);
                 
 	scrollPane = new JScrollPane(table);
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Η υμερομηνία", "Το σύστημα", "Ο τύπος", "Το μηχάνημα", "Τα έχοδα", "Η σημείοση"}, 0);
@@ -195,29 +196,29 @@ public class Accounts extends JPanel implements ActionListener, MouseListener {
 
     private void createPanelButtons() {
 
-	buttonAdd = new JMyButton("Προσθήκω");
+	buttonAdd = new JMyButton("Προσθήκω", fontsize);
 	buttonAdd.setMnemonic(KeyEvent.VK_P);
 	buttonAdd.setActionCommand("Add");
 	buttonAdd.addActionListener(this);
 	panelButtons.add(buttonAdd);
 
-	buttonDelete = new JMyButton("Αφαιρώ");
+	buttonDelete = new JMyButton("Αφαιρώ", fontsize);
 	buttonDelete.setActionCommand("Delete");
 	buttonDelete.addActionListener(this);
 	panelButtons.add(buttonDelete);
 
-	buttonChange = new JMyButton("Αλλάζω");
+	buttonChange = new JMyButton("Αλλάζω", fontsize);
 	buttonChange.setActionCommand("Change");
 	buttonChange.addActionListener(this);
 	panelButtons.add(buttonChange);
 
-	buttonFilter = new JMyButton("Φιλτράρω");
+	buttonFilter = new JMyButton("Φιλτράρω", fontsize);
 	buttonFilter.setActionCommand("filtern");
 	buttonFilter.setMnemonic(KeyEvent.VK_F);
 	buttonFilter.addActionListener(this);
 	panelButtons.add(buttonFilter);
 	
-	buttonApply = new JMyButton("Καταχωρώ");
+	buttonApply = new JMyButton("Καταχωρώ", fontsize);
 	buttonApply.setMnemonic(KeyEvent.VK_I);
 	buttonApply.setActionCommand("Apply");
 	buttonApply.addActionListener(this);

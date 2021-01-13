@@ -10,9 +10,10 @@ import javax.swing.JMenuBar;
 public class MainFrameS extends MainFrame {
 
     WorkS panelWorks;
+    int fontsize;
 
-    protected MainFrameS(String host) {
-	super(host);
+    protected MainFrameS(String host, int size) {
+	super(host, size);
 //	panelWorks = new WorkS(connection);
 //	tabbedpane.addTab("Darbai", panelWorks);
 
@@ -35,7 +36,7 @@ public class MainFrameS extends MainFrame {
     @Override
     protected void showWorks() {
 	if (panelWorks == null & menuItemWorks.isSelected()) {
-	    panelWorks = new WorkS(connection);
+	    panelWorks = new WorkS(connection, fontsize);
 	    tabbedpane.addTab("Darbai", panelWorks);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
@@ -66,26 +67,26 @@ public class MainFrameS extends MainFrame {
     public JMenuBar menuBar() {
 	menu_bar = new JMenuBar();
 
-	menuDatabase = new JMyMenu("Duombazė");
-	menuItem_connect = new JMyMenuItem("Prisijungti");
+	menuDatabase = new JMyMenu("Duombazė", fontsize);
+	menuItem_connect = new JMyMenuItem("Prisijungti", fontsize);
 	menuItem_connect.addActionListener(this);
 	menuItem_connect.setActionCommand("connect");
-	menItem_disconnect = new JMyMenuItem("Atsijungti");
+	menItem_disconnect = new JMyMenuItem("Atsijungti", fontsize);
 	menItem_disconnect.setActionCommand("disconnect");
 	menItem_disconnect.addActionListener(this);
 	menuDatabase.add(menuItem_connect);
 	menuDatabase.add(menItem_disconnect);
 	menu_bar.add(menuDatabase);
-        menuData = new JMyMenu("Lentelės");
-        menuItemWorks = new JMyCheckBoxMenuItem("Darbai");
+        menuData = new JMyMenu("Lentelės", fontsize);
+        menuItemWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
 	menuItemWorks.addActionListener(this);
 	menuItemWorks.setActionCommand("works");
 	menuData.add(menuItemWorks);
-	menuItemUsers = new JMyCheckBoxMenuItem("Vartotojai");
+	menuItemUsers = new JMyCheckBoxMenuItem("Vartotojai", fontsize);
 	menuItemUsers.addActionListener(this);
 	menuItemUsers.setActionCommand("users");
 	menuData.add(menuItemUsers);	
-	menuItemSystems = new JMyCheckBoxMenuItem("Sistemos");
+	menuItemSystems = new JMyCheckBoxMenuItem("Sistemos", fontsize);
 	menuItemSystems.addActionListener(this);
 	menuItemSystems.setActionCommand("systems");
 	menuData.add(menuItemSystems);
@@ -97,7 +98,7 @@ public class MainFrameS extends MainFrame {
 //	menuItemBudget.addActionListener(this);
 //	menuItemBudget.setActionCommand("budget");
 //	menuData.add(menuItemBudget);
-        menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys");
+        menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys", fontsize);
         menuItemWorktypes.addActionListener(this);
         menuItemWorktypes.setActionCommand("worktypes");
         menuData.add(menuItemWorktypes);
@@ -105,18 +106,18 @@ public class MainFrameS extends MainFrame {
 //        menuItemEquipmentTypes.addActionListener(this);
 //        menuItemEquipmentTypes.setActionCommand("equipmenttypes");
 //        menuData.add(menuItemEquipmentTypes);
-        menuItemStates = new JMyCheckBoxMenuItem("Būsenos");
+        menuItemStates = new JMyCheckBoxMenuItem("Būsenos", fontsize);
         menuItemStates.addActionListener(this);
         menuItemStates.setActionCommand("states");
         menuData.add(menuItemStates);
 	menu_bar.add(menuData);
 
-	menuHelp = new JMyMenu("Pagalba");
-	menuItemHelp = new JMyMenuItem("Aprašymas");
+	menuHelp = new JMyMenu("Pagalba", fontsize);
+	menuItemHelp = new JMyMenuItem("Aprašymas", fontsize);
 	menuItemHelp.addActionListener(this);
 	menuItemHelp.setActionCommand("help");
 	menuHelp.add(menuItemHelp);
-	menuItemAbout = new JMyMenuItem("Versija");
+	menuItemAbout = new JMyMenuItem("Versija", fontsize);
 	menuItemAbout.addActionListener(this);
 	menuItemAbout.setActionCommand("about");
 	menuHelp.add(menuItemAbout);

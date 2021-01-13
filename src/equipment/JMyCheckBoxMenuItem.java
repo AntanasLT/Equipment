@@ -13,8 +13,8 @@ import javax.swing.JCheckBoxMenuItem;
  * @author a
  */
 public class JMyCheckBoxMenuItem extends JCheckBoxMenuItem {
-    public JMyCheckBoxMenuItem(String text) {
-        setFont(new Font("Arial", Font.PLAIN, 12));
+    public JMyCheckBoxMenuItem(String text, int size) {
+        setFont(new Font("Arial", Font.PLAIN, size));
         setText(text);
         
     }
