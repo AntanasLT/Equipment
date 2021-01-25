@@ -1,0 +1,1929 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2020.2.3)  25 JAN 2021 09:07
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**Barcodes.tex
+(./Barcodes.tex
+LaTeX2e <2018-12-01>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2018/09/03 v1.4i Standard LaTeX file (size option)
+)
+\c@part=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2018/04/16 v5.8 Page Geometry
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count88
+\Gm@cntv=\count89
+\c@Gm@tempcnt=\count90
+\Gm@bindingoffset=\dimen103
+\Gm@wd@mp=\dimen104
+\Gm@odd@mp=\dimen105
+\Gm@even@mp=\dimen106
+\Gm@layoutwidth=\dimen107
+\Gm@layoutheight=\dimen108
+\Gm@layouthoffset=\dimen109
+\Gm@layoutvoffset=\dimen110
+\Gm@dimlist=\toks15
+)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks16
+\inpenc@posthook=\toks17
+
+(/usr/share/texlive/texmf-dist/tex/latex/ucs/utf8x.def
+File: utf8x.def 2004/10/17 UCS: Input encoding UTF-8
+))
+(/usr/share/texlive/texmf-dist/tex/latex/ucs/ucs.sty
+Package: ucs 2013/05/11 v2.2 UCS: Unicode input support
+
+(/usr/share/texlive/texmf-dist/tex/latex/ucs/data/uni-global.def
+File: uni-global.def 2013/05/13 UCS: Unicode global data
+)
+\uc@secondtry=\count91
+\uc@combtoks=\toks18
+\uc@combtoksb=\toks19
+\uc@temptokena=\toks20
+)
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2018/11/13 3.27 The Babel package
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2018/11/13 3.27 Babel switching mechanism
+)
+(/usr/share/texlive/texmf-dist/tex/latex/lithuanian/lithuanian.ldf
+Language: lithuanian 2017/12/06 v1.0 Lithuanian support from the babel system
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2018/11/13 3.27 Babel common definitions
+\babel@savecnt=\count92
+\U@D=\dimen111
+
+(/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@dirlevel=\count93
+)))
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2018/08/11 v2.0j Standard LaTeX package
+
+(/usr/share/texlive/texmf-dist/tex/latex/lithuanian/l7xenc.def
+File: l7xenc.def 2017/12/06 v2.0 LaTeX-LT file
+)
+LaTeX Font Info:    Try loading font information for L7x+lmr on input line 105.
+
+
+(/usr/share/texmf/tex/latex/lm/l7xlmr.fd
+File: l7xlmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen112
+\Gin@req@width=\dimen113
+)
+(/usr/share/texlive/texmf-dist/tex/latex/supertabular/supertabular.sty
+Package: supertabular 2004/02/20 v4.1e the supertabular environment
+\c@tracingst=\count94
+\ST@wd=\dimen114
+\ST@rightskip=\skip43
+\ST@leftskip=\skip44
+\ST@parfillskip=\skip45
+\ST@pageleft=\dimen115
+\ST@headht=\dimen116
+\ST@tailht=\dimen117
+\ST@pagesofar=\dimen118
+\ST@pboxht=\dimen119
+\ST@lineht=\dimen120
+\ST@stretchht=\dimen121
+\ST@prevht=\dimen122
+\ST@toadd=\dimen123
+\ST@dimen=\dimen124
+\ST@pbox=\box27
+)
+(./Barcodes.aux)
+\openout1 = `Barcodes.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for L7x/lmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Try loading font information for L7x+cmr on input line 9.
+LaTeX Font Info:    No file L7xcmr.fd. on input line 9.
+
+
+LaTeX Font Warning: Font shape `L7x/cmr/m/n' undefined
+(Font)              using `L7x/lmr/m/n' instead on input line 9.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(14.22636pt, 569.05515pt, 14.22636pt)
+* v-part:(T,H,B)=(14.22636pt, 816.59412pt, 14.22636pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=569.05515pt
+* \textheight=816.59412pt
+* \oddsidemargin=-58.04362pt
+* \evensidemargin=-58.04362pt
+* \topmargin=-95.04362pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/latex/ucs/ucsencs.def
+File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
+)
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count95
+\scratchdimen=\dimen125
+\scratchbox=\box28
+\nofMPsegments=\count96
+\nofMParguments=\count97
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count98
+\MPscratchDim=\dimen126
+\MPnumerator=\count99
+\makeMPintoPDFobject=\count100
+\everyMPtoPDFconversion=\toks22
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+))))
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2018/09/10 v0.29 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 11.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 11.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 11.
+Package epstopdf Info: Source file: <IT000604.eps>
+(epstopdf)                    date: 2021-01-25 09:06:38
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000604-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:37
+(epstopdf)                    size: 3931 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000604-eps-converted-to.
+pdf IT000604.eps>
+(epstopdf)             \includegraphics on input line 12.
+runsystem(repstopdf --outfile=IT000604-eps-converted-to.pdf IT000604.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000604-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:02
+(epstopdf)                    size: 3931 bytes.
+<IT000604-eps-converted-to.pdf, id=1, 124.465pt x 81.30376pt>
+File: IT000604-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000604-eps-converted-to.pdf>
+Package pdftex.def Info: IT000604-eps-converted-to.pdf  used on input line 12.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+(/usr/share/texlive/texmf-dist/tex/latex/ucs/data/uni-1.def
+File: uni-1.def 2013/05/13 UCS: Unicode data U+0100..U+01FF
+)
+Overfull \hbox (0.79494pt too wide) in paragraph at lines 12--13
+\L7x/lmr/m/n/12 "Introskopas""Linescan-
+ []
+
+Package epstopdf Info: Source file: <IT000605.eps>
+(epstopdf)                    date: 2021-01-25 09:06:39
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000605-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:38
+(epstopdf)                    size: 3971 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000605-eps-converted-to.
+pdf IT000605.eps>
+(epstopdf)             \includegraphics on input line 13.
+runsystem(repstopdf --outfile=IT000605-eps-converted-to.pdf IT000605.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000605-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:02
+(epstopdf)                    size: 3971 bytes.
+<IT000605-eps-converted-to.pdf, id=2, 124.465pt x 81.30376pt>
+File: IT000605-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000605-eps-converted-to.pdf>
+Package pdftex.def Info: IT000605-eps-converted-to.pdf  used on input line 13.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Overfull \hbox (0.79494pt too wide) in paragraph at lines 13--13
+\L7x/lmr/m/n/12 "Introskopas""Linescan-
+ []
+
+Package epstopdf Info: Source file: <IT000613.eps>
+(epstopdf)                    date: 2021-01-25 09:06:39
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000613-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:38
+(epstopdf)                    size: 4050 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000613-eps-converted-to.
+pdf IT000613.eps>
+(epstopdf)             \includegraphics on input line 13.
+runsystem(repstopdf --outfile=IT000613-eps-converted-to.pdf IT000613.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000613-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:03
+(epstopdf)                    size: 4050 bytes.
+<IT000613-eps-converted-to.pdf, id=3, 124.465pt x 81.30376pt>
+File: IT000613-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000613-eps-converted-to.pdf>
+Package pdftex.def Info: IT000613-eps-converted-to.pdf  used on input line 13.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--14
+\L7x/lmr/m/n/12 Video-audio in-for-
+ []
+
+Package epstopdf Info: Source file: <IT000629.eps>
+(epstopdf)                    date: 2021-01-25 09:06:39
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000629-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:39
+(epstopdf)                    size: 4099 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000629-eps-converted-to.
+pdf IT000629.eps>
+(epstopdf)             \includegraphics on input line 14.
+runsystem(repstopdf --outfile=IT000629-eps-converted-to.pdf IT000629.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000629-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:03
+(epstopdf)                    size: 4099 bytes.
+<IT000629-eps-converted-to.pdf, id=4, 124.465pt x 81.30376pt>
+File: IT000629-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000629-eps-converted-to.pdf>
+Package pdftex.def Info: IT000629-eps-converted-to.pdf  used on input line 14.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Overfull \hbox (0.79494pt too wide) in paragraph at lines 14--14
+\L7x/lmr/m/n/12 "Introskopas""Linescan-
+ []
+
+Package epstopdf Info: Source file: <IT000698.eps>
+(epstopdf)                    date: 2021-01-25 09:06:40
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000698-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:39
+(epstopdf)                    size: 4116 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000698-eps-converted-to.
+pdf IT000698.eps>
+(epstopdf)             \includegraphics on input line 15.
+runsystem(repstopdf --outfile=IT000698-eps-converted-to.pdf IT000698.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000698-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:04
+(epstopdf)                    size: 4116 bytes.
+<IT000698-eps-converted-to.pdf, id=5, 124.465pt x 81.30376pt>
+File: IT000698-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000698-eps-converted-to.pdf>
+Package pdftex.def Info: IT000698-eps-converted-to.pdf  used on input line 15.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT000751.eps>
+(epstopdf)                    date: 2021-01-25 09:06:40
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000751-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:40
+(epstopdf)                    size: 3946 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000751-eps-converted-to.
+pdf IT000751.eps>
+(epstopdf)             \includegraphics on input line 15.
+runsystem(repstopdf --outfile=IT000751-eps-converted-to.pdf IT000751.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000751-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:05
+(epstopdf)                    size: 3946 bytes.
+<IT000751-eps-converted-to.pdf, id=6, 124.465pt x 81.30376pt>
+File: IT000751-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000751-eps-converted-to.pdf>
+Package pdftex.def Info: IT000751-eps-converted-to.pdf  used on input line 15.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--15
+\L7x/lmr/m/n/12 Tunelis avia-kel.
+ []
+
+Package epstopdf Info: Source file: <IT000752.eps>
+(epstopdf)                    date: 2021-01-25 09:06:40
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000752-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:40
+(epstopdf)                    size: 4013 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000752-eps-converted-to.
+pdf IT000752.eps>
+(epstopdf)             \includegraphics on input line 15.
+runsystem(repstopdf --outfile=IT000752-eps-converted-to.pdf IT000752.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000752-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:05
+(epstopdf)                    size: 4013 bytes.
+<IT000752-eps-converted-to.pdf, id=7, 124.465pt x 81.30376pt>
+File: IT000752-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000752-eps-converted-to.pdf>
+Package pdftex.def Info: IT000752-eps-converted-to.pdf  used on input line 15.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--15
+\L7x/lmr/m/n/12 Tunelis avia-kel.
+ []
+
+Package epstopdf Info: Source file: <IT000755.eps>
+(epstopdf)                    date: 2021-01-25 09:06:41
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000755-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:41
+(epstopdf)                    size: 3900 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000755-eps-converted-to.
+pdf IT000755.eps>
+(epstopdf)             \includegraphics on input line 15.
+runsystem(repstopdf --outfile=IT000755-eps-converted-to.pdf IT000755.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000755-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:06
+(epstopdf)                    size: 3900 bytes.
+<IT000755-eps-converted-to.pdf, id=8, 124.465pt x 81.30376pt>
+File: IT000755-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000755-eps-converted-to.pdf>
+Package pdftex.def Info: IT000755-eps-converted-to.pdf  used on input line 15.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--15
+\L7x/lmr/m/n/12 Veidrod.lëkt.stabdymo
+ []
+
+Package epstopdf Info: Source file: <IT000765.eps>
+(epstopdf)                    date: 2021-01-25 09:06:41
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000765-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:41
+(epstopdf)                    size: 4021 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000765-eps-converted-to.
+pdf IT000765.eps>
+(epstopdf)             \includegraphics on input line 16.
+runsystem(repstopdf --outfile=IT000765-eps-converted-to.pdf IT000765.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000765-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:06
+(epstopdf)                    size: 4021 bytes.
+<IT000765-eps-converted-to.pdf, id=9, 124.465pt x 81.30376pt>
+File: IT000765-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000765-eps-converted-to.pdf>
+Package pdftex.def Info: IT000765-eps-converted-to.pdf  used on input line 16.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 16--16
+\L7x/lmr/m/n/12 Hi-Scan
+ []
+
+Package epstopdf Info: Source file: <IT000767.eps>
+(epstopdf)                    date: 2021-01-25 09:06:41
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000767-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:42
+(epstopdf)                    size: 3922 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000767-eps-converted-to.
+pdf IT000767.eps>
+(epstopdf)             \includegraphics on input line 16.
+runsystem(repstopdf --outfile=IT000767-eps-converted-to.pdf IT000767.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000767-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:07
+(epstopdf)                    size: 3922 bytes.
+<IT000767-eps-converted-to.pdf, id=10, 124.465pt x 81.30376pt>
+File: IT000767-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000767-eps-converted-to.pdf>
+Package pdftex.def Info: IT000767-eps-converted-to.pdf  used on input line 16.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 16--16
+\L7x/lmr/m/n/12 Hi-Scan
+ []
+
+Package epstopdf Info: Source file: <IT000781.eps>
+(epstopdf)                    date: 2021-01-25 09:06:42
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000781-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:42
+(epstopdf)                    size: 3988 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000781-eps-converted-to.
+pdf IT000781.eps>
+(epstopdf)             \includegraphics on input line 16.
+runsystem(repstopdf --outfile=IT000781-eps-converted-to.pdf IT000781.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000781-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:07
+(epstopdf)                    size: 3988 bytes.
+<IT000781-eps-converted-to.pdf, id=11, 124.465pt x 81.30376pt>
+File: IT000781-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000781-eps-converted-to.pdf>
+Package pdftex.def Info: IT000781-eps-converted-to.pdf  used on input line 16.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 16--16
+\L7x/lmr/m/n/12 Terminalo pa-sta-to
+ []
+
+Package epstopdf Info: Source file: <IT000782.eps>
+(epstopdf)                    date: 2021-01-25 09:06:42
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000782-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:43
+(epstopdf)                    size: 4057 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000782-eps-converted-to.
+pdf IT000782.eps>
+(epstopdf)             \includegraphics on input line 16.
+runsystem(repstopdf --outfile=IT000782-eps-converted-to.pdf IT000782.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000782-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:08
+(epstopdf)                    size: 4057 bytes.
+<IT000782-eps-converted-to.pdf, id=12, 124.465pt x 81.30376pt>
+File: IT000782-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000782-eps-converted-to.pdf>
+Package pdftex.def Info: IT000782-eps-converted-to.pdf  used on input line 16.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 16--16
+\L7x/lmr/m/n/12 Terminalo lif-
+ []
+
+Package epstopdf Info: Source file: <IT000857.eps>
+(epstopdf)                    date: 2021-01-25 09:06:42
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000857-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:43
+(epstopdf)                    size: 4042 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000857-eps-converted-to.
+pdf IT000857.eps>
+(epstopdf)             \includegraphics on input line 17.
+runsystem(repstopdf --outfile=IT000857-eps-converted-to.pdf IT000857.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000857-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:08
+(epstopdf)                    size: 4042 bytes.
+<IT000857-eps-converted-to.pdf, id=13, 124.465pt x 81.30376pt>
+File: IT000857-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000857-eps-converted-to.pdf>
+Package pdftex.def Info: IT000857-eps-converted-to.pdf  used on input line 17.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--17
+\L7x/lmr/m/n/12 Intraskopas HiScan-
+ []
+
+Package epstopdf Info: Source file: <IT000863.eps>
+(epstopdf)                    date: 2021-01-25 09:06:43
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000863-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:44
+(epstopdf)                    size: 4140 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000863-eps-converted-to.
+pdf IT000863.eps>
+(epstopdf)             \includegraphics on input line 17.
+runsystem(repstopdf --outfile=IT000863-eps-converted-to.pdf IT000863.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000863-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:09
+(epstopdf)                    size: 4140 bytes.
+<IT000863-eps-converted-to.pdf, id=14, 124.465pt x 81.30376pt>
+File: IT000863-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000863-eps-converted-to.pdf>
+Package pdftex.def Info: IT000863-eps-converted-to.pdf  used on input line 17.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT000864.eps>
+(epstopdf)                    date: 2021-01-25 09:06:43
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000864-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:44
+(epstopdf)                    size: 4062 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000864-eps-converted-to.
+pdf IT000864.eps>
+(epstopdf)             \includegraphics on input line 18.
+runsystem(repstopdf --outfile=IT000864-eps-converted-to.pdf IT000864.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000864-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:09
+(epstopdf)                    size: 4062 bytes.
+<IT000864-eps-converted-to.pdf, id=15, 124.465pt x 81.30376pt>
+File: IT000864-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000864-eps-converted-to.pdf>
+Package pdftex.def Info: IT000864-eps-converted-to.pdf  used on input line 18.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT000865.eps>
+(epstopdf)                    date: 2021-01-25 09:06:43
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000865-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:45
+(epstopdf)                    size: 4107 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000865-eps-converted-to.
+pdf IT000865.eps>
+(epstopdf)             \includegraphics on input line 18.
+runsystem(repstopdf --outfile=IT000865-eps-converted-to.pdf IT000865.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000865-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:10
+(epstopdf)                    size: 4107 bytes.
+<IT000865-eps-converted-to.pdf, id=16, 124.465pt x 81.30376pt>
+File: IT000865-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000865-eps-converted-to.pdf>
+Package pdftex.def Info: IT000865-eps-converted-to.pdf  used on input line 18.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT000866.eps>
+(epstopdf)                    date: 2021-01-25 09:06:44
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000866-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:45
+(epstopdf)                    size: 4007 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000866-eps-converted-to.
+pdf IT000866.eps>
+(epstopdf)             \includegraphics on input line 19.
+runsystem(repstopdf --outfile=IT000866-eps-converted-to.pdf IT000866.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000866-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:10
+(epstopdf)                    size: 4007 bytes.
+<IT000866-eps-converted-to.pdf, id=17, 124.465pt x 81.30376pt>
+File: IT000866-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000866-eps-converted-to.pdf>
+Package pdftex.def Info: IT000866-eps-converted-to.pdf  used on input line 19.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT000871.eps>
+(epstopdf)                    date: 2021-01-25 09:06:44
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000871-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:46
+(epstopdf)                    size: 3987 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000871-eps-converted-to.
+pdf IT000871.eps>
+(epstopdf)             \includegraphics on input line 19.
+runsystem(repstopdf --outfile=IT000871-eps-converted-to.pdf IT000871.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000871-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:11
+(epstopdf)                    size: 3987 bytes.
+<IT000871-eps-converted-to.pdf, id=18, 124.465pt x 81.30376pt>
+File: IT000871-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000871-eps-converted-to.pdf>
+Package pdftex.def Info: IT000871-eps-converted-to.pdf  used on input line 19.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+(/usr/share/texlive/texmf-dist/tex/latex/ucs/data/uni-32.def
+File: uni-32.def 2013/05/13 UCS: Unicode data U+2000..U+20FF
+)
+Underfull \hbox (badness 10000) in paragraph at lines 19--19
+\L7x/lmr/m/n/12 Montaþinis tem-pik-lis
+ []
+
+Package epstopdf Info: Source file: <IT000876.eps>
+(epstopdf)                    date: 2021-01-25 09:06:44
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT000876-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:46
+(epstopdf)                    size: 4061 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT000876-eps-converted-to.
+pdf IT000876.eps>
+(epstopdf)             \includegraphics on input line 19.
+runsystem(repstopdf --outfile=IT000876-eps-converted-to.pdf IT000876.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT000876-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:11
+(epstopdf)                    size: 4061 bytes.
+<IT000876-eps-converted-to.pdf, id=19, 124.465pt x 81.30376pt>
+File: IT000876-eps-converted-to.pdf Graphic file (type pdf)
+<use IT000876-eps-converted-to.pdf>
+Package pdftex.def Info: IT000876-eps-converted-to.pdf  used on input line 19.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 19--19
+\L7x/lmr/m/n/12 Intraskopas HiS-can
+ []
+
+Package epstopdf Info: Source file: <IT001365.eps>
+(epstopdf)                    date: 2021-01-25 09:06:45
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001365-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:47
+(epstopdf)                    size: 4147 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001365-eps-converted-to.
+pdf IT001365.eps>
+(epstopdf)             \includegraphics on input line 19.
+runsystem(repstopdf --outfile=IT001365-eps-converted-to.pdf IT001365.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001365-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:12
+(epstopdf)                    size: 4147 bytes.
+<IT001365-eps-converted-to.pdf, id=20, 124.465pt x 81.30376pt>
+File: IT001365-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001365-eps-converted-to.pdf>
+Package pdftex.def Info: IT001365-eps-converted-to.pdf  used on input line 19.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 19--19
+\L7x/lmr/m/n/12 Televizorius LCD-TV
+ []
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./IT000604-eps-converted-t
+o.pdf> <./IT000605-eps-converted-to.pdf> <./IT000613-eps-converted-to.pdf> <./I
+T000629-eps-converted-to.pdf> <./IT000698-eps-converted-to.pdf> <./IT000751-eps
+-converted-to.pdf> <./IT000752-eps-converted-to.pdf> <./IT000755-eps-converted-
+to.pdf> <./IT000765-eps-converted-to.pdf> <./IT000767-eps-converted-to.pdf> <./
+IT000781-eps-converted-to.pdf> <./IT000782-eps-converted-to.pdf> <./IT000857-ep
+s-converted-to.pdf> <./IT000863-eps-converted-to.pdf> <./IT000864-eps-converted
+-to.pdf> <./IT000865-eps-converted-to.pdf> <./IT000866-eps-converted-to.pdf> <.
+/IT000871-eps-converted-to.pdf> <./IT000876-eps-converted-to.pdf> <./IT001365-e
+ps-converted-to.pdf>]
+Package epstopdf Info: Source file: <IT001369.eps>
+(epstopdf)                    date: 2021-01-25 09:06:45
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001369-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:47
+(epstopdf)                    size: 4160 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001369-eps-converted-to.
+pdf IT001369.eps>
+(epstopdf)             \includegraphics on input line 20.
+runsystem(repstopdf --outfile=IT001369-eps-converted-to.pdf IT001369.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001369-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:12
+(epstopdf)                    size: 4160 bytes.
+<IT001369-eps-converted-to.pdf, id=128, 124.465pt x 81.30376pt>
+File: IT001369-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001369-eps-converted-to.pdf>
+Package pdftex.def Info: IT001369-eps-converted-to.pdf  used on input line 20.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT001370.eps>
+(epstopdf)                    date: 2021-01-25 09:06:45
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001370-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:48
+(epstopdf)                    size: 3981 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001370-eps-converted-to.
+pdf IT001370.eps>
+(epstopdf)             \includegraphics on input line 20.
+runsystem(repstopdf --outfile=IT001370-eps-converted-to.pdf IT001370.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001370-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:13
+(epstopdf)                    size: 3981 bytes.
+<IT001370-eps-converted-to.pdf, id=129, 124.465pt x 81.30376pt>
+File: IT001370-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001370-eps-converted-to.pdf>
+Package pdftex.def Info: IT001370-eps-converted-to.pdf  used on input line 20.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT001371.eps>
+(epstopdf)                    date: 2021-01-25 09:06:46
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001371-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:48
+(epstopdf)                    size: 3981 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001371-eps-converted-to.
+pdf IT001371.eps>
+(epstopdf)             \includegraphics on input line 20.
+runsystem(repstopdf --outfile=IT001371-eps-converted-to.pdf IT001371.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001371-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:13
+(epstopdf)                    size: 3981 bytes.
+<IT001371-eps-converted-to.pdf, id=130, 124.465pt x 81.30376pt>
+File: IT001371-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001371-eps-converted-to.pdf>
+Package pdftex.def Info: IT001371-eps-converted-to.pdf  used on input line 20.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT001377.eps>
+(epstopdf)                    date: 2021-01-25 09:06:46
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001377-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:49
+(epstopdf)                    size: 3981 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001377-eps-converted-to.
+pdf IT001377.eps>
+(epstopdf)             \includegraphics on input line 20.
+runsystem(repstopdf --outfile=IT001377-eps-converted-to.pdf IT001377.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001377-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:14
+(epstopdf)                    size: 3981 bytes.
+<IT001377-eps-converted-to.pdf, id=131, 124.465pt x 81.30376pt>
+File: IT001377-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001377-eps-converted-to.pdf>
+Package pdftex.def Info: IT001377-eps-converted-to.pdf  used on input line 20.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT001387.eps>
+(epstopdf)                    date: 2021-01-25 09:06:46
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001387-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:49
+(epstopdf)                    size: 4119 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001387-eps-converted-to.
+pdf IT001387.eps>
+(epstopdf)             \includegraphics on input line 21.
+runsystem(repstopdf --outfile=IT001387-eps-converted-to.pdf IT001387.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001387-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:14
+(epstopdf)                    size: 4119 bytes.
+<IT001387-eps-converted-to.pdf, id=132, 124.465pt x 81.30376pt>
+File: IT001387-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001387-eps-converted-to.pdf>
+Package pdftex.def Info: IT001387-eps-converted-to.pdf  used on input line 21.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--21
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT001390.eps>
+(epstopdf)                    date: 2021-01-25 09:06:47
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001390-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:50
+(epstopdf)                    size: 4046 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001390-eps-converted-to.
+pdf IT001390.eps>
+(epstopdf)             \includegraphics on input line 21.
+runsystem(repstopdf --outfile=IT001390-eps-converted-to.pdf IT001390.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001390-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:15
+(epstopdf)                    size: 4046 bytes.
+<IT001390-eps-converted-to.pdf, id=133, 124.465pt x 81.30376pt>
+File: IT001390-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001390-eps-converted-to.pdf>
+Package pdftex.def Info: IT001390-eps-converted-to.pdf  used on input line 21.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--21
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT001394.eps>
+(epstopdf)                    date: 2021-01-25 09:06:47
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001394-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:50
+(epstopdf)                    size: 4101 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001394-eps-converted-to.
+pdf IT001394.eps>
+(epstopdf)             \includegraphics on input line 21.
+runsystem(repstopdf --outfile=IT001394-eps-converted-to.pdf IT001394.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001394-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:15
+(epstopdf)                    size: 4101 bytes.
+<IT001394-eps-converted-to.pdf, id=134, 124.465pt x 81.30376pt>
+File: IT001394-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001394-eps-converted-to.pdf>
+Package pdftex.def Info: IT001394-eps-converted-to.pdf  used on input line 21.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--21
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT001395.eps>
+(epstopdf)                    date: 2021-01-25 09:06:47
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT001395-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:51
+(epstopdf)                    size: 4146 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT001395-eps-converted-to.
+pdf IT001395.eps>
+(epstopdf)             \includegraphics on input line 21.
+runsystem(repstopdf --outfile=IT001395-eps-converted-to.pdf IT001395.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT001395-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:16
+(epstopdf)                    size: 4146 bytes.
+<IT001395-eps-converted-to.pdf, id=135, 124.465pt x 81.30376pt>
+File: IT001395-eps-converted-to.pdf Graphic file (type pdf)
+<use IT001395-eps-converted-to.pdf>
+Package pdftex.def Info: IT001395-eps-converted-to.pdf  used on input line 21.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--21
+\L7x/cmr/m/n/12 Televizorius LCD-TV
+ []
+
+Package epstopdf Info: Source file: <IT007562.eps>
+(epstopdf)                    date: 2021-01-25 09:06:48
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007562-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:51
+(epstopdf)                    size: 4129 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007562-eps-converted-to.
+pdf IT007562.eps>
+(epstopdf)             \includegraphics on input line 22.
+runsystem(repstopdf --outfile=IT007562-eps-converted-to.pdf IT007562.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007562-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:16
+(epstopdf)                    size: 4129 bytes.
+<IT007562-eps-converted-to.pdf, id=136, 124.465pt x 81.30376pt>
+File: IT007562-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007562-eps-converted-to.pdf>
+Package pdftex.def Info: IT007562-eps-converted-to.pdf  used on input line 22.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007563.eps>
+(epstopdf)                    date: 2021-01-25 09:06:48
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007563-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:52
+(epstopdf)                    size: 4155 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007563-eps-converted-to.
+pdf IT007563.eps>
+(epstopdf)             \includegraphics on input line 22.
+runsystem(repstopdf --outfile=IT007563-eps-converted-to.pdf IT007563.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007563-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:17
+(epstopdf)                    size: 4155 bytes.
+<IT007563-eps-converted-to.pdf, id=137, 124.465pt x 81.30376pt>
+File: IT007563-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007563-eps-converted-to.pdf>
+Package pdftex.def Info: IT007563-eps-converted-to.pdf  used on input line 22.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007573.eps>
+(epstopdf)                    date: 2021-01-25 09:06:48
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007573-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:52
+(epstopdf)                    size: 4036 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007573-eps-converted-to.
+pdf IT007573.eps>
+(epstopdf)             \includegraphics on input line 22.
+runsystem(repstopdf --outfile=IT007573-eps-converted-to.pdf IT007573.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007573-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:17
+(epstopdf)                    size: 4036 bytes.
+<IT007573-eps-converted-to.pdf, id=138, 124.465pt x 81.30376pt>
+File: IT007573-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007573-eps-converted-to.pdf>
+Package pdftex.def Info: IT007573-eps-converted-to.pdf  used on input line 22.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007574.eps>
+(epstopdf)                    date: 2021-01-25 09:06:49
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007574-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:53
+(epstopdf)                    size: 3961 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007574-eps-converted-to.
+pdf IT007574.eps>
+(epstopdf)             \includegraphics on input line 22.
+runsystem(repstopdf --outfile=IT007574-eps-converted-to.pdf IT007574.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007574-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:18
+(epstopdf)                    size: 3961 bytes.
+<IT007574-eps-converted-to.pdf, id=139, 124.465pt x 81.30376pt>
+File: IT007574-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007574-eps-converted-to.pdf>
+Package pdftex.def Info: IT007574-eps-converted-to.pdf  used on input line 22.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007576.eps>
+(epstopdf)                    date: 2021-01-25 09:06:49
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007576-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:53
+(epstopdf)                    size: 4016 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007576-eps-converted-to.
+pdf IT007576.eps>
+(epstopdf)             \includegraphics on input line 23.
+runsystem(repstopdf --outfile=IT007576-eps-converted-to.pdf IT007576.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007576-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:18
+(epstopdf)                    size: 4016 bytes.
+<IT007576-eps-converted-to.pdf, id=140, 124.465pt x 81.30376pt>
+File: IT007576-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007576-eps-converted-to.pdf>
+Package pdftex.def Info: IT007576-eps-converted-to.pdf  used on input line 23.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007577.eps>
+(epstopdf)                    date: 2021-01-25 09:06:49
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007577-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:54
+(epstopdf)                    size: 3900 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007577-eps-converted-to.
+pdf IT007577.eps>
+(epstopdf)             \includegraphics on input line 23.
+runsystem(repstopdf --outfile=IT007577-eps-converted-to.pdf IT007577.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007577-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:19
+(epstopdf)                    size: 3900 bytes.
+<IT007577-eps-converted-to.pdf, id=141, 124.465pt x 81.30376pt>
+File: IT007577-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007577-eps-converted-to.pdf>
+Package pdftex.def Info: IT007577-eps-converted-to.pdf  used on input line 23.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007578.eps>
+(epstopdf)                    date: 2021-01-25 09:06:50
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007578-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:54
+(epstopdf)                    size: 4042 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007578-eps-converted-to.
+pdf IT007578.eps>
+(epstopdf)             \includegraphics on input line 23.
+runsystem(repstopdf --outfile=IT007578-eps-converted-to.pdf IT007578.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007578-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:19
+(epstopdf)                    size: 4042 bytes.
+<IT007578-eps-converted-to.pdf, id=142, 124.465pt x 81.30376pt>
+File: IT007578-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007578-eps-converted-to.pdf>
+Package pdftex.def Info: IT007578-eps-converted-to.pdf  used on input line 23.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007579.eps>
+(epstopdf)                    date: 2021-01-25 09:06:50
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007579-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:55
+(epstopdf)                    size: 4018 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007579-eps-converted-to.
+pdf IT007579.eps>
+(epstopdf)             \includegraphics on input line 23.
+runsystem(repstopdf --outfile=IT007579-eps-converted-to.pdf IT007579.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007579-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:20
+(epstopdf)                    size: 4018 bytes.
+<IT007579-eps-converted-to.pdf, id=143, 124.465pt x 81.30376pt>
+File: IT007579-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007579-eps-converted-to.pdf>
+Package pdftex.def Info: IT007579-eps-converted-to.pdf  used on input line 23.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007580.eps>
+(epstopdf)                    date: 2021-01-25 09:06:50
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007580-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:55
+(epstopdf)                    size: 4042 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007580-eps-converted-to.
+pdf IT007580.eps>
+(epstopdf)             \includegraphics on input line 24.
+runsystem(repstopdf --outfile=IT007580-eps-converted-to.pdf IT007580.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007580-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:20
+(epstopdf)                    size: 4042 bytes.
+<IT007580-eps-converted-to.pdf, id=144, 124.465pt x 81.30376pt>
+File: IT007580-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007580-eps-converted-to.pdf>
+Package pdftex.def Info: IT007580-eps-converted-to.pdf  used on input line 24.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007582.eps>
+(epstopdf)                    date: 2021-01-25 09:06:51
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007582-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:56
+(epstopdf)                    size: 4150 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007582-eps-converted-to.
+pdf IT007582.eps>
+(epstopdf)             \includegraphics on input line 24.
+runsystem(repstopdf --outfile=IT007582-eps-converted-to.pdf IT007582.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007582-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:21
+(epstopdf)                    size: 4150 bytes.
+<IT007582-eps-converted-to.pdf, id=145, 124.465pt x 81.30376pt>
+File: IT007582-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007582-eps-converted-to.pdf>
+Package pdftex.def Info: IT007582-eps-converted-to.pdf  used on input line 24.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT007583.eps>
+(epstopdf)                    date: 2021-01-25 09:06:51
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT007583-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:56
+(epstopdf)                    size: 4174 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT007583-eps-converted-to.
+pdf IT007583.eps>
+(epstopdf)             \includegraphics on input line 24.
+runsystem(repstopdf --outfile=IT007583-eps-converted-to.pdf IT007583.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT007583-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:21
+(epstopdf)                    size: 4174 bytes.
+<IT007583-eps-converted-to.pdf, id=146, 124.465pt x 81.30376pt>
+File: IT007583-eps-converted-to.pdf Graphic file (type pdf)
+<use IT007583-eps-converted-to.pdf>
+Package pdftex.def Info: IT007583-eps-converted-to.pdf  used on input line 24.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT013272.eps>
+(epstopdf)                    date: 2021-01-25 09:06:51
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013272-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:57
+(epstopdf)                    size: 4095 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013272-eps-converted-to.
+pdf IT013272.eps>
+(epstopdf)             \includegraphics on input line 24.
+runsystem(repstopdf --outfile=IT013272-eps-converted-to.pdf IT013272.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013272-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:22
+(epstopdf)                    size: 4095 bytes.
+<IT013272-eps-converted-to.pdf, id=147, 124.465pt x 81.30376pt>
+File: IT013272-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013272-eps-converted-to.pdf>
+Package pdftex.def Info: IT013272-eps-converted-to.pdf  used on input line 24.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 24--24
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013273.eps>
+(epstopdf)                    date: 2021-01-25 09:06:52
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013273-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:57
+(epstopdf)                    size: 4094 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013273-eps-converted-to.
+pdf IT013273.eps>
+(epstopdf)             \includegraphics on input line 25.
+runsystem(repstopdf --outfile=IT013273-eps-converted-to.pdf IT013273.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013273-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:22
+(epstopdf)                    size: 4094 bytes.
+<IT013273-eps-converted-to.pdf, id=148, 124.465pt x 81.30376pt>
+File: IT013273-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013273-eps-converted-to.pdf>
+Package pdftex.def Info: IT013273-eps-converted-to.pdf  used on input line 25.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 25--25
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013274.eps>
+(epstopdf)                    date: 2021-01-25 09:06:52
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013274-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:58
+(epstopdf)                    size: 4148 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013274-eps-converted-to.
+pdf IT013274.eps>
+(epstopdf)             \includegraphics on input line 25.
+runsystem(repstopdf --outfile=IT013274-eps-converted-to.pdf IT013274.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013274-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:23
+(epstopdf)                    size: 4148 bytes.
+<IT013274-eps-converted-to.pdf, id=149, 124.465pt x 81.30376pt>
+File: IT013274-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013274-eps-converted-to.pdf>
+Package pdftex.def Info: IT013274-eps-converted-to.pdf  used on input line 25.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 25--25
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013275.eps>
+(epstopdf)                    date: 2021-01-25 09:06:52
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013275-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:58
+(epstopdf)                    size: 4192 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013275-eps-converted-to.
+pdf IT013275.eps>
+(epstopdf)             \includegraphics on input line 25.
+runsystem(repstopdf --outfile=IT013275-eps-converted-to.pdf IT013275.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013275-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:23
+(epstopdf)                    size: 4192 bytes.
+<IT013275-eps-converted-to.pdf, id=150, 124.465pt x 81.30376pt>
+File: IT013275-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013275-eps-converted-to.pdf>
+Package pdftex.def Info: IT013275-eps-converted-to.pdf  used on input line 25.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 25--25
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013276.eps>
+(epstopdf)                    date: 2021-01-25 09:06:53
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013276-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:59
+(epstopdf)                    size: 4211 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013276-eps-converted-to.
+pdf IT013276.eps>
+(epstopdf)             \includegraphics on input line 25.
+runsystem(repstopdf --outfile=IT013276-eps-converted-to.pdf IT013276.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013276-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:24
+(epstopdf)                    size: 4211 bytes.
+<IT013276-eps-converted-to.pdf, id=151, 124.465pt x 81.30376pt>
+File: IT013276-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013276-eps-converted-to.pdf>
+Package pdftex.def Info: IT013276-eps-converted-to.pdf  used on input line 25.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 25--25
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+[2 <./IT001369-eps-converted-to.pdf> <./IT001370-eps-converted-to.pdf> <./IT001
+371-eps-converted-to.pdf> <./IT001377-eps-converted-to.pdf> <./IT001387-eps-con
+verted-to.pdf> <./IT001390-eps-converted-to.pdf> <./IT001394-eps-converted-to.p
+df> <./IT001395-eps-converted-to.pdf> <./IT007562-eps-converted-to.pdf> <./IT00
+7563-eps-converted-to.pdf> <./IT007573-eps-converted-to.pdf> <./IT007574-eps-co
+nverted-to.pdf> <./IT007576-eps-converted-to.pdf> <./IT007577-eps-converted-to.
+pdf> <./IT007578-eps-converted-to.pdf> <./IT007579-eps-converted-to.pdf> <./IT0
+07580-eps-converted-to.pdf> <./IT007582-eps-converted-to.pdf> <./IT007583-eps-c
+onverted-to.pdf> <./IT013272-eps-converted-to.pdf> <./IT013273-eps-converted-to
+.pdf> <./IT013274-eps-converted-to.pdf> <./IT013275-eps-converted-to.pdf> <./IT
+013276-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <IT013277.eps>
+(epstopdf)                    date: 2021-01-25 09:06:53
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013277-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:00:59
+(epstopdf)                    size: 4093 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013277-eps-converted-to.
+pdf IT013277.eps>
+(epstopdf)             \includegraphics on input line 26.
+runsystem(repstopdf --outfile=IT013277-eps-converted-to.pdf IT013277.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013277-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:24
+(epstopdf)                    size: 4093 bytes.
+<IT013277-eps-converted-to.pdf, id=276, 124.465pt x 81.30376pt>
+File: IT013277-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013277-eps-converted-to.pdf>
+Package pdftex.def Info: IT013277-eps-converted-to.pdf  used on input line 26.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 26--26
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013278.eps>
+(epstopdf)                    date: 2021-01-25 09:06:53
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013278-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:00
+(epstopdf)                    size: 4231 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013278-eps-converted-to.
+pdf IT013278.eps>
+(epstopdf)             \includegraphics on input line 26.
+runsystem(repstopdf --outfile=IT013278-eps-converted-to.pdf IT013278.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013278-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:25
+(epstopdf)                    size: 4231 bytes.
+<IT013278-eps-converted-to.pdf, id=277, 124.465pt x 81.30376pt>
+File: IT013278-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013278-eps-converted-to.pdf>
+Package pdftex.def Info: IT013278-eps-converted-to.pdf  used on input line 26.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 26--26
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013279.eps>
+(epstopdf)                    date: 2021-01-25 09:06:54
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013279-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:00
+(epstopdf)                    size: 4206 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013279-eps-converted-to.
+pdf IT013279.eps>
+(epstopdf)             \includegraphics on input line 26.
+runsystem(repstopdf --outfile=IT013279-eps-converted-to.pdf IT013279.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013279-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:25
+(epstopdf)                    size: 4206 bytes.
+<IT013279-eps-converted-to.pdf, id=278, 124.465pt x 81.30376pt>
+File: IT013279-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013279-eps-converted-to.pdf>
+Package pdftex.def Info: IT013279-eps-converted-to.pdf  used on input line 26.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 26--26
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013280.eps>
+(epstopdf)                    date: 2021-01-25 09:06:54
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013280-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:01
+(epstopdf)                    size: 4180 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013280-eps-converted-to.
+pdf IT013280.eps>
+(epstopdf)             \includegraphics on input line 26.
+runsystem(repstopdf --outfile=IT013280-eps-converted-to.pdf IT013280.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013280-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:26
+(epstopdf)                    size: 4180 bytes.
+<IT013280-eps-converted-to.pdf, id=279, 124.465pt x 81.30376pt>
+File: IT013280-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013280-eps-converted-to.pdf>
+Package pdftex.def Info: IT013280-eps-converted-to.pdf  used on input line 26.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 26--26
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013281.eps>
+(epstopdf)                    date: 2021-01-25 09:06:54
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013281-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:01
+(epstopdf)                    size: 4176 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013281-eps-converted-to.
+pdf IT013281.eps>
+(epstopdf)             \includegraphics on input line 27.
+runsystem(repstopdf --outfile=IT013281-eps-converted-to.pdf IT013281.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013281-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:26
+(epstopdf)                    size: 4176 bytes.
+<IT013281-eps-converted-to.pdf, id=280, 124.465pt x 81.30376pt>
+File: IT013281-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013281-eps-converted-to.pdf>
+Package pdftex.def Info: IT013281-eps-converted-to.pdf  used on input line 27.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 27--27
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013282.eps>
+(epstopdf)                    date: 2021-01-25 09:06:55
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013282-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:02
+(epstopdf)                    size: 4180 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013282-eps-converted-to.
+pdf IT013282.eps>
+(epstopdf)             \includegraphics on input line 27.
+runsystem(repstopdf --outfile=IT013282-eps-converted-to.pdf IT013282.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013282-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:27
+(epstopdf)                    size: 4180 bytes.
+<IT013282-eps-converted-to.pdf, id=281, 124.465pt x 81.30376pt>
+File: IT013282-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013282-eps-converted-to.pdf>
+Package pdftex.def Info: IT013282-eps-converted-to.pdf  used on input line 27.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 27--27
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013283.eps>
+(epstopdf)                    date: 2021-01-25 09:06:55
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013283-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:02
+(epstopdf)                    size: 4178 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013283-eps-converted-to.
+pdf IT013283.eps>
+(epstopdf)             \includegraphics on input line 27.
+runsystem(repstopdf --outfile=IT013283-eps-converted-to.pdf IT013283.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013283-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:27
+(epstopdf)                    size: 4178 bytes.
+<IT013283-eps-converted-to.pdf, id=282, 124.465pt x 81.30376pt>
+File: IT013283-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013283-eps-converted-to.pdf>
+Package pdftex.def Info: IT013283-eps-converted-to.pdf  used on input line 27.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 27--27
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013284.eps>
+(epstopdf)                    date: 2021-01-25 09:06:55
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013284-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:03
+(epstopdf)                    size: 4232 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013284-eps-converted-to.
+pdf IT013284.eps>
+(epstopdf)             \includegraphics on input line 27.
+runsystem(repstopdf --outfile=IT013284-eps-converted-to.pdf IT013284.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013284-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:28
+(epstopdf)                    size: 4232 bytes.
+<IT013284-eps-converted-to.pdf, id=283, 124.465pt x 81.30376pt>
+File: IT013284-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013284-eps-converted-to.pdf>
+Package pdftex.def Info: IT013284-eps-converted-to.pdf  used on input line 27.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 4229) in paragraph at lines 27--27
+\L7x/cmr/m/n/12 Skaitmeninis mik-ro-fo-
+ []
+
+Package epstopdf Info: Source file: <IT013799.eps>
+(epstopdf)                    date: 2021-01-25 09:06:56
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT013799-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:03
+(epstopdf)                    size: 4098 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT013799-eps-converted-to.
+pdf IT013799.eps>
+(epstopdf)             \includegraphics on input line 28.
+runsystem(repstopdf --outfile=IT013799-eps-converted-to.pdf IT013799.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT013799-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:28
+(epstopdf)                    size: 4098 bytes.
+<IT013799-eps-converted-to.pdf, id=284, 124.465pt x 81.30376pt>
+File: IT013799-eps-converted-to.pdf Graphic file (type pdf)
+<use IT013799-eps-converted-to.pdf>
+Package pdftex.def Info: IT013799-eps-converted-to.pdf  used on input line 28.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 28--28
+\L7x/cmr/m/n/12 Reklaminë ðviesdëþë-
+ []
+
+Package epstopdf Info: Source file: <IT015840.eps>
+(epstopdf)                    date: 2021-01-25 09:06:56
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT015840-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:04
+(epstopdf)                    size: 4086 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT015840-eps-converted-to.
+pdf IT015840.eps>
+(epstopdf)             \includegraphics on input line 28.
+runsystem(repstopdf --outfile=IT015840-eps-converted-to.pdf IT015840.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT015840-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:29
+(epstopdf)                    size: 4086 bytes.
+<IT015840-eps-converted-to.pdf, id=285, 124.465pt x 81.30376pt>
+File: IT015840-eps-converted-to.pdf Graphic file (type pdf)
+<use IT015840-eps-converted-to.pdf>
+Package pdftex.def Info: IT015840-eps-converted-to.pdf  used on input line 28.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT015860.eps>
+(epstopdf)                    date: 2021-01-25 09:06:56
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT015860-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:04
+(epstopdf)                    size: 4145 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT015860-eps-converted-to.
+pdf IT015860.eps>
+(epstopdf)             \includegraphics on input line 28.
+runsystem(repstopdf --outfile=IT015860-eps-converted-to.pdf IT015860.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT015860-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:29
+(epstopdf)                    size: 4145 bytes.
+<IT015860-eps-converted-to.pdf, id=286, 124.465pt x 81.30376pt>
+File: IT015860-eps-converted-to.pdf Graphic file (type pdf)
+<use IT015860-eps-converted-to.pdf>
+Package pdftex.def Info: IT015860-eps-converted-to.pdf  used on input line 28.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT015861.eps>
+(epstopdf)                    date: 2021-01-25 09:06:57
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT015861-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:05
+(epstopdf)                    size: 4148 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT015861-eps-converted-to.
+pdf IT015861.eps>
+(epstopdf)             \includegraphics on input line 28.
+runsystem(repstopdf --outfile=IT015861-eps-converted-to.pdf IT015861.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT015861-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:30
+(epstopdf)                    size: 4148 bytes.
+<IT015861-eps-converted-to.pdf, id=287, 124.465pt x 81.30376pt>
+File: IT015861-eps-converted-to.pdf Graphic file (type pdf)
+<use IT015861-eps-converted-to.pdf>
+Package pdftex.def Info: IT015861-eps-converted-to.pdf  used on input line 28.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT016939.eps>
+(epstopdf)                    date: 2021-01-25 09:06:57
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT016939-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:05
+(epstopdf)                    size: 4155 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT016939-eps-converted-to.
+pdf IT016939.eps>
+(epstopdf)             \includegraphics on input line 29.
+runsystem(repstopdf --outfile=IT016939-eps-converted-to.pdf IT016939.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT016939-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:30
+(epstopdf)                    size: 4155 bytes.
+<IT016939-eps-converted-to.pdf, id=288, 124.465pt x 81.30376pt>
+File: IT016939-eps-converted-to.pdf Graphic file (type pdf)
+<use IT016939-eps-converted-to.pdf>
+Package pdftex.def Info: IT016939-eps-converted-to.pdf  used on input line 29.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--31
+\L7x/cmr/m/n/10 Orona M33V3/3G 1015
+ []
+
+Package epstopdf Info: Source file: <IT016940.eps>
+(epstopdf)                    date: 2021-01-25 09:06:57
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT016940-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:06
+(epstopdf)                    size: 4078 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT016940-eps-converted-to.
+pdf IT016940.eps>
+(epstopdf)             \includegraphics on input line 31.
+runsystem(repstopdf --outfile=IT016940-eps-converted-to.pdf IT016940.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT016940-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:31
+(epstopdf)                    size: 4078 bytes.
+<IT016940-eps-converted-to.pdf, id=289, 124.465pt x 81.30376pt>
+File: IT016940-eps-converted-to.pdf Graphic file (type pdf)
+<use IT016940-eps-converted-to.pdf>
+Package pdftex.def Info: IT016940-eps-converted-to.pdf  used on input line 31.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 31--33
+\L7x/cmr/m/n/10 Orona M33V3/3G 1015
+ []
+
+Package epstopdf Info: Source file: <IT017072.eps>
+(epstopdf)                    date: 2021-01-25 09:06:58
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT017072-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:06
+(epstopdf)                    size: 3959 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT017072-eps-converted-to.
+pdf IT017072.eps>
+(epstopdf)             \includegraphics on input line 33.
+runsystem(repstopdf --outfile=IT017072-eps-converted-to.pdf IT017072.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT017072-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:31
+(epstopdf)                    size: 3959 bytes.
+<IT017072-eps-converted-to.pdf, id=290, 124.465pt x 81.30376pt>
+File: IT017072-eps-converted-to.pdf Graphic file (type pdf)
+<use IT017072-eps-converted-to.pdf>
+Package pdftex.def Info: IT017072-eps-converted-to.pdf  used on input line 33.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <IT017180.eps>
+(epstopdf)                    date: 2021-01-25 09:06:58
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <IT017180-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:07
+(epstopdf)                    size: 3988 bytes
+(epstopdf)             Command: <repstopdf --outfile=IT017180-eps-converted-to.
+pdf IT017180.eps>
+(epstopdf)             \includegraphics on input line 33.
+runsystem(repstopdf --outfile=IT017180-eps-converted-to.pdf IT017180.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <IT017180-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:32
+(epstopdf)                    size: 3988 bytes.
+<IT017180-eps-converted-to.pdf, id=291, 124.465pt x 81.30376pt>
+File: IT017180-eps-converted-to.pdf Graphic file (type pdf)
+<use IT017180-eps-converted-to.pdf>
+Package pdftex.def Info: IT017180-eps-converted-to.pdf  used on input line 33.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--33
+\L7x/cmr/m/n/12 Apsauginës sig-na-liz.
+ []
+
+Package epstopdf Info: Source file: <MI011318.eps>
+(epstopdf)                    date: 2021-01-25 09:06:58
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI011318-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:08
+(epstopdf)                    size: 4075 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI011318-eps-converted-to.
+pdf MI011318.eps>
+(epstopdf)             \includegraphics on input line 34.
+runsystem(repstopdf --outfile=MI011318-eps-converted-to.pdf MI011318.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI011318-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:32
+(epstopdf)                    size: 4075 bytes.
+<MI011318-eps-converted-to.pdf, id=292, 124.465pt x 81.30376pt>
+File: MI011318-eps-converted-to.pdf Graphic file (type pdf)
+<use MI011318-eps-converted-to.pdf>
+Package pdftex.def Info: MI011318-eps-converted-to.pdf  used on input line 34.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <MI011319.eps>
+(epstopdf)                    date: 2021-01-25 09:06:59
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI011319-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:08
+(epstopdf)                    size: 4052 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI011319-eps-converted-to.
+pdf MI011319.eps>
+(epstopdf)             \includegraphics on input line 34.
+runsystem(repstopdf --outfile=MI011319-eps-converted-to.pdf MI011319.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI011319-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:33
+(epstopdf)                    size: 4052 bytes.
+<MI011319-eps-converted-to.pdf, id=293, 124.465pt x 81.30376pt>
+File: MI011319-eps-converted-to.pdf Graphic file (type pdf)
+<use MI011319-eps-converted-to.pdf>
+Package pdftex.def Info: MI011319-eps-converted-to.pdf  used on input line 34.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <MI011320.eps>
+(epstopdf)                    date: 2021-01-25 09:06:59
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI011320-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:09
+(epstopdf)                    size: 4052 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI011320-eps-converted-to.
+pdf MI011320.eps>
+(epstopdf)             \includegraphics on input line 34.
+runsystem(repstopdf --outfile=MI011320-eps-converted-to.pdf MI011320.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI011320-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:33
+(epstopdf)                    size: 4052 bytes.
+<MI011320-eps-converted-to.pdf, id=294, 124.465pt x 81.30376pt>
+File: MI011320-eps-converted-to.pdf Graphic file (type pdf)
+<use MI011320-eps-converted-to.pdf>
+Package pdftex.def Info: MI011320-eps-converted-to.pdf  used on input line 34.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <MI012004.eps>
+(epstopdf)                    date: 2021-01-25 09:06:59
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI012004-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:09
+(epstopdf)                    size: 3974 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI012004-eps-converted-to.
+pdf MI012004.eps>
+(epstopdf)             \includegraphics on input line 34.
+runsystem(repstopdf --outfile=MI012004-eps-converted-to.pdf MI012004.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI012004-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:34
+(epstopdf)                    size: 3974 bytes.
+<MI012004-eps-converted-to.pdf, id=295, 124.465pt x 81.30376pt>
+File: MI012004-eps-converted-to.pdf Graphic file (type pdf)
+<use MI012004-eps-converted-to.pdf>
+Package pdftex.def Info: MI012004-eps-converted-to.pdf  used on input line 34.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 1742) in paragraph at lines 34--34
+\L7x/cmr/m/n/12 IP ka-me-ra DO-ME 4
+ []
+
+[3 <./IT013277-eps-converted-to.pdf> <./IT013278-eps-converted-to.pdf> <./IT013
+279-eps-converted-to.pdf> <./IT013280-eps-converted-to.pdf> <./IT013281-eps-con
+verted-to.pdf> <./IT013282-eps-converted-to.pdf> <./IT013283-eps-converted-to.p
+df> <./IT013284-eps-converted-to.pdf> <./IT013799-eps-converted-to.pdf> <./IT01
+5840-eps-converted-to.pdf> <./IT015860-eps-converted-to.pdf> <./IT015861-eps-co
+nverted-to.pdf> <./IT016939-eps-converted-to.pdf> <./IT016940-eps-converted-to.
+pdf> <./IT017072-eps-converted-to.pdf> <./IT017180-eps-converted-to.pdf> <./MI0
+11318-eps-converted-to.pdf> <./MI011319-eps-converted-to.pdf> <./MI011320-eps-c
+onverted-to.pdf> <./MI012004-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <MI012005.eps>
+(epstopdf)                    date: 2021-01-25 09:07:00
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI012005-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:10
+(epstopdf)                    size: 4016 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI012005-eps-converted-to.
+pdf MI012005.eps>
+(epstopdf)             \includegraphics on input line 35.
+runsystem(repstopdf --outfile=MI012005-eps-converted-to.pdf MI012005.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI012005-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:34
+(epstopdf)                    size: 4016 bytes.
+<MI012005-eps-converted-to.pdf, id=400, 124.465pt x 81.30376pt>
+File: MI012005-eps-converted-to.pdf Graphic file (type pdf)
+<use MI012005-eps-converted-to.pdf>
+Package pdftex.def Info: MI012005-eps-converted-to.pdf  used on input line 35.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 1742) in paragraph at lines 35--35
+\L7x/cmr/m/n/12 IP ka-me-ra DO-ME 4
+ []
+
+Package epstopdf Info: Source file: <MI014821.eps>
+(epstopdf)                    date: 2021-01-25 09:07:00
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI014821-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:10
+(epstopdf)                    size: 4109 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI014821-eps-converted-to.
+pdf MI014821.eps>
+(epstopdf)             \includegraphics on input line 35.
+runsystem(repstopdf --outfile=MI014821-eps-converted-to.pdf MI014821.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI014821-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:35
+(epstopdf)                    size: 4109 bytes.
+<MI014821-eps-converted-to.pdf, id=401, 124.465pt x 81.30376pt>
+File: MI014821-eps-converted-to.pdf Graphic file (type pdf)
+<use MI014821-eps-converted-to.pdf>
+Package pdftex.def Info: MI014821-eps-converted-to.pdf  used on input line 35.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--35
+\L7x/cmr/m/n/12 Signalo ko-mu-ta-to-rius
+ []
+
+Package epstopdf Info: Source file: <MI014843.eps>
+(epstopdf)                    date: 2021-01-25 09:07:00
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI014843-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:11
+(epstopdf)                    size: 4125 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI014843-eps-converted-to.
+pdf MI014843.eps>
+(epstopdf)             \includegraphics on input line 35.
+runsystem(repstopdf --outfile=MI014843-eps-converted-to.pdf MI014843.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI014843-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:35
+(epstopdf)                    size: 4125 bytes.
+<MI014843-eps-converted-to.pdf, id=402, 124.465pt x 81.30376pt>
+File: MI014843-eps-converted-to.pdf Graphic file (type pdf)
+<use MI014843-eps-converted-to.pdf>
+Package pdftex.def Info: MI014843-eps-converted-to.pdf  used on input line 35.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+
+Underfull \hbox (badness 2865) in paragraph at lines 35--35
+\L7x/cmr/m/n/12 Maitinimo ðal-ti-nis (1
+ []
+
+Package epstopdf Info: Source file: <MI014844.eps>
+(epstopdf)                    date: 2021-01-25 09:07:01
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI014844-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:11
+(epstopdf)                    size: 3999 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI014844-eps-converted-to.
+pdf MI014844.eps>
+(epstopdf)             \includegraphics on input line 35.
+runsystem(repstopdf --outfile=MI014844-eps-converted-to.pdf MI014844.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI014844-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:36
+(epstopdf)                    size: 3999 bytes.
+<MI014844-eps-converted-to.pdf, id=403, 124.465pt x 81.30376pt>
+File: MI014844-eps-converted-to.pdf Graphic file (type pdf)
+<use MI014844-eps-converted-to.pdf>
+Package pdftex.def Info: MI014844-eps-converted-to.pdf  used on input line 35.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+Package epstopdf Info: Source file: <MI014845.eps>
+(epstopdf)                    date: 2021-01-25 09:07:01
+(epstopdf)                    size: 2347 bytes
+(epstopdf)             Output file: <MI014845-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:01:12
+(epstopdf)                    size: 4085 bytes
+(epstopdf)             Command: <repstopdf --outfile=MI014845-eps-converted-to.
+pdf MI014845.eps>
+(epstopdf)             \includegraphics on input line 36.
+runsystem(repstopdf --outfile=MI014845-eps-converted-to.pdf MI014845.eps)...exe
+cuted safely (allowed).
+
+Package epstopdf Info: Result file: <MI014845-eps-converted-to.pdf>
+(epstopdf)                    date: 2021-01-25 09:07:36
+(epstopdf)                    size: 4085 bytes.
+<MI014845-eps-converted-to.pdf, id=404, 124.465pt x 81.30376pt>
+File: MI014845-eps-converted-to.pdf Graphic file (type pdf)
+<use MI014845-eps-converted-to.pdf>
+Package pdftex.def Info: MI014845-eps-converted-to.pdf  used on input line 36.
+(pdftex.def)             Requested size: 112.01746pt x 73.17268pt.
+[4 <./MI012005-eps-converted-to.pdf> <./MI014821-eps-converted-to.pdf> <./MI014
+843-eps-converted-to.pdf> <./MI014844-eps-converted-to.pdf> <./MI014845-eps-con
+verted-to.pdf>] (./Barcodes.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 4405 strings out of 493311
+ 65959 string characters out of 6145885
+ 135796 words of memory out of 5000000
+ 8153 multiletter control sequences out of 15000+600000
+ 9727 words of font info for 25 fonts, out of 8000000 for 9000
+ 667 hyphenation exceptions out of 8191
+ 41i,13n,25p,751b,681s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-l7x.enc}</usr/share/texmf/fonts/type1
+/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb>
+Output written on Barcodes.pdf (4 pages, 171479 bytes).
+PDF statistics:
+ 442 PDF objects out of 1000 (max. 8388607)
+ 293 compressed objects within 3 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 346 words of extra memory for PDF output out of 10000 (max. 10000000)
+

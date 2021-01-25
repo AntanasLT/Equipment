@@ -363,7 +363,7 @@ public class TP extends Darbai {
 	i = sb.indexOf(" tp.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) tfDate.getText());
+	    preparedFilter.setString(n, tfDate.getText());
 	}
 	i = sb.indexOf(" tp.Sistema = ?");
 	if (i >= 0) {
@@ -378,7 +378,7 @@ public class TP extends Darbai {
 	i = sb.indexOf(" tp.Pastaba LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) taMessage.getText());
+	    preparedFilter.setString(n, taMessage.getText());
 	}
 
     }
@@ -451,12 +451,6 @@ public class TP extends Darbai {
         }
     }
 
-    private void clearCheckboxes() {
-	chDate.setSelected(false);
-	chTPtype.setSelected(false);
-	chMessage.setSelected(false);
-	chSystem.setSelected(false);
-    }
 
 //    private void delete() {
 //	int row;

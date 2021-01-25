@@ -82,13 +82,13 @@ public class MainFrameP extends MainFrame {
 	menuDatabase.add(menItem_disconnect);
 	menu_bar.add(menuDatabase);
         
-	menuData = new JMyMenu("Kortelės", fontsize);
+	menuTabs = new JMyMenu("Kortelės", fontsize);
 	menuItemWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
 	menuItemWorks.addActionListener(this);
 	menuItemWorks.setActionCommand("works");
 	menuItemWorks.setSelected(true);
-	menuData.add(menuItemWorks);
-	menu_bar.add(menuData);
+	menuTabs.add(menuItemWorks);
+	menu_bar.add(menuTabs);
         
         menuHelp = new JMyMenu("Pagalba", fontsize);
         menuItemHelp = new JMyMenuItem("Aprašymas", fontsize);

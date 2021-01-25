@@ -21,8 +21,8 @@ public class MainFrameS extends MainFrame {
 
     @Override
     protected void connect_Equipment() {
-	if (menuData != null) {
-	    menuData.setVisible(true);
+	if (menuTabs != null) {
+	    menuTabs.setVisible(true);
 	}
 	if (connection == null) {
 	    connection = connect("Equipment");
@@ -77,19 +77,19 @@ public class MainFrameS extends MainFrame {
 	menuDatabase.add(menuItem_connect);
 	menuDatabase.add(menItem_disconnect);
 	menu_bar.add(menuDatabase);
-        menuData = new JMyMenu("Lentelės", fontsize);
+        menuTabs = new JMyMenu("Lentelės", fontsize);
         menuItemWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
 	menuItemWorks.addActionListener(this);
 	menuItemWorks.setActionCommand("works");
-	menuData.add(menuItemWorks);
+	menuTabs.add(menuItemWorks);
 	menuItemUsers = new JMyCheckBoxMenuItem("Vartotojai", fontsize);
 	menuItemUsers.addActionListener(this);
 	menuItemUsers.setActionCommand("users");
-	menuData.add(menuItemUsers);	
+	menuTabs.add(menuItemUsers);	
 	menuItemSystems = new JMyCheckBoxMenuItem("Sistemos", fontsize);
 	menuItemSystems.addActionListener(this);
 	menuItemSystems.setActionCommand("systems");
-	menuData.add(menuItemSystems);
+	menuTabs.add(menuItemSystems);
 //	menuItemDevices = new JMyCheckBoxMenuItem("Įrenginiai");
 //	menuItemDevices.addActionListener(this);
 //	menuItemDevices.setActionCommand("devices");
@@ -101,7 +101,7 @@ public class MainFrameS extends MainFrame {
         menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys", fontsize);
         menuItemWorktypes.addActionListener(this);
         menuItemWorktypes.setActionCommand("worktypes");
-        menuData.add(menuItemWorktypes);
+        menuTabs.add(menuItemWorktypes);
 //        menuItemEquipmentTypes = new JMyCheckBoxMenuItem("Įrangos tipai");
 //        menuItemEquipmentTypes.addActionListener(this);
 //        menuItemEquipmentTypes.setActionCommand("equipmenttypes");
@@ -109,8 +109,8 @@ public class MainFrameS extends MainFrame {
         menuItemStates = new JMyCheckBoxMenuItem("Būsenos", fontsize);
         menuItemStates.addActionListener(this);
         menuItemStates.setActionCommand("states");
-        menuData.add(menuItemStates);
-	menu_bar.add(menuData);
+        menuTabs.add(menuItemStates);
+	menu_bar.add(menuTabs);
 
 	menuHelp = new JMyMenu("Pagalba", fontsize);
 	menuItemHelp = new JMyMenuItem("Aprašymas", fontsize);

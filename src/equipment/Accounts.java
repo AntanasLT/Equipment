@@ -610,20 +610,20 @@ public class Accounts extends JPanel implements ActionListener, MouseListener {
 	y = 0;
 	try {
 	    y = Float.parseFloat(ss[0]);
-	    for (i = 0; i + 2 < anzahl; i = i + 2) {
+	    for (i = 0; i + 2 < anzahl; i += 2) {
 		x = Float.parseFloat(ss[i + 2]);
 		switch (ss[i + 1]) {
 		    case "/":
-			y = y / x;
+			y /= x;
 			break;
 		    case "*":
-			y = y * x;
+			y *= x;
 			break;
 		    case "+":
-			y = y + x;
+			y += x;
 			break;
 		    case "-":
-			y = y - x;
+			y -= x;
 			break;
 		    default:
 			showErrorMessage("Es wird nur + - / * berechnet.");

@@ -586,19 +586,19 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	int i, n, idpr, id;
 	n = 0;
         if (!tfIDpr.getText().isEmpty()) {
-            idpr = Integer.valueOf((String) tfIDpr.getText()); 
+            idpr = Integer.valueOf(tfIDpr.getText()); 
         } else {
             idpr = 0;
         }
         if (!tfID.getText().isEmpty()) {
-            id = Integer.valueOf((String) tfID.getText()); 
+            id = Integer.valueOf(tfID.getText()); 
         } else {
             id = 0;
         }
 	i = sb.indexOf(" d.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) tfDate.getText());
+	    preparedFilter.setString(n, tfDate.getText());
 	}
 	i = sb.indexOf(" d.Sistema = ?");
 	if (i >= 0) {
@@ -608,7 +608,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	i = sb.indexOf(" d.Irenginys LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) fName.getText());
+	    preparedFilter.setString(n, fName.getText());
 	}
 	i = sb.indexOf(" d.Darbas = ?");
 	if (i >= 0) {
@@ -636,7 +636,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	i = sb.indexOf(" d.Pastabos LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) taMessage.getText());
+	    preparedFilter.setString(n, taMessage.getText());
 	}
 	
     }
@@ -762,7 +762,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 		preparedUpdate.setInt(9, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter_all();
-		};
+		}
 		if (clossed) {
 		    update_finish(idpr);
 		}
@@ -970,7 +970,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
     public void valueChanged(ListSelectionEvent lse) {
 	selectedRow = table.getSelectedRow();
 	if (selectedRow >= 0) {
-	    if (!user.equals((String) table.getValueAt(selectedRow, 2))) {
+	    if (!user.equals(table.getValueAt(selectedRow, 2))) {
 		enableChangeButton(false);
 	    } else {
                 enableChangeButton(true);

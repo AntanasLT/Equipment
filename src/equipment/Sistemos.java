@@ -56,6 +56,7 @@ public class Sistemos extends Darbai {
     protected void createPanelButtons() {
 	pButtons = new JPanel();
 	super.btFilter = new JMyButton("Rodyti", fontsize);
+        btFilter.setMnemonic('R');
 	super.btFilter.setActionCommand("filter");
 	super.btFilter.addActionListener(this);
  	pButtons.add(super.btFilter);

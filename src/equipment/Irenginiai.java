@@ -6,10 +6,14 @@
 package equipment;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +38,20 @@ public class Irenginiai extends Sistemos {
     private static final String SELECT = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID";
     private static final String PREPARE_INSERT = "INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema, Data, Vieta, Pozymis, Pastaba, Veikla) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String PREPARE_UPDATE = "UPDATE Irenginiai SET IT = ?, Nr = ?, Pavadinimas = ?, Sistema = ?, Data = ?, Vieta = ?, Pozymis = ?, Pastaba = ?, Veikla = ? WHERE ID = ?";
+    private static final String TEX_START = "\\documentclass[a4paper,12pt]{article}\n" +
+ "\\usepackage[left=5mm, top=5mm, bottom=5mm, right=5mm]{geometry}\n"
+	    + "\\usepackage[utf8x]{inputenc}\n" +
+"\\usepackage[lithuanian]{babel}\n" +
+"\\usepackage[L7x]{fontenc}\n" +
+"\\usepackage{graphicx}\n" +
+ "\\usepackage{supertabular}\n"
+	    + "\n" +
+ "\\begin{document}\n \\tabletail{\\hline}\n"
+	    + "\\begin{supertabular}{|p{4.2cm}|p{4.2cm}|p{4.2cm}|p{4.2cm}|} \\hline\n";
+    private static final String TEX_END = "\n\\end{supertabular}\n"
+	    + "\\end{document}";
+    private static final String BARCODES_FILE = "Barcodes";
+    private static final int TEX_COL_COUNT = 4;
 //    private static final String PREPARE_DELETE = "DELETE FROM Irenginiai WHERE ID = ?";
     private static final String ID = "ID (auto)";
     private static final String IT = "IT";
@@ -298,7 +316,7 @@ public class Irenginiai extends Sistemos {
 //    }
 //
 
-    private void filter() {
+    protected void filter() {
         if (chDate.isSelected() || chSystem.isSelected() || chName.isSelected() || chLocation.isSelected() || chMark.isSelected() || chIT.isSelected() || chNr.isSelected()) {
             filter_by();
         } else {
@@ -375,7 +393,7 @@ public class Irenginiai extends Sistemos {
         }
         if (chMark.isSelected()) {
             appendAND(sb);
-            sb.append(" i.Pozymis LIKE ?");
+	    sb.append(" i.Pozymis LIKE CONVERT (? USING utf8mb4) COLLATE utf8mb4_bin");
         }
         if (chIT.isSelected()) {
             appendAND(sb);
@@ -402,7 +420,7 @@ public class Irenginiai extends Sistemos {
 	i = sb.indexOf(" i.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) tfDate.getText());
+	    preparedFilter.setString(n, tfDate.getText());
 	}
 	i = sb.indexOf(" i.Sistema = ?");
 	if (i >= 0) {
@@ -412,32 +430,32 @@ public class Irenginiai extends Sistemos {
 	i = sb.indexOf(" i.Pavadinimas LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) fName.getText());
+	    preparedFilter.setString(n, fName.getText());
 	}
 	i = sb.indexOf(" i.Vieta = ?");
 	if (i >= 0) {
 	    n++;
 	    preparedFilter.setInt(n, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
 	}
-	i = sb.indexOf(" i.Pozymis LIKE ?");
+	i = sb.indexOf(" i.Pozymis LIKE");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) fMark.getText());;
+	    preparedFilter.setString(n, fMark.getText());
 	}
 	i = sb.indexOf(" i.IT LIKE ?");
 	if (i >= 0) {
  	    n++;
-	    preparedFilter.setString(n, (String) fIT.getText());;
+	    preparedFilter.setString(n, fIT.getText());
 	}
 	i = sb.indexOf(" i.Nr LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, (String) ta_Message.getText());
+	    preparedFilter.setString(n, ta_Message.getText());
 	}
 	i = sb.indexOf(" i.Pastaba LIKE ?");
 	if (i >= 0) {
  	    n++;
-	    preparedFilter.setString(n, (String) ta_Message.getText());;
+	    preparedFilter.setString(n, ta_Message.getText());
 	}
 	
     }
@@ -464,7 +482,7 @@ public class Irenginiai extends Sistemos {
 		preparedUpdate.setInt(10, (Integer) table.getValueAt(row, tableModel.findColumn(ID)));
 		
 		if (preparedUpdate.executeUpdate() == 1) {
-		    filter_all();
+		    filter();
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -488,10 +506,10 @@ public class Irenginiai extends Sistemos {
 		// IT, Nr, Pavadinimas, Sistema
 		preparedInsert.setString(1, table.getValueAt(row, 1).toString());
 		preparedInsert.setString(2, table.getValueAt(row, 2).toString());
-		preparedInsert.setString(3, table.getValueAt(row, 3).toString());
+		preparedInsert.setString(3, table.getValueAt(row, 4).toString());
 		preparedInsert.setInt(4, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
 		if (preparedInsert.executeUpdate() == 1) {
-		    filter_all();
+		    filter();
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -501,6 +519,108 @@ public class Irenginiai extends Sistemos {
 //	    }
 	}  else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
+	}
+    }
+
+
+    private void saveFile(String filename, String text) {
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(filename));
+            writer.write(text);
+            writer.close();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void delete_temp_files(){
+        Runtime r;
+        Process pr;
+	String[] del_cmd = {"rm", "-f", "*ps"};
+	r = Runtime.getRuntime();
+	try {
+	    pr = r.exec(del_cmd);
+            pr.waitFor();
+//	    pr.waitFor(1000, TimeUnit.MILLISECONDS);
+	    JOptionPane.showMessageDialog(this, pr.exitValue());
+	    pr.destroy();
+	} catch (IOException | InterruptedException ex) {
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+	}
+    }
+
+    /**
+     *
+     */
+    public void create_barcodes_file() {
+	String[] run_pdflatex = {"pdflatex", "-synctex=1", "-interaction=nonstopmode", BARCODES_FILE.concat(".tex")};
+	String[] ps2eps_cmd = {"ps2eps", "-f", "zw.ps"};
+	String[] barcode_cmd;
+	String[] name, note;
+	StringBuilder sb;
+        Runtime r;
+        Process pr;
+	int res, col, rows, i, j;
+	name = new String[TEX_COL_COUNT];
+	note = new String[TEX_COL_COUNT];
+	barcode_cmd = new String[5];
+	barcode_cmd[0] = "barcode";
+	barcode_cmd[1] = "-b";
+	barcode_cmd[3] = "-o";
+	res = -1;
+	col = 0;
+	rows = table.getRowCount();
+	sb = new StringBuilder(TEX_START);
+	if (JOptionPane.showConfirmDialog(this, "Sukurti brūkšninių kodų pdf?", "Sukurti pdf?", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+	    r = Runtime.getRuntime();
+	    try {
+		for (i = 0; i < rows; i++) {
+		    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		    barcode_cmd[2] = (String) table.getValueAt(i, 1);
+		    name[col] = (String) table.getValueAt(i, 3);
+		    note[col] = (String) table.getValueAt(i, 7);
+		    barcode_cmd[4] = barcode_cmd[2].concat(".ps");
+		    pr = r.exec(barcode_cmd);
+                    pr.waitFor();
+//		    pr.waitFor(200, TimeUnit.MILLISECONDS);
+		    res = pr.exitValue();
+		    if (res == 0) {
+			ps2eps_cmd[2] = barcode_cmd[4];
+			pr = r.exec(ps2eps_cmd);
+                        pr.waitFor();
+//			pr.waitFor(200, TimeUnit.MILLISECONDS);
+
+			res = pr.exitValue();
+		    }
+		    if (res == 0) {
+			sb.append("Vilniaus oro uostas \\newline \\includegraphics[scale=0.9]{").append(barcode_cmd[2]).append(".eps}").append(" \\newline ").append(name[col]).append(" \\newline \\footnotesize {").append(note[col]).append("}");
+			if (col < TEX_COL_COUNT - 1) {
+			    sb.append(" & ");
+			    col++;
+			} else {
+			    sb.append("\\\\\\hline\n");
+			    col = 0;
+			}
+		    }
+		}
+		for (j = i; j <= i + 1; j++) {
+		    sb.append(" & ");
+		}
+		sb.append("\\\\\\hline\n");
+		sb.append(TEX_END);
+		saveFile(BARCODES_FILE.concat(".tex"), sb.toString());
+		pr = r.exec(run_pdflatex);
+		pr.waitFor();
+//		pr.waitFor(3, TimeUnit.SECONDS);
+		res = pr.exitValue();
+		pr.destroy();
+		setCursor(Cursor.getDefaultCursor());
+	    } catch (IOException | InterruptedException ex) {
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+	    }
+	    JOptionPane.showMessageDialog(this, "Failas ".concat(BARCODES_FILE).concat(".pdf: ").concat(String.valueOf(res)));
+	    delete_temp_files();
 	}
     }
 
