@@ -43,7 +43,7 @@ public class ZurnalasP {
         if (args[1] == null) {
             size = 12;
         } else {
-            size = Integer.getInteger(args[1]);
+            size = Integer.parseInt(args[1]);
         }
         MainFrameP mainFrame = new MainFrameP(args[0], size);
         mainFrame.setDefaultCloseOperation(MainFrameP.EXIT_ON_CLOSE);

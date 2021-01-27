@@ -10,13 +10,23 @@ import javax.swing.JMenuBar;
 public class MainFrameS extends MainFrame {
 
     WorkS panelWorks;
-    int fontsize;
+    AboutS frAboutS;
 
     protected MainFrameS(String host, int size) {
 	super(host, size);
-//	panelWorks = new WorkS(connection);
-//	tabbedpane.addTab("Darbai", panelWorks);
+    }
 
+    @Override
+    protected void showAbout() {
+	if (frAboutS == null) {
+	    frAboutS = new AboutS();
+	    frAboutS.setSize(200, 100);
+	    frAboutS.setTitle("Apie");
+	    frAboutS.setResizable(false);
+	    frAboutS.setLocation(100, 100);
+	} else {
+	    frAboutS.setVisible(true);
+	}
     }
 
     @Override

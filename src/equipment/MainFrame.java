@@ -56,7 +56,7 @@ public class MainFrame extends JFrame implements ActionListener{
     Busenos panelStates;
     Veiklos panelVeiklos;
     Help frHelp;
-    private About frAbout;
+    protected About frAbout;
     
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
@@ -85,7 +85,7 @@ public class MainFrame extends JFrame implements ActionListener{
     DialogPassword dialogPassword;
     protected JLabelLeft labelMessage;
 // –––––––––––––––––––––––
-    int fontsize;
+    public int fontsize;
 // –––––––––––––––––––––––
 
     protected MainFrame(String host, int size) {

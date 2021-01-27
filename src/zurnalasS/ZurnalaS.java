@@ -19,7 +19,7 @@ public class ZurnalaS {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int h, h1, l, size;
+        int h, h1, l;
 
 //		try {
 //			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
@@ -40,12 +40,7 @@ public class ZurnalaS {
 //			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 //			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 //		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {		}
-        if (args[1] == null) {
-            size = 12;
-        } else {
-            size = Integer.getInteger(args[1]);
-        }
-        MainFrameS mainFrame = new MainFrameS(args[0], size);
+        MainFrameS mainFrame = new MainFrameS(args[0], Integer.parseInt(args[1]));
         mainFrame.setDefaultCloseOperation(MainFrameS.EXIT_ON_CLOSE);
         h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);

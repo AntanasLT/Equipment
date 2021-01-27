@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zurnalasP;
+package zurnalasS;
 
 import java.net.URL;
 import javax.swing.JEditorPane;
@@ -21,7 +21,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author a
  */
-public class AboutP extends JFrame {
+public class AboutS extends JFrame {
        
     JScrollPane scrpane;
     JEditorPane editorPane;
@@ -32,7 +32,7 @@ public class AboutP extends JFrame {
     String[] initString = {"Versija 1.1.5\n", "2021-01-27"};
     String[] initStyles = {"caption", "regular"}; //
     
-    public AboutP() {
+    public AboutS() {
         init();
     }
     
