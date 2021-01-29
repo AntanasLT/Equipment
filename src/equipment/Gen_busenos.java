@@ -6,16 +6,13 @@
 package equipment;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -24,30 +21,18 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Generators extends Sistemos {
+public class Gen_busenos extends Sistemos {
 
-    static final String SELECT_ALL = "SELECT Nr, Pavadinimas, Vamzdis, Data FROM JSG ORDER BY Data";
-    static final String SEARCH = "SELECT Nr, Pavadinimas, Vamzdis, Data FROM JSG WHERE Nr LIKE ? OR Pavadinimas LIKE ? OR Vamzdis LIKE ? OR Data LIKE ?";
-    static final String PREPARE_DELETE = "DELETE FROM JSG WHERE ID = ?";
-    static final String PREPARE_INSERT = "INSERT INTO JSG (Nr, Pavadinimas, Vamzdis, Data) VALUES (?, ?, ?, ?, ?)";
-    static final String PREPARE_UPDATE = "UPDATE JSG SET Pavadinimas = ?, Vamzdis = ?, Data = ? WHERE Nr = ?";
-
-    static final String NR = "Nr";
-    static final String PAVADINIMAS = "Pavadinimas";
-    static final String DATA = "Data";
-    static final String VAMZDIS = "Vamzdis";
+    static final String SELECT_ALL = "SELECT ID, Busena FROM Gen_busenos";
+    private static final String PREPARE_INSERT = "INSERT INTO Gen_busenos (ID, Busena) VALUES (?, ?)";
+    private static final String PREPARE_UPDATE = "UPDATE Gen_busenos SET Busena = ? WHERE ID = ?";
+    private static final String PREPARE_DELETE = "DELETE FROM Gen_busenos WHERE ID = ?";
 
     private DefaultTableModel tableModel;
-    private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
-    
-    private JPanel panelSearch, panelTop;
-    private JLabelRechts lSearch;
-    private JTextField fSearch;
-
-    private PreparedStatement preparedFilter;
+    private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete;
 
 
-    public Generators(ConnectionEquipment connection, int size) {
+    public Gen_busenos(ConnectionEquipment connection, int size) {
 	super(connection, size);
 	init();
     }
@@ -56,8 +41,8 @@ public class Generators extends Sistemos {
 	if (connection != null) {
 	    setLayout(new BorderLayout());
 	    createTable();
-	    createTopPanel();
-	    add(panelTop, BorderLayout.NORTH);
+	    createPanelButtons();
+	    add(pButtons, BorderLayout.NORTH);
 	    add(scrPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
 	    filter();
@@ -65,21 +50,9 @@ public class Generators extends Sistemos {
 	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-    
-    private void createTopPanel(){
-	createPanelButtons();
-	panelTop = new JPanel(new GridLayout(2, 1));
-	panelSearch = new JPanel();
-	lSearch = new JLabelRechts("Paieška:", fontsize);
-	panelSearch.add(lSearch);
-	fSearch = new JTextField(50);
-	panelSearch.add(fSearch);
-	panelTop.add(pButtons);
-	panelTop.add(panelSearch);
-    }
 
     private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{NR, PAVADINIMAS, VAMZDIS, DATA}, 0);
+	tableModel = new DefaultTableModel(new Object[]{"ID", "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
         table.setFont(font);
         table.getTableHeader().setFont(font);
@@ -96,12 +69,12 @@ public class Generators extends Sistemos {
 	dieSpalte = null;
 	    for (int i = 0; i < table.getColumnCount(); i++) {
 		dieSpalte = table.getColumnModel().getColumn(i);
-		switch (tableModel.getColumnName(i)) {
-//		    case PAVADINIMAS:
-//			dieSpalte.setPreferredWidth(100);
-//			break;
-		    case DATA:
-			dieSpalte.setPreferredWidth(100);
+		switch (i) {
+		    case 0:
+			dieSpalte.setPreferredWidth(20);
+			break;
+		    case 1:
+			dieSpalte.setPreferredWidth(800);
 			break;
 		}
 	    }
@@ -112,25 +85,14 @@ public class Generators extends Sistemos {
 //        table.getColumnModel().getColumn(1).setHeaderValue("<html>Der<br>Typ</html>");
 //    }
 	
-// SELECT Nr, Pavadinimas, Vamzdis, Data FROM JSG WHERE Nr LIKE ? OR Pavadinimas LIKE ? OR Vamzdis LIKE ? OR Data LIKE ?
-    private void filter() {
+
+    protected void filter() {
         Object[] row;
 	int i, colcount;
-	String toSearch;
 	tableModel.setRowCount(0);
         ResultSet resultset;
 	try {
-	    if (fSearch.getText().isEmpty()) {
-		resultset = connection.executeQuery(SELECT_ALL);
-	    } else {
-		toSearch = fSearch.getText();
-		preparedFilter = connection.prepareStatement(SEARCH);
-		preparedFilter.setString(1, toSearch);
-		preparedFilter.setString(2, toSearch);
-		preparedFilter.setString(3, toSearch);
-		preparedFilter.setString(4, toSearch);
-		resultset = preparedFilter.executeQuery();
-	    }
+	    resultset = connection.executeQuery(SELECT_ALL);
 	    colcount = tableModel.getColumnCount();
 	    row = new Object[colcount];
 	    while( resultset.next() ){
@@ -143,11 +105,9 @@ public class Generators extends Sistemos {
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
-
     }
 	
-// UPDATE JSG SET Pavadinimas = ?, Vamzdis = ?, Data = ? WHERE Nr = ?    
-   private void update() {
+    private void update() {
 	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
@@ -155,10 +115,9 @@ public class Generators extends Sistemos {
 		if (preparedUpdate == null) {
 		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
 		}
+// IT, Nr, Pavadinimas, Sistema, ID
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
-		preparedUpdate.setString(2, (String) table.getValueAt(row, 2));
-		preparedUpdate.setString(3, (String) table.getValueAt(row, 3));
-		preparedUpdate.setString(4, (String) table.getValueAt(row, 0));
+		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter();
 		}
@@ -178,13 +137,14 @@ public class Generators extends Sistemos {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 		}
-		// ID, Pavadinimas
-		preparedInsert.setString(1, (String) table.getValueAt(row, 1));
+		// IT, Nr, Pavadinimas, Sistema
+		preparedInsert.setInt(1, Integer.valueOf((String) table.getValueAt(row, 0)));
+		preparedInsert.setString(2, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();
 		}
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	} else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -199,7 +159,7 @@ public class Generators extends Sistemos {
 		if (preparedDelete == null) {
 		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
 		}
-// ID, Pavadinimas
+// ID, IT, Nr, Pavadinimas, Sistema
 		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
 		if (preparedDelete.execute()) {
 		    filter();
@@ -211,7 +171,7 @@ public class Generators extends Sistemos {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
 	String derBefehl;
@@ -219,7 +179,6 @@ public class Generators extends Sistemos {
 	switch (derBefehl) {
 	    case "update":
 		update();
-		filter();
 		break;	
 	    case "filter":
 		filter();
@@ -227,10 +186,10 @@ public class Generators extends Sistemos {
 	    case "insert":
 		insert();
 		break;	
-//	    case "delete":
-//		delete();
-//		filter();
-//		break;	
+	    case "delete":
+		delete();
+		filter();
+		break;	
 	}
 	
     }

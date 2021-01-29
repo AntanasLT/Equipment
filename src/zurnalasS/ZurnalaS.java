@@ -19,7 +19,7 @@ public class ZurnalaS {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int h, h1, l;
+        int h, h1, l, size;
 
 //		try {
 //			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
@@ -46,7 +46,8 @@ public class ZurnalaS {
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
 //	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 //            l = l > 1600 ? 1600 : l;
-        l = 1024;
+        size = Integer.valueOf(args[1]);
+        l = size * 102;
         h1 = 800;
         mainFrame.setSize(l, h1);
         mainFrame.setMinimumSize(new Dimension(l, h1/2));

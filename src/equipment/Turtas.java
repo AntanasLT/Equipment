@@ -32,7 +32,7 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Irenginiai extends Sistemos {
+public class Turtas extends Sistemos {
 
     private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID ORDER BY i.IT";
     private static final String SELECT = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID";
@@ -65,17 +65,19 @@ public class Irenginiai extends Sistemos {
     private static final String VEIKLA = "Veikla";
     
     private JCheckBox chLocation, chMark, chIT, chNr, chName;
-    private JLabelRechts lName, lLocation, lNr, lMark, lIT;
-    private JMyComboBox cbLocations, cbCode;
+    private JLabelRechts lMark, lIT;
+    protected JLabelRechts lName, lLocation, lNr;
+    private JMyComboBox cbCode;
+    protected JMyComboBox cbLocations;
     private JTextField fMark, fIT, fNr;
     private JTextArea ta_Message;
 
-    private DefaultTableModel tableModel;
-    private PreparedStatement preparedUpdate, preparedInsert, preparedFilter;
+    protected DefaultTableModel tableModel;
+    protected PreparedStatement preparedUpdate, preparedInsert, preparedFilter;
     
-    String[][] locations, codes;
+    protected String[][] locations, codes;
 
-    protected Irenginiai(ConnectionEquipment connection, int size) {
+    protected Turtas(ConnectionEquipment connection, int size) {
 	super(connection, size);
         fontsize = size;
 	init();
@@ -89,7 +91,7 @@ public class Irenginiai extends Sistemos {
 	    add(pInput, BorderLayout.NORTH);
 	    add(scrPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
-	    filter_all();
+	    filter_all(SELECT_ALL);
 	} else {
 	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -107,7 +109,7 @@ public class Irenginiai extends Sistemos {
 	lMessage = new JLabelRechts(fontsize);
     }
 
-    private void createTable() {
+    protected void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{ID, IT, NR, PAVADINIMAS, SISTEMA, VIETA, POZYMIS, PASTABA, DATA, VEIKLA}, 0);
 	table = new JTable(tableModel);
 	table.setAutoCreateRowSorter(true);
@@ -316,21 +318,21 @@ public class Irenginiai extends Sistemos {
 //    }
 //
 
-    protected void filter() {
+    private void filter() {
         if (chDate.isSelected() || chSystem.isSelected() || chName.isSelected() || chLocation.isSelected() || chMark.isSelected() || chIT.isSelected() || chNr.isSelected()) {
             filter_by();
         } else {
-            filter_all();
+            filter_all(SELECT_ALL);
         }
     }
 
-    protected void filter_all() {
+    protected void filter_all(String query) {
 	Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
 	try {
-	    resultset = connection.executeQuery(SELECT_ALL);
+	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
 	    row = new Object[colcount];
 	    while (resultset.next()) {
@@ -345,7 +347,7 @@ public class Irenginiai extends Sistemos {
 	}
     }
 
-    private void filter_by() {
+    protected void filter_by() {
 	int i, colcount;
         Object[] row;
 	StringBuilder sb;
@@ -372,7 +374,7 @@ public class Irenginiai extends Sistemos {
     }
 
 //SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pastaba, i.Pozymis, i.Data FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.Pavadinimas
-    private StringBuilder prepareFilter() {
+    protected StringBuilder prepareFilter() {
 	StringBuilder sb;
 	sb = new StringBuilder(SELECT);
         sb.append(" WHERE");
@@ -413,7 +415,7 @@ public class Irenginiai extends Sistemos {
     }
     
 //SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pastaba, i.Pozymis, i.Data FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.Pavadinimas
-    private void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
+    protected void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
 	int i, n;
 	n = 0;
 //System.out.println(sb.toString());
@@ -460,7 +462,7 @@ public class Irenginiai extends Sistemos {
 	
     }
 
-//UPDATE Irenginiai SET IT = ?, Nr = ?, Pavadinimas = ?, Sistema = ?, Data = ?, Vieta = ?, Pozymis = ?, Pastaba = ? WHERE ID = ?    
+//    
     private void update() {
 	int row;
 	row = table.getSelectedRow();
@@ -469,7 +471,6 @@ public class Irenginiai extends Sistemos {
 		if (preparedUpdate == null) {
 		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
 		}
-// IT, Nr, Pavadinimas, Sistema, ID
 		preparedUpdate.setString(1, fIT.getText());
 		preparedUpdate.setString(2, fNr.getText());
 		preparedUpdate.setString(3, fName.getText());
@@ -490,33 +491,32 @@ public class Irenginiai extends Sistemos {
 	} else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
-//	taMessage.requestFocus();
     }
 
+// INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema, Data, Vieta, Pozymis, Pastaba, Veikla) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     private void insert() {
 	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
-//	    systems_id = getSystemID((String) table.getValueAt(row, 4));
-//	    if (systems_id >= 0) {
 	    try {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 		}
-		// IT, Nr, Pavadinimas, Sistema
-		preparedInsert.setString(1, table.getValueAt(row, 1).toString());
-		preparedInsert.setString(2, table.getValueAt(row, 2).toString());
-		preparedInsert.setString(3, table.getValueAt(row, 4).toString());
-		preparedInsert.setInt(4, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
-		if (preparedInsert.executeUpdate() == 1) {
+		preparedUpdate.setString(1, fIT.getText());
+		preparedUpdate.setString(2, fNr.getText());
+		preparedUpdate.setString(3, fName.getText());
+		preparedUpdate.setInt(4, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+                preparedUpdate.setString(5, tfDate.getText());
+		preparedUpdate.setInt(6, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
+		preparedUpdate.setString(7, fMark.getText());
+		preparedUpdate.setString(8, ta_Message.getText());
+		preparedUpdate.setInt(9, Integer.valueOf(codes[0][cbCode.getSelectedIndex()]));
+                if (preparedInsert.executeUpdate() == 1) {
 		    filter();
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
-//	    } else {
-//		JOptionPane.showMessageDialog(this, "Nėra tokios sistemos.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-//	    }
 	}  else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
 	}

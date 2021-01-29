@@ -177,7 +177,7 @@ public class ConnectionEquipment {
 	return result;
     }
 
-    public String[][] getStates() throws SQLException {
+    public String[][] getStates_of_works() throws SQLException {
 	int i;
 	String[][] result;
 	ResultSet resultSet;
@@ -194,6 +194,25 @@ public class ConnectionEquipment {
 	}
 	return result;
     }
+    
+    public String[][] getStates_of_generators() throws SQLException {
+	int i;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+	    result = new String[2][get_count("Gen_busenos")];
+	    resultSet = statement.executeQuery("SELECT ID, Busena FROM Gen_busenos ORDER BY Busena");
+	    i = 0;
+	    while (resultSet.next()) {
+		result[0][i] = resultSet.getString(1);
+		result[1][i] = resultSet.getString(2);
+		i++;
+	    }
+	}
+	return result;
+    }
+    
 
     public String[][] getLocations() throws SQLException {
 	int i;

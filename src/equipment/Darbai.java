@@ -65,11 +65,12 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
     Datum date;
     private DefaultTableModel tableModel;
     GridBagConstraints gbc;
-    JCheckBox chDate, chSystem, chDevice, chWorktype, chState, chMessage;
+    JCheckBox chDate, chSystem, chDevice, chWorktype, chMessage;
+    private JCheckBox chState;
     JLabelRechts lMessage, lDate, lDevice, lSystem, lWork, lIDpr, lFilters;
     protected JMyButton bDelete, bAdd, btChange, btAcknowl, btFilter, btUnfinished, btAll, btInfo;
-    private JMyComboBox cbWorktype;
-    JMyComboBox cbSystem, cbState;
+    private JMyComboBox cbWorktype, cbState;
+    JMyComboBox cbSystem;
     protected JPanel pInput, pnFIlterButtons, pFields;
     JPanel pEditButtons, pMessage;
     private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete, preparedFilter, preparedUpdateFinish;
@@ -81,7 +82,8 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     int selectedRow, fontsize;
     String user, message;
-    String[][] systems, worktypes, users, states;
+    String[][] systems, users;
+    private String[][] states, worktypes;
     Font font;
  
 
@@ -357,7 +359,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	}
     }
 
-    protected void getWorktypes() {
+    private void getWorktypes() {
 	try {
 	    worktypes = connection.getWorkTypes();
 	} catch (SQLException ex) {
@@ -367,7 +369,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     protected void getStates() {
 	try {
-	    states = connection.getStates();
+	    states = connection.getStates_of_works();
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -390,29 +392,34 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     private void setColumnsWidths() {
 	TableColumn column;
-	    for (int i = 0; i < table.getColumnCount(); i++) {
-		column = table.getColumnModel().getColumn(i);
-		if (tableModel.getColumnName(i).equals(BUSENA) || tableModel.getColumnName(i).equals(DARBAS) || tableModel.getColumnName(i).equals(USER)) {
-		    column.setMaxWidth(120);
-		    column.setPreferredWidth(100);
-		} else	if (tableModel.getColumnName(i).equals(ID) || tableModel.getColumnName(i).equals(ID_PR)) {
-		    column.setMaxWidth(60);
-		    column.setPreferredWidth(50);
-		} else if (tableModel.getColumnName(i).equals(SISTEMA) || tableModel.getColumnName(i).equals(IRENGINYS)) {
-		    column.setMaxWidth(300);
-		    column.setPreferredWidth(150);
-		}
-		//		if (tableModel.getColumnName(i).equals(IRENGINYS) || tableModel.getColumnName(i).equals(SISTEMA)) {
-		//		    column.setMaxWidth(100);
-		//		    column.setPreferredWidth(80);
-		//		}
-		else if (tableModel.getColumnName(i).equals(APRASYMAS)) {
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            column = table.getColumnModel().getColumn(i);
+            switch (tableModel.getColumnName(i)) {
+                case BUSENA:
+                case DARBAS:
+                case USER:
+                    column.setMaxWidth(120);
+                    column.setPreferredWidth(100);
+                    break;
+                case ID:
+                case ID_PR:
+                    column.setMaxWidth(60);
+                    column.setPreferredWidth(50);
+                    break;
+                case SISTEMA:
+                case IRENGINYS:
+                    column.setMaxWidth(300);
+                    column.setPreferredWidth(150);
+                    break;
+                case APRASYMAS:
                     column.setPreferredWidth(500);
-		} else {
+                    break;
+                default:
                     column.setMaxWidth(200);
                     column.setPreferredWidth(100);
-		}
-   	    }
+                    break;
+            }
+        }
     }
 
 //    private void setzt_dieUeberschriften(){

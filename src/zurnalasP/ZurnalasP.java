@@ -51,7 +51,7 @@ public class ZurnalasP {
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
 //	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 //            l = l > 1600 ? 1600 : l;
-        l = 1024;
+        l = size * 102;
         h1 = 800;
         mainFrame.setSize(l, h1);
         mainFrame.setMinimumSize(new Dimension(l, h1/2));

@@ -47,7 +47,7 @@ public class Equipment {
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
 //	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 //            l = l > 1600 ? 1600 : l;
-        l = 1200;
+        l = size * 102;
         h1 = 700;
         mainFrame.setMinimumSize(new Dimension(850, h1/2));
         mainFrame.setSize(l, h1);
