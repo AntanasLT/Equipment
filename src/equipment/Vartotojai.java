@@ -5,10 +5,8 @@
  */
 package equipment;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -28,31 +26,34 @@ public class Vartotojai extends Sistemos {
     private static final String PREPARE_INSERT = "INSERT INTO Vartotojai (ID, Vardas) VALUES (?, ?)";
     private static final String PREPARE_UPDATE = "UPDATE Vartotojai SET Vardas = ? WHERE ID = ?";
 
-    private DefaultTableModel tableModel;
+//    private DefaultTableModel tableModel;
     private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
+
 
     public Vartotojai(ConnectionEquipment connection, int size) {
 	super(connection, size);
-	init();
+//	init();
 //        createTable();
     }
 
-    private void init() {
-	if (connection != null) {
-	setLayout(new BorderLayout());
-	createTable();
-	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
-	    add(scrPaneTable, BorderLayout.CENTER);
-	    setVisible(true);
-	    filter();
-	} else {
-	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+//    @Override
+//    protected void init() {
+//	if (connection != null) {
+//	setLayout(new BorderLayout());
+//	createTable();
+//	    createPanelButtons();
+//	    add(pButtons, BorderLayout.NORTH);
+//	    add(scrPaneTable, BorderLayout.CENTER);
+//	    setVisible(true);
+//	    filter(SELECT_ALL);
+//	} else {
+//	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
 
     
-    private void createTable() {
+    @Override
+    protected void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Vardas"}, 0);
 	table = new JTable(tableModel);
         table.setFont(font);
@@ -63,6 +64,11 @@ public class Vartotojai extends Sistemos {
 	tableModel.setRowCount(1);
 //	setzt_dieUeberschriften();
 	scrPaneTable = new JScrollPane(table);
+    }
+
+    @Override
+    protected void setSelectQuery() {
+	select = SELECT_ALL;
     }
 
     private void setColumnsWidths() {
@@ -87,32 +93,6 @@ public class Vartotojai extends Sistemos {
 //    }
 	
 
-    private void filter() {
-	Object[] row;
-	int i, colcount;
-	tableModel.setRowCount(0);
-	ResultSet resultset;
-	try {
-	    resultset = connection.executeQuery(SELECT_ALL);
-	    colcount = tableModel.getColumnCount();
-//            System.out.println(colcount);
-	    row = new Object[colcount];
-	    while (resultset.next()) {
-		for (i = 0; i <= colcount - 1; i++) {
-//                    System.out.print(i);
-		    row[i] = resultset.getObject(i + 1);
-//                    System.out.println(row[i]);
-		}
-		tableModel.addRow(row);
-	    }
-	    resultset.close();
-	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
-
-    }
-	
-    
     private void update() {
 	int row;
 	row = table.getSelectedRow();
@@ -125,7 +105,7 @@ public class Vartotojai extends Sistemos {
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
 		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
-		    filter();
+		    filter(SELECT_ALL);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -147,7 +127,7 @@ public class Vartotojai extends Sistemos {
 		preparedInsert.setInt(1, Integer.valueOf((String) table.getValueAt(row, 0)));
 		preparedInsert.setString(2, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
-		    filter();
+		    filter(SELECT_ALL);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -168,7 +148,7 @@ public class Vartotojai extends Sistemos {
 // ID, Pavadinimas
 		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
 		if (preparedDelete.execute()) {
-		    filter();
+		    filter(SELECT_ALL);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -187,7 +167,7 @@ public class Vartotojai extends Sistemos {
 		update();
 		break;	
 	    case "filter":
-		filter();
+		filter(SELECT_ALL);
 		break;
 	    case "insert":
 		insert();

@@ -5,10 +5,8 @@
  */
 package equipment;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -23,36 +21,43 @@ import javax.swing.table.TableColumn;
  */
 public class Darbu_rusys extends Sistemos {
 
-    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas";
+    private static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas";
     static final String PREPARE_DELETE = "DELETE FROM Darbotipis WHERE ID = ?";
     static final String PREPARE_INSERT = "INSERT INTO Darbotipis (Pavadinimas) VALUES (?)";
     static final String PREPARE_UPDATE = "UPDATE Darbotipis SET Pavadinimas = ? WHERE ID = ?";
 
-    private DefaultTableModel tableModel;
+//    private DefaultTableModel tableModel;
     private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
 
 
     public Darbu_rusys(ConnectionEquipment connection, int size) {
 	super(connection, size);
-	init();
+//	init();
     }
 
-    private void init() {
-	if (connection != null) {
-	    setLayout(new BorderLayout());
-	    createTable();
-	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
-	    add(scrPaneTable, BorderLayout.CENTER);
-	    setVisible(true);
-	    filter();
-	} else {
-	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
+//    @Override
+//    protected final void init() {
+//	if (connection != null) {
+//	    setLayout(new BorderLayout());
+//	    createTable();
+//	    createPanelButtons();
+//	    add(pButtons, BorderLayout.NORTH);
+//	    add(scrPaneTable, BorderLayout.CENTER);
+//	    setVisible(true);
+//	    filter(SELECT_ALL);
+//	} else {
+//	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
+//	}
+//    }
+
+    @Override
+    protected void setSelectQuery() {
+	select = SELECT_ALL;
     }
 
-    private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID (auto)", "Pavadinimas"}, 0);
+    @Override
+    protected void createTable() {
+	tableModel = new DefaultTableModel(new Object[]{ID, PAVADINIMAS}, 0);
 	table = new JTable(tableModel);
         table.setFont(font);
         table.getTableHeader().setFont(font);
@@ -86,32 +91,6 @@ public class Darbu_rusys extends Sistemos {
 //    }
 	
 
-    private void filter() {
-        Object[] row;
-	int i, colcount;
-	tableModel.setRowCount(0);
-        ResultSet resultset;
-	try {
-            resultset = connection.executeQuery(SELECT_ALL);
-	    colcount = tableModel.getColumnCount();
-//            System.out.println(colcount);
-	    row = new Object[colcount];
-	    while( resultset.next() ){
-		for (i = 0; i <= colcount - 1; i++) {
-//                    System.out.print(i); 
-		    row[i] = resultset.getObject(i + 1);
-//                    System.out.println(row[i]);
-		}
-		tableModel.addRow(row);
-	    }
-	    resultset.close();
-	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
-
-    }
-	
-    
    private void update() {
 	int row;
 	row = table.getSelectedRow();
@@ -124,7 +103,7 @@ public class Darbu_rusys extends Sistemos {
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
 		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -145,7 +124,7 @@ public class Darbu_rusys extends Sistemos {
 		// ID, Pavadinimas
 		preparedInsert.setString(1, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -166,7 +145,7 @@ public class Darbu_rusys extends Sistemos {
 // ID, Pavadinimas
 		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
 		if (preparedDelete.execute()) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -185,14 +164,14 @@ public class Darbu_rusys extends Sistemos {
 		update();
 		break;	
 	    case "filter":
-		filter();
+		filter(select);
 		break;
 	    case "insert":
 		insert();
 		break;	
 	    case "delete":
 		delete();
-		filter();
+		filter(select);
 		break;	
 	}
 	

@@ -29,17 +29,23 @@ public class Sistemos extends Darbai {
     private static final String PREPARE_INSERT = "INSERT INTO Sistemos (Pavadinimas) VALUES (?)";
     private static final String PREPARE_UPDATE = "UPDATE Sistemos SET Pavadinimas = ? WHERE ID = ?";
 
-    private DefaultTableModel tableModel;
-    private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
+//    protected DefaultTableModel tableModel;
+//    private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
     protected JPanel pButtons;
     protected JMyButton btInsert, btEdit;
 
+    protected static final String PAVADINIMAS = "Pavadinimas";
+    protected static final String ID = "ID";
+    
+    protected String select;
+
     public Sistemos(ConnectionEquipment connection, int size) {
 	super(connection, size);
-	init();
+//	init();
     }
 
-    private void init() {
+    @Override
+    protected void init() {
 	if (connection != null) {
 	    setLayout(new BorderLayout());
 	    createTable();
@@ -47,10 +53,15 @@ public class Sistemos extends Darbai {
 	    add(pButtons, BorderLayout.NORTH);
 	    add(scrPaneTable, BorderLayout.CENTER);
 	    setVisible(true);
-	    filter();
+	    setSelectQuery();
+	    filter(select);
 	} else {
 	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
 	}
+    }
+    
+    protected void setSelectQuery(){
+	select = SELECT_ALL;
     }
 
     protected void createPanelButtons() {
@@ -72,8 +83,8 @@ public class Sistemos extends Darbai {
 	pButtons.add(btInsert);
     }
     
-    private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID (auto)", "Pavadinimas"}, 0);
+    protected void createTable() {
+	tableModel = new DefaultTableModel(new Object[]{ID, PAVADINIMAS}, 0);
 	table = new JTable(tableModel);
         table.setFont(font);
         table.getTableHeader().setFont(font);
@@ -89,11 +100,11 @@ public class Sistemos extends Darbai {
     dieSpalte = null;
         for (int i = 0; i < table.getColumnCount(); i++) {
             dieSpalte = table.getColumnModel().getColumn(i);
-            switch (i) {
-                case 0:
+	    switch (tableModel.getColumnName(i)) {
+		case ID:
                     dieSpalte.setPreferredWidth(20);
                     break;
-                case 1:
+		case PAVADINIMAS:
                     dieSpalte.setPreferredWidth(800);
                     break;
             }
@@ -106,13 +117,13 @@ public class Sistemos extends Darbai {
 //    }
 	
 
-    private void filter() {
+    protected void filter(String query) {
 	Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
 	try {
-	    resultset = connection.executeQuery(SELECT_ALL);
+	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
 	    row = new Object[colcount];
 	    while (resultset.next()) {
@@ -123,9 +134,8 @@ public class Sistemos extends Darbai {
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Λάθος!", JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
-
     }
 	
     
@@ -141,7 +151,7 @@ public class Sistemos extends Darbai {
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
 		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -162,7 +172,7 @@ public class Sistemos extends Darbai {
 		// ID, Pavadinimas
 		preparedInsert.setString(1, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -183,7 +193,7 @@ public class Sistemos extends Darbai {
 // ID, Pavadinimas
 		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
 		if (preparedDelete.execute()) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -202,14 +212,14 @@ public class Sistemos extends Darbai {
 		update();
 		break;	
 	    case "filter":
-		filter();
+		filter(select);
 		break;
 	    case "insert":
 		insert();
 		break;	
 //	    case "delete":
 //		delete();
-//		filter();
+//		filter(SELECT);
 //		break;	
 	}
 	

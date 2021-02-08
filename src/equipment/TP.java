@@ -52,12 +52,12 @@ public class TP extends Darbai {
 
     protected TP(ConnectionEquipment connection, int size) {
 	super(connection, size);
-	init_components();
+//	init_components();
     }
 
 
     @Override
-    protected final void init_components() {
+    protected void init_components() {
 	if (connection != null) {
 	    setLayout(new BorderLayout());
 	    getTPtypes();
@@ -201,7 +201,7 @@ public class TP extends Darbai {
 	gbc.gridx = 1;
 	gbc.weightx = 0.5;
 	gbc.gridwidth = 4;
-	taMessage = new JMyTextArea(5, 30, fontsize);
+	taMessage = new JMyTextArea(15, 30, fontsize);
 	taMessage.addMouseListener(this);
 	taMessage.setLineWrap(true);
 	taMessage.setWrapStyleWord(true);
@@ -331,7 +331,8 @@ public class TP extends Darbai {
     }
 
 // SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID
-    private StringBuilder prepareFilter() {
+    @Override
+    protected StringBuilder prepareFilter() {
 	StringBuilder sb;
 	sb = new StringBuilder(SELECT);
 	if (chDate.isSelected() || chSystem.isSelected() || chTPtype.isSelected() || chMessage.isSelected()) {
@@ -357,7 +358,8 @@ public class TP extends Darbai {
 	return sb;
     }
     
-    private void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
+    @Override
+    protected void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
 	int i, n, idpr, id;
 	n = 0;
 	i = sb.indexOf(" tp.Data LIKE ?");

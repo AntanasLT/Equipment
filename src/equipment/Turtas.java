@@ -52,11 +52,10 @@ public class Turtas extends Sistemos {
 	    + "\\end{document}";
     private static final String BARCODES_FILE = "Barcodes";
     private static final int TEX_COL_COUNT = 4;
-//    private static final String PREPARE_DELETE = "DELETE FROM Irenginiai WHERE ID = ?";
-    private static final String ID = "ID (auto)";
+//    private static final String ID = "ID (auto)";
     private static final String IT = "IT";
     private static final String NR = "Nr";
-    private static final String PAVADINIMAS = "Pavadinimas";
+//    private static final String PAVADINIMAS = "Pavadinimas";
     private static final String SISTEMA = "Sistema";
     private static final String VIETA = "Vieta";
     private static final String POZYMIS = "⊠□";
@@ -72,18 +71,19 @@ public class Turtas extends Sistemos {
     private JTextField fMark, fIT, fNr;
     private JTextArea ta_Message;
 
-    protected DefaultTableModel tableModel;
+//    protected DefaultTableModel tableModel;
     protected PreparedStatement preparedUpdate, preparedInsert, preparedFilter;
     
     protected String[][] locations, codes;
 
     protected Turtas(ConnectionEquipment connection, int size) {
 	super(connection, size);
-        fontsize = size;
-	init();
+	fontsize = size;
+//	init();
     }
 
-    private void init() {
+    @Override
+    protected void init() {
 	if (connection != null) {
 	    setLayout(new BorderLayout());
 	    createTable();
@@ -96,11 +96,9 @@ public class Turtas extends Sistemos {
 	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-
+    
     @Override
     protected void createPanelInput() {
-	getLocations();
-        getCodes();
 	pInput = new JPanel(new BorderLayout());
 	createPanelFields();
 	pInput.add(pFields, BorderLayout.NORTH);
@@ -109,6 +107,7 @@ public class Turtas extends Sistemos {
 	lMessage = new JLabelRechts(fontsize);
     }
 
+    @Override
     protected void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{ID, IT, NR, PAVADINIMAS, SISTEMA, VIETA, POZYMIS, PASTABA, DATA, VEIKLA}, 0);
 	table = new JTable(tableModel);
@@ -143,9 +142,9 @@ public class Turtas extends Sistemos {
 	}
     }
     
-    private void getLocations(){
+    private void getLocations() {
 	try {
-	    locations = connection.getLocations();
+	    locations = connection.getList("Vietos");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -153,7 +152,7 @@ public class Turtas extends Sistemos {
     
     private void getCodes(){
 	try {
-	    codes = connection.getCodes();
+	    codes = connection.getList("Veiklos");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -162,6 +161,9 @@ public class Turtas extends Sistemos {
 
     @Override
     protected void createPanelFields() {
+	getLocations();
+	getSystems();
+	getCodes();
         pFields = new JPanel(new GridBagLayout());
 	gbc = new GridBagConstraints();
 	gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -177,7 +179,7 @@ public class Turtas extends Sistemos {
 
 	gbc.gridx = 1;
 	gbc.weightx = 0;
-	tfDate = new JMyTextField(date.getToday(), 8, fontsize);
+	tfDate = new JMyTextField(8, fontsize);
 	tfDate.addMouseListener(this);
 	tfDate.setToolTipText("Dvigubas spragtelėjimas šiandienos datai");
 	pFields.add(tfDate, gbc);
@@ -318,7 +320,7 @@ public class Turtas extends Sistemos {
 //    }
 //
 
-    private void filter() {
+    protected void filter() {
         if (chDate.isSelected() || chSystem.isSelected() || chName.isSelected() || chLocation.isSelected() || chMark.isSelected() || chIT.isSelected() || chNr.isSelected()) {
             filter_by();
         } else {

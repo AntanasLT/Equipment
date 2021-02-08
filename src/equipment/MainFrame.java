@@ -43,16 +43,16 @@ public class MainFrame extends JFrame implements ActionListener{
     Message message;
 
     public JTabbedPane tabbedpane;
-    Accounts panelOutlays;
     Irangos_tipai panelEquipmentTypes;
     Sistemos panelSystems;
     Vartotojai panelUsers;
     Darbu_rusys panelWorktypes;
     Darbai panelWorks;
-    Turtas panelIrenginiai;
+    Turtas panelIT;
     TP panelTP;
     Vietos panelLocations;
     Generatoriai panelGeneratoriai;
+    Introskopai panelIntroskopai;
     Gen_busenos panelGen_busenos;
     Busenos panelStates;
     Veiklos panelVeiklos;
@@ -65,17 +65,16 @@ public class MainFrame extends JFrame implements ActionListener{
     public JMyMenu menuDatabase;
     public JMyMenuItem menuItem_connect, menItem_disconnect;
 // –––––––––––––––––––––––
-    public JMyMenu menuTabs;
+    public JMyMenu menuTabs, menuRSC;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
-    public JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemIrenginiai, menuItemWorks, menuItemStates, menuItemWorktypes, menuItemEquipmentTypes, menuItemTP, menuItemLocations, 
-            menuItemGenerators, menuItemGeneratorStates,
+    public JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemIT, menuItemWorks, menuItemStates, menuItemWorktypes, menuItemEquipmentTypes, menuItemTP, menuItemLocations,            menuItemGenerators, menuItemGeneratorStates, menuItemIntroscopes,
             
             menuItemCodes,
 	    
 	    menuItemContracts, menuItemAccounts,
             menuItemPartners, menuItemBudget, menuItemOrders;
 // –––––––––––––––––––––––
-    public JMyMenu menuData;
+    public JMyMenu menuIT;
     public JMyMenu menuIreginiai;
     public JMyMenuItem menuItemBarcode;
 // –––––––––––––––––––––––    
@@ -146,10 +145,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	menuItemSystems.addActionListener(this);
 	menuItemSystems.setActionCommand("systems");
 	menuTabs.add(menuItemSystems);
-	menuItemIrenginiai = new JMyCheckBoxMenuItem("Įrenginiai", fontsize);
-	menuItemIrenginiai.addActionListener(this);
-	menuItemIrenginiai.setActionCommand("devices");
-	menuTabs.add(menuItemIrenginiai);
         menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys", fontsize);
         menuItemWorktypes.addActionListener(this);
         menuItemWorktypes.setActionCommand("worktypes");
@@ -169,20 +164,36 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 // _____________________________
 	menuTabs.addSeparator();
+        menuRSC = new JMyMenu("RSC", fontsize);
 	menuItemGenerators = new JMyCheckBoxMenuItem("Generatoriai", fontsize);
 	menuItemGenerators.addActionListener(this);
 	menuItemGenerators.setActionCommand("generators");
-        menuTabs.add(menuItemGenerators);
+        menuRSC.add(menuItemGenerators);
+	menuItemIntroscopes = new JMyCheckBoxMenuItem("Introskopai", fontsize);
+	menuItemIntroscopes.addActionListener(this);
+	menuItemIntroscopes.setActionCommand("introscopes");
+        menuRSC.add(menuItemIntroscopes);
 	menuItemGeneratorStates = new JMyCheckBoxMenuItem("Generatorių būsenos", fontsize);
 	menuItemGeneratorStates.addActionListener(this);
 	menuItemGeneratorStates.setActionCommand("generatorStates");
-        menuTabs.add(menuItemGeneratorStates);        
-// _____________________________
+        menuRSC.add(menuItemGeneratorStates);
+        menuTabs.add(menuRSC);
+// _______________Turtas_______________
 	menuTabs.addSeparator();
+	menuIT = new JMyMenu("Turtas", fontsize);
+	menuItemIT = new JMyCheckBoxMenuItem("IT", fontsize);
+	menuItemIT.addActionListener(this);
+	menuItemIT.setActionCommand("it");
+        menuIT.add(menuItemIT);
 	menuItemCodes = new JMyCheckBoxMenuItem("Veiklos kodai", fontsize);
 	menuItemCodes.addActionListener(this);
         menuItemCodes.setActionCommand("codes");
-        menuTabs.add(menuItemCodes);
+        menuIT.add(menuItemCodes);
+	menuItemBarcode = new JMyMenuItem("Brūkšniai kodai", fontsize);
+	menuItemBarcode.addActionListener(this);
+	menuItemBarcode.setActionCommand("barcodes");
+	menuIT.add(menuItemBarcode);
+	menuTabs.add(menuIT);
 // _____________________________
 	menuTabs.addSeparator();
         menuItemTP = new JMyCheckBoxMenuItem("TP", fontsize);
@@ -192,15 +203,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	menu_bar.add(menuTabs);
    
-// _______________Duomenys_______________
-	menuData = new JMyMenu("Duomenys", fontsize);
-	menuIreginiai = new JMyMenu("Irenginiai", fontsize);
-	menuItemBarcode = new JMyMenuItem("Brūkšniai kodai", fontsize);
-	menuItemBarcode.addActionListener(this);
-	menuItemBarcode.setActionCommand("barcodes");
-	menuIreginiai.add(menuItemBarcode);
-	menuData.add(menuIreginiai);
-	menu_bar.add(menuData);
 // __________Pagalba___________________
         menuHelp = new JMyMenu("Pagalba", fontsize);
         menuItemHelp = new JMyMenuItem("Aprašymas", fontsize);
@@ -239,33 +241,19 @@ public class MainFrame extends JFrame implements ActionListener{
 
 // _________ Οι γενικοί μεθόδοι ___________
     
-//    protected ConnectionEquipment connect(String database) {
-//	if (password.equals("") || connection == null) { 
-//	    if (dialogPassword != null) {
-//		dialogPassword.dispose();
-//	    }
-//	    dialogPassword = new DialogPassword(this);
-//	    dialogPassword.pack();
-//	    dialogPassword.setVisible(true);
-////	    password = "i--Logic15325";
-////	    username = "Antanas";
-//	    password = dialogPassword.bekommeKennwort()[1];
-//	    username = dialogPassword.bekommeKennwort()[0];
-//	}
-//	connection = new ConnectionEquipment(the_host, database, username);
-//	try {
-//	    labelMessage.setText(connection.connect(password));
-//	} catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
-//	    connection = null;
-//	    password = "";
-//	    labelMessage.setText(ex.getMessage());
-//	}
-//	return connection;
-//    }
-
     protected ConnectionEquipment connect(String database) {
-        password = "i--Logic15325";
-        username = "Antanas";
+	if (password.equals("") || connection == null) {
+	    if (dialogPassword != null) {
+		dialogPassword.dispose();
+	    }
+	    dialogPassword = new DialogPassword(this);
+	    dialogPassword.pack();
+	    dialogPassword.setVisible(true);
+//	    password = "i--Logic15325";
+//	    username = "Antanas";
+	    password = dialogPassword.bekommeKennwort()[1];
+	    username = dialogPassword.bekommeKennwort()[0];
+	}
 	connection = new ConnectionEquipment(the_host, database, username);
 	try {
 	    labelMessage.setText(connection.connect(password));
@@ -276,6 +264,20 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	return connection;
     }
+
+//    protected ConnectionEquipment connect(String database) {
+//        password = "i--Logic15325";
+//        username = "Antanas";
+//	connection = new ConnectionEquipment(the_host, database, username);
+//	try {
+//	    labelMessage.setText(connection.connect(password));
+//	} catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
+//	    connection = null;
+//	    password = "";
+//	    labelMessage.setText(ex.getMessage());
+//	}
+//	return connection;
+//    }
     
     
     protected void disconnect() {
@@ -291,11 +293,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	    tabbedpane.remove(panelWorks);
 	    showWorks();
 	}
-	if (panelIrenginiai != null) {
-	    panelIrenginiai.disconnect();
-	    menuItemIrenginiai.setSelected(false);
-	    tabbedpane.remove(panelIrenginiai);
-	    showDevices();
+	if (panelIT != null) {
+	    panelIT.disconnect();
+	    menuItemIT.setSelected(false);
+	    tabbedpane.remove(panelIT);
+	    showIT();
 	}
 	if (panelEquipmentTypes != null) {
 	    panelEquipmentTypes.disconnect();
@@ -345,8 +347,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (connection == null) {
 	    connection = connect("Equipment");
 	}
-	if (panelIrenginiai != null) {
-	    panelIrenginiai.setConnection(connection);
+	if (panelIT != null) {
+	    panelIT.setConnection(connection);
 	}
 	if (panelEquipmentTypes != null) {
 	    panelEquipmentTypes.setConnection(connection);
@@ -370,14 +372,6 @@ public class MainFrame extends JFrame implements ActionListener{
 //	renewTypes();
     }
 
-    private void einpflegt_dieAuswahlGruppe() {
-	try {
-	    panelOutlays.renewTypes();
-	} catch (SQLException ex) {
-	    labelMessage.setText(ex.getMessage());
-	}
-    }
-    
     private String bekommt_letztenDatensatz(String einDateiname) {
 	final int DIEZEILELZENGE = 64;
 	int gelesen;
@@ -514,14 +508,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
 
-    private void showDevices() {
-	if (panelIrenginiai != null & !menuItemIrenginiai.isSelected()) {
-	    tabbedpane.remove(panelIrenginiai);
-	    panelIrenginiai = null;
+    private void showIT() {
+	if (panelIT != null & !menuItemIT.isSelected()) {
+	    tabbedpane.remove(panelIT);
+	    panelIT = null;
 	}
-	if (panelIrenginiai == null & menuItemIrenginiai.isSelected()) {
-	    panelIrenginiai = new Turtas(connection, fontsize);	    
-	    tabbedpane.addTab("Įrenginiai", panelIrenginiai);
+	if (panelIT == null & menuItemIT.isSelected()) {
+	    panelIT = new Turtas(connection, fontsize);
+	    tabbedpane.addTab("IT", panelIT);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
     }
@@ -562,6 +556,18 @@ public class MainFrame extends JFrame implements ActionListener{
 	    panelGeneratoriai = null;
 	}
     }
+    
+    private void showIntroscopes() {
+	if (panelIntroskopai == null & menuItemIntroscopes.isSelected()) {
+	    panelIntroskopai = new Introskopai(connection, fontsize);
+	    tabbedpane.addTab("Introskopai", panelIntroskopai);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+	}
+	if (panelIntroskopai != null & !menuItemIntroscopes.isSelected()) {
+	    tabbedpane.remove(panelIntroskopai);
+	    panelIntroskopai = null;
+	}
+    }    
     
     private void showGeneratorStates() {
 	if (panelGen_busenos == null & menuItemGeneratorStates.isSelected()) {
@@ -643,9 +649,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		connect_Equipment();
 		showWorks();
 		break;		
-	    case "devices":
+	    case "it":
 		connect_Equipment();
-		showDevices();
+		showIT();
 		break;		
             case "equipmenttypes":
 		connect_Equipment();
@@ -663,6 +669,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		connect_Equipment();
 		showGenerators();
 		break;
+	    case "introscopes":
+		connect_Equipment();
+		showIntroscopes();
+		break;		
 	    case "generatorStates":
 		connect_Equipment();
 		showGeneratorStates();
@@ -673,9 +683,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;		
 	    case "barcodes":
 		connect_Equipment();
-		menuItemIrenginiai.setSelected(true);
-		showDevices();
-		panelIrenginiai.create_barcodes_file();
+		menuItemIT.setSelected(true);
+		showIT();
+		panelIT.create_barcodes_file();
 		break;		
 	    case "help":
 		showHelp();

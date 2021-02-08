@@ -5,10 +5,8 @@
  */
 package equipment;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -28,31 +26,38 @@ public class Vietos extends Sistemos {
     static final String PREPARE_INSERT = "INSERT INTO Vietos (Pavadinimas) VALUES (?)";
     static final String PREPARE_UPDATE = "UPDATE Vietos SET Pavadinimas = ? WHERE ID = ?";
 
-    private DefaultTableModel tableModel;
+//    protected DefaultTableModel tableModel;
     private PreparedStatement preparedUpdate, preparedInsert, preparedDelete;
 
 
     public Vietos(ConnectionEquipment connection, int size) {
 	super(connection, size);
-	init();
+//	init();
     }
 
-    private void init() {
-	if (connection != null) {
-	    setLayout(new BorderLayout());
-	    createTable();
-	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
-	    add(scrPaneTable, BorderLayout.CENTER);
-	    setVisible(true);
-	    filter();
-	} else {
-	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
+//    @Override
+//    protected void init() {
+//	if (connection != null) {
+//	    setLayout(new BorderLayout());
+//	    createTable();
+//	    createPanelButtons();
+//	    add(pButtons, BorderLayout.NORTH);
+//	    add(scrPaneTable, BorderLayout.CENTER);
+//	    setVisible(true);
+//	    filter(SELECT_ALL);
+//	} else {
+//	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
+//	}
+//    }
+
+    @Override
+    protected void setSelectQuery() {
+	select = SELECT_ALL;
     }
 
-    private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"ID (auto)", "Pavadinimas"}, 0);
+    @Override
+    protected void createTable() {
+	tableModel = new DefaultTableModel(new Object[]{ID, PAVADINIMAS}, 0);
 	table = new JTable(tableModel);
         table.getTableHeader().setFont(font);
         table.setFont(font);
@@ -89,31 +94,6 @@ public class Vietos extends Sistemos {
 //    }
 	
 
-    private void filter() {
-        Object[] row;
-	int i, colcount;
-	tableModel.setRowCount(0);
-        ResultSet resultset;
-	try {
-            resultset = connection.executeQuery(SELECT_ALL);
-	    colcount = tableModel.getColumnCount();
-//            System.out.println(colcount);
-	    row = new Object[colcount];
-	    while( resultset.next() ){
-		for (i = 0; i <= colcount - 1; i++) {
-//                    System.out.print(i); 
-		    row[i] = resultset.getObject(i + 1);
-//                    System.out.println(row[i]);
-		}
-		tableModel.addRow(row);
-	    }
-	    resultset.close();
-	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
-
-    }
-	
 // UPDATE Vietos SET Pavadinimas = ? WHERE ID = ?
    private void update() {
 	int row;
@@ -127,7 +107,7 @@ public class Vietos extends Sistemos {
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
 		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -148,7 +128,7 @@ public class Vietos extends Sistemos {
 // ID, Pavadinimas, Patalpa
 		preparedInsert.setString(1, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -186,10 +166,10 @@ public class Vietos extends Sistemos {
 	switch (derBefehl) {
 	    case "update":
 		update();
-		filter();
+		filter(select);
 		break;	
 	    case "filter":
-		filter();
+		filter(select);
 		break;
 	    case "insert":
 		insert();

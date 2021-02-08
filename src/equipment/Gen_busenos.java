@@ -5,10 +5,8 @@
  */
 package equipment;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -23,35 +21,42 @@ import javax.swing.table.TableColumn;
  */
 public class Gen_busenos extends Sistemos {
 
-    static final String SELECT_ALL = "SELECT ID, Busena FROM Gen_busenos";
-    private static final String PREPARE_INSERT = "INSERT INTO Gen_busenos (ID, Busena) VALUES (?, ?)";
-    private static final String PREPARE_UPDATE = "UPDATE Gen_busenos SET Busena = ? WHERE ID = ?";
+    static final String SELECT_ALL = "SELECT ID, Pavadinimas FROM Gen_busenos";
+    private static final String PREPARE_INSERT = "INSERT INTO Gen_busenos (ID, Pavadinimas) VALUES (?, ?)";
+    private static final String PREPARE_UPDATE = "UPDATE Gen_busenos SET Pavadinimas = ? WHERE ID = ?";
     private static final String PREPARE_DELETE = "DELETE FROM Gen_busenos WHERE ID = ?";
 
-    private DefaultTableModel tableModel;
+//    private DefaultTableModel tableModel;
     private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete;
 
 
     public Gen_busenos(ConnectionEquipment connection, int size) {
 	super(connection, size);
-	init();
+//	init();
     }
 
-    private void init() {
-	if (connection != null) {
-	    setLayout(new BorderLayout());
-	    createTable();
-	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
-	    add(scrPaneTable, BorderLayout.CENTER);
-	    setVisible(true);
-	    filter();
-	} else {
-	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
+//    @Override
+//    protected final void init() {
+//	if (connection != null) {
+//	    setLayout(new BorderLayout());
+//	    createTable();
+//	    createPanelButtons();
+//	    add(pButtons, BorderLayout.NORTH);
+//	    add(scrPaneTable, BorderLayout.CENTER);
+//	    setVisible(true);
+//	    filter(SELECT_ALL);
+//	} else {
+//	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
+//	}
+//    }
+
+    @Override
+    protected void setSelectQuery() {
+	select = SELECT_ALL;
     }
 
-    private void createTable() {
+    @Override
+    protected void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{"ID", "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
         table.setFont(font);
@@ -86,27 +91,6 @@ public class Gen_busenos extends Sistemos {
 //    }
 	
 
-    protected void filter() {
-        Object[] row;
-	int i, colcount;
-	tableModel.setRowCount(0);
-        ResultSet resultset;
-	try {
-	    resultset = connection.executeQuery(SELECT_ALL);
-	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
-	    while( resultset.next() ){
-		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
-		}
-		tableModel.addRow(row);
-	    }
-	    resultset.close();
-	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
-    }
-	
     private void update() {
 	int row;
 	row = table.getSelectedRow();
@@ -119,7 +103,7 @@ public class Gen_busenos extends Sistemos {
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
 		preparedUpdate.setInt(2, (int) table.getValueAt(row, 0));
 		if (preparedUpdate.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -141,10 +125,10 @@ public class Gen_busenos extends Sistemos {
 		preparedInsert.setInt(1, Integer.valueOf((String) table.getValueAt(row, 0)));
 		preparedInsert.setString(2, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	} else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -162,7 +146,7 @@ public class Gen_busenos extends Sistemos {
 // ID, IT, Nr, Pavadinimas, Sistema
 		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
 		if (preparedDelete.execute()) {
-		    filter();
+		    filter(select);
 		}
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -181,14 +165,14 @@ public class Gen_busenos extends Sistemos {
 		update();
 		break;	
 	    case "filter":
-		filter();
+		filter(select);
 		break;
 	    case "insert":
 		insert();
 		break;	
 	    case "delete":
 		delete();
-		filter();
+		filter(select);
 		break;	
 	}
 	

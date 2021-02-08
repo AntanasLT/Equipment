@@ -123,32 +123,32 @@ public class ConnectionEquipment {
      * @return [0] – TID, [1] – TName
      * @throws SQLException
      */
-    public String[][] getEquipmentTypes() throws SQLException {
-	int i;
-	String[][] result;
-	ResultSet resultSet;
-	result = null;
-	if (myConnection != null) {
-	    result = new String[2][get_count("IrangosTipai")];
-	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY Pavadinimas");
-	    i = 0;
-	    while (resultSet.next()) {
-		result[0][i] = resultSet.getString(1);
-		result[1][i] = resultSet.getString(2);
-		i++;
-	    }
-	}
-	return result;
-    }
+//    public String[][] getEquipmentTypes() throws SQLException {
+//	int i;
+//	String[][] result;
+//	ResultSet resultSet;
+//	result = null;
+//	if (myConnection != null) {
+//	    result = new String[2][get_count("IrangosTipai")];
+//	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM IrangosTipai ORDER BY Pavadinimas");
+//	    i = 0;
+//	    while (resultSet.next()) {
+//		result[0][i] = resultSet.getString(1);
+//		result[1][i] = resultSet.getString(2);
+//		i++;
+//	    }
+//	}
+//	return result;
+//    }
 
-    public String[][] getSystems() throws SQLException {
+    public String[][] getList(String table) throws SQLException {
 	int i;
 	String[][] result;
 	ResultSet resultSet;
 	result = null;
 	if (myConnection != null) {
-	    result = new String[2][get_count("Sistemos")];
-	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas");
+	    result = new String[2][get_count(table)];
+	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM ".concat(table).concat(" ORDER BY Pavadinimas"));
 	    i = 0;
 	    while (resultSet.next()) {
 		result[0][i] = resultSet.getString(1);
@@ -158,97 +158,116 @@ public class ConnectionEquipment {
 	}
 	return result;
     }
+            
+            
+//    public String[][] getSystems() throws SQLException {
+//	int i;
+//	String[][] result;
+//	ResultSet resultSet;
+//	result = null;
+//	if (myConnection != null) {
+//	    result = new String[2][get_count("Sistemos")];
+//	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Sistemos ORDER BY Pavadinimas");
+//	    i = 0;
+//	    while (resultSet.next()) {
+//		result[0][i] = resultSet.getString(1);
+//		result[1][i] = resultSet.getString(2);
+//		i++;
+//	    }
+//	}
+//	return result;
+//    }
 
-    public String[][] getWorkTypes() throws SQLException {
-	int i;
-	String[][] result;
-	ResultSet resultSet;
-	result = null;
-	if (myConnection != null) {
-	    result = new String[2][get_count("Darbotipis")];
-	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas");
-	    i = 0;
-	    while (resultSet.next()) {
-		result[0][i] = resultSet.getString(1);
-		result[1][i] = resultSet.getString(2);
-		i++;
-	    }
-	}
-	return result;
-    }
+//    public String[][] getWorkTypes() throws SQLException {
+//	int i;
+//	String[][] result;
+//	ResultSet resultSet;
+//	result = null;
+//	if (myConnection != null) {
+//	    result = new String[2][get_count("Darbotipis")];
+//	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Darbotipis ORDER BY Pavadinimas");
+//	    i = 0;
+//	    while (resultSet.next()) {
+//		result[0][i] = resultSet.getString(1);
+//		result[1][i] = resultSet.getString(2);
+//		i++;
+//	    }
+//	}
+//	return result;
+//    }
 
-    public String[][] getStates_of_works() throws SQLException {
-	int i;
-	String[][] result;
-	ResultSet resultSet;
-	result = null;
-	if (myConnection != null) {
-	    result = new String[2][get_count("Busenos")];
-	    resultSet = statement.executeQuery("SELECT ID, Busena FROM Busenos ORDER BY Busena");
-	    i = 0;
-	    while (resultSet.next()) {
-		result[0][i] = resultSet.getString(1);
-		result[1][i] = resultSet.getString(2);
-		i++;
-	    }
-	}
-	return result;
-    }
+//    public String[][] getStates_of_works() throws SQLException {
+//	int i;
+//	String[][] result;
+//	ResultSet resultSet;
+//	result = null;
+//	if (myConnection != null) {
+//	    result = new String[2][get_count("Busenos")];
+//	    resultSet = statement.executeQuery("SELECT ID, Busena FROM Busenos ORDER BY Busena");
+//	    i = 0;
+//	    while (resultSet.next()) {
+//		result[0][i] = resultSet.getString(1);
+//		result[1][i] = resultSet.getString(2);
+//		i++;
+//	    }
+//	}
+//	return result;
+//    }
+//
+//    public String[][] getStates_of_generators() throws SQLException {
+//	int i;
+//	String[][] result;
+//	ResultSet resultSet;
+//	result = null;
+//	if (myConnection != null) {
+//	    result = new String[2][get_count("Gen_busenos")];
+//	    resultSet = statement.executeQuery("SELECT ID, Busena FROM Gen_busenos ORDER BY Busena");
+//	    i = 0;
+//	    while (resultSet.next()) {
+//		result[0][i] = resultSet.getString(1);
+//		result[1][i] = resultSet.getString(2);
+//		i++;
+//	    }
+//	}
+//	return result;
+//    }
     
-    public String[][] getStates_of_generators() throws SQLException {
-	int i;
-	String[][] result;
-	ResultSet resultSet;
-	result = null;
-	if (myConnection != null) {
-	    result = new String[2][get_count("Gen_busenos")];
-	    resultSet = statement.executeQuery("SELECT ID, Busena FROM Gen_busenos ORDER BY Busena");
-	    i = 0;
-	    while (resultSet.next()) {
-		result[0][i] = resultSet.getString(1);
-		result[1][i] = resultSet.getString(2);
-		i++;
-	    }
-	}
-	return result;
-    }
-    
 
-    public String[][] getLocations() throws SQLException {
-	int i;
-	String[][] result;
-	ResultSet resultSet;
-	result = null;
-	if (myConnection != null) {
-	    result = new String[2][get_count("Vietos")];
-	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Vietos ORDER BY Pavadinimas");
-	    i = 0;
-	    while (resultSet.next()) {
-		result[0][i] = resultSet.getString(1);
-		result[1][i] = resultSet.getString(2);
-		i++;
-	    }
-	}
-	return result;
-    }
+//    public String[][] getLocations() throws SQLException {
+//	int i;
+//	String[][] result;
+//	ResultSet resultSet;
+//	result = null;
+//	if (myConnection != null) {
+//	    result = new String[2][get_count("Vietos")];
+//	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Vietos ORDER BY Pavadinimas");
+//	    i = 0;
+//	    while (resultSet.next()) {
+//		result[0][i] = resultSet.getString(1);
+//		result[1][i] = resultSet.getString(2);
+//		i++;
+//	    }
+//	}
+//	return result;
+//    }
 
-    public String[][] getCodes() throws SQLException {
-	int i;
-	String[][] result;
-	ResultSet resultSet;
-	result = null;
-	if (myConnection != null) {
-	    result = new String[2][get_count("Veiklos")];
-	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Veiklos ORDER BY Pavadinimas");
-	    i = 0;
-	    while (resultSet.next()) {
-		result[0][i] = resultSet.getString(1);
-		result[1][i] = resultSet.getString(2);
-		i++;
-	    }
-	}
-	return result;
-    }
+//    public String[][] getCodes() throws SQLException {
+//	int i;
+//	String[][] result;
+//	ResultSet resultSet;
+//	result = null;
+//	if (myConnection != null) {
+//	    result = new String[2][get_count("Veiklos")];
+//	    resultSet = statement.executeQuery("SELECT ID, Pavadinimas FROM Veiklos ORDER BY Pavadinimas");
+//	    i = 0;
+//	    while (resultSet.next()) {
+//		result[0][i] = resultSet.getString(1);
+//		result[1][i] = resultSet.getString(2);
+//		i++;
+//	    }
+//	}
+//	return result;
+//    }
 
     public String[][] getEquipment(String sortFeldname) throws SQLException {
 	int i;
@@ -272,6 +291,7 @@ public class ConnectionEquipment {
     
     
     /**
+     * @param the_statement
      * @return
      * @throws java.sql.SQLException
      */

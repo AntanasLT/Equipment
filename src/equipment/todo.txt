@@ -1,1 +1,0 @@
-https://linuxconfig.org/introduction-to-database-joins-with-mariadb-and-mysql-join-examples

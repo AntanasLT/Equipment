@@ -37,15 +37,15 @@ import javax.swing.table.TableColumn;
  */
 public class Darbai extends JPanel implements ActionListener, ListSelectionListener, MouseListener {
 
-    private static final String PREPARE_SELECT_ALL = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ORDER BY d.ID DESC LIMIT 50";
-    private static final String PREPARE_SELECT = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID";
-    private static final String PREPARE_INFO = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE dt.ID = 6 ORDER BY d.ID DESC";
-//    private static final String PREPARE_INFO_ID = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Busena = 5 AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID";
-    private static final String PREPARE_UNFINISHED = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE ORDER BY d.ID DESC";
-    private static final String PREPARE_UNFINISHED_ID = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID DESC";
-    private static final String PREPARE_UPDATE = "UPDATE Darbai SET Data = ?, IDPr = ?,  Sistema = ?, Irenginys = ?, Darbas = ?, Busena = ?, Pastabos = ?, Baigta = ? WHERE ID = ?";
+    private static final String PREPARE_SELECT_ALL = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ORDER BY d.ID DESC LIMIT 50";
+    private static final String PREPARE_SELECT = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID";
+    private static final String PREPARE_INFO = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE dt.ID = 6 ORDER BY d.ID DESC";
+//    private static final String PREPARE_INFO_ID = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Busena = 5 AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID";
+    private static final String PREPARE_UNFINISHED = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE ORDER BY d.ID DESC";
+    private static final String PREPARE_UNFINISHED_ID = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID DESC";
+    private static final String PREPARE_UPDATE = "UPDATE Darbai SET Data = ?, IDPr = ?,  Sistema = ?, Irenginys = ?, Darbas = ?, Pavadinimas = ?, Pastabos = ?, Baigta = ? WHERE ID = ?";
     private static final String PREPARE_UPDATE_FINISH = "UPDATE Darbai SET Baigta = TRUE WHERE ID = ? OR IDpr = ?";
-    private static final String PREPARE_INSERT = "INSERT INTO Darbai (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Busena, Pastabos, Baigta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String PREPARE_INSERT = "INSERT INTO Darbai (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 //    private static final String PREPARE_SELECT = "";
     private static final String PREPARE_DELETE = "DELETE FROM Darbai WHERE ID = ?";
     private static final String ID = "ID";
@@ -63,17 +63,17 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     ConnectionEquipment connection;
     Datum date;
-    private DefaultTableModel tableModel;
+    protected DefaultTableModel tableModel;
     GridBagConstraints gbc;
     JCheckBox chDate, chSystem, chDevice, chWorktype, chMessage;
     private JCheckBox chState;
     JLabelRechts lMessage, lDate, lDevice, lSystem, lWork, lIDpr, lFilters;
     protected JMyButton bDelete, bAdd, btChange, btAcknowl, btFilter, btUnfinished, btAll, btInfo;
-    private JMyComboBox cbWorktype, cbState;
+    JMyComboBox cbWorktype, cbState;
     JMyComboBox cbSystem;
     protected JPanel pInput, pnFIlterButtons, pFields;
     JPanel pEditButtons, pMessage;
-    private PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete, preparedFilter, preparedUpdateFinish;
+    protected PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete, preparedFilter, preparedUpdateFinish;
     JRadioButton radioButton1;
     JScrollPane scrPaneTable, scrPaneMessage;
     JTable table;
@@ -94,7 +94,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	init();
     }
 
-    private void init() {
+    protected void init() {
         font = new Font("Arial", Font.PLAIN, fontsize);
 	if (connection != null) {
 	    try {
@@ -201,7 +201,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	gbc.weightx = 0;
 	tfDate = new JMyTextField(date.getToday(), 10, fontsize);
 	tfDate.addMouseListener(this);
-	tfDate.setToolTipText("Dvigubas spragtelėjimas šiandienos datai");
+//	tfDate.setToolTipText("Dvigubas spragtelėjimas šiandienos datai");
 	pFields.add(tfDate, gbc);
 
 	gbc.gridx = 2;
@@ -266,7 +266,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	
 	gbc.gridx = 1;
 	chDate = new JCheckBox();
-	chDate.setToolTipText("<html>Galimi datos lauko šablonai paieškai:<br> 2020% – visi 2020 m. įrašai;<br> 2020-10% – visi 2020 m. 10 mėn. įrašai;<br> %-10-% – visi visų 10-ojo mėn. įrašai.</html>");
+//	chDate.setToolTipText("<html>Galimi datos lauko šablonai paieškai:<br> 2020% – visi 2020 m. įrašai;<br> 2020-10% – visi 2020 m. 10 mėn. įrašai;<br> %-10-% – visi visų 10-ojo mėn. įrašai.</html>");
 	pFields.add(chDate, gbc);
 
 	gbc.gridx = 3;
@@ -277,7 +277,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	chDevice = new JCheckBox();
 	chDevice.addActionListener(this);
 	chDevice.setActionCommand("chDevice");
-	chDevice.setToolTipText("Galimi paieškos šablonai. Pvz.: %onitor% – bus ieškoma visų įrašų, turinčių „onitor“");
+//	chDevice.setToolTipText("Galimi paieškos šablonai. Pvz.: %onitor% – bus ieškoma visų įrašų, turinčių „onitor“");
 	pFields.add(chDevice, gbc);
 
 	gbc.gridx = 7;
@@ -353,7 +353,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     protected void getSystems() {
 	try {
-	    systems = connection.getSystems();
+	    systems = connection.getList("Sistemos");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -361,7 +361,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     private void getWorktypes() {
 	try {
-	    worktypes = connection.getWorkTypes();
+	    worktypes = connection.getList("Darbotipis");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -369,7 +369,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     protected void getStates() {
 	try {
-	    states = connection.getStates_of_works();
+	    states = connection.getList("Busenos");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -520,7 +520,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
     }
     
 
-    private void filter() {
+    protected void filter() {
 	int i, colcount;
         Object[] row;
 	StringBuilder sb;
@@ -546,8 +546,8 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	}
     }
 
-//SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Busena, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID
-    private StringBuilder prepareFilter() {
+//SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID
+    protected StringBuilder prepareFilter() {
 	StringBuilder sb;
 	sb = new StringBuilder(PREPARE_SELECT);
         if (chDevice != null & chState != null & chWorktype != null & chMessage != null) {
@@ -570,7 +570,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
                 }
                 if (chState.isSelected()) {
                     appendAND(sb);
-                    sb.append(" d.Busena = ?");
+		    sb.append(" d.Busena = ?");
                 }
                 if (chMessage.isSelected()) {
                     appendAND(sb);
@@ -589,7 +589,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	return sb;
     }
     
-    private void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
+    protected void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
 	int i, n, idpr, id;
 	n = 0;
         if (!tfIDpr.getText().isEmpty()) {
@@ -605,7 +605,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	i = sb.indexOf(" d.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, tfDate.getText());
+	    preparedFilter.setString(n, "%".concat(tfDate.getText().concat("%")));
 	}
 	i = sb.indexOf(" d.Sistema = ?");
 	if (i >= 0) {
@@ -615,7 +615,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	i = sb.indexOf(" d.Irenginys LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, fName.getText());
+	    preparedFilter.setString(n, "%".concat(fName.getText().concat("%")));
 	}
 	i = sb.indexOf(" d.Darbas = ?");
 	if (i >= 0) {
@@ -643,7 +643,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	i = sb.indexOf(" d.Pastabos LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, taMessage.getText());
+	    preparedFilter.setString(n, "%".concat(taMessage.getText().concat("%")));
 	}
 	
     }
@@ -684,7 +684,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	    if (preparedInsert == null) {
 		preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 	    }
-//    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Busena, Pastabos, Baigtas)
+//    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigtas)
 	    preparedInsert.setInt(1, get_int(tfIDpr.getText()));
 	    preparedInsert.setInt(2, id);
 	    preparedInsert.setString(3, tfDate.getText());
@@ -720,7 +720,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	    if (preparedInsert == null) {
 		preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 	    }
-//(IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Busena, Pastabos, Baigta)
+//(IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta)
 	    preparedInsert.setInt(1, get_int(tfID.getText()));
 	    preparedInsert.setInt(2, id);
 	    preparedInsert.setString(3, date.getToday());
@@ -745,7 +745,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
         
     }
     
-//    (Data, IDpr, Sistema, Irenginys, Darbas, Busena, Pastabos, Baigta, ID)
+//    (Data, IDpr, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta, ID)
     private void update() {
 	int row, state, idpr;
 	boolean clossed;
@@ -1011,23 +1011,23 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
         if (me.getComponent().equals(tfID)) {
           tfIDpr.setText(tfID.getText());
         }
-	if (me.getComponent().equals(fName) & me.getClickCount() == 4) {
-	    fName.setText("%%");
-	}
+//	if (me.getComponent().equals(fName) & me.getClickCount() == 4) {
+//	    fName.setText("%%");
+//	}
 	if (me.getComponent().equals(tfIDpr)) {
           tfIDpr.setText("");
         }
 //	if (me.getComponent().equals(lFilters)) {
 //	    clearCheckboxes();
 //        }
- 	if (me.getComponent().equals(taMessage)) {
-//	    if (me.getClickCount() == 2) {
-//		taMessage.setText("");
+// 	if (me.getComponent().equals(taMessage)) {
+////	    if (me.getClickCount() == 2) {
+////		taMessage.setText("");
+////	    }
+//	    if (me.getClickCount() == 4) {
+//		taMessage.setText("%%");
 //	    }
-	    if (me.getClickCount() == 4) {
-		taMessage.setText("%%");
-	    }	    
-	}
+//	}
 	if (me.getComponent().equals(table) & me.getClickCount() == 2) {
 	    filter();
         }	
