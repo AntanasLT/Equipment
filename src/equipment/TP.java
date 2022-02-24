@@ -5,23 +5,21 @@
  */
 package equipment;
 
+import datum.Datum;
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.sql.PreparedStatement;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
@@ -29,96 +27,58 @@ import javax.swing.table.TableColumn;
  */
 public class TP extends Darbai {
 
-    private static final String SELECT_ALL = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID ORDER BY tp.Data DESC LIMIT 100";
-    private static final String INSERT = "INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?";
+    private static final String PREPARE_SELECT_ALL = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID ORDER BY tp.Data DESC LIMIT 100";
+    private static final String PREPARE_INSERT = "INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)";
+    private static final String PREPARE_UPDATE = "UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?";
     private static final String SELECT = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID";
-//    private static final String PREPARE_DELETE = "DELETE FROM Irenginiai WHERE ID = ?";
-    private static final String ID = "ID";
-    private static final String DATE = "Data";
-    private static final String SYSTEM = "Sistema";
-    private static final String TP = "Rūšis";
-    private static final String NOTE = "Pastaba";
+    static final String DATE = "Data";
+    static final String SYSTEM = "Sistema";
+    static final String TP = "Rūšis";
+    static final String NOTE = "Pastaba";
+    
 
-    private DefaultTableModel tableModel;
-    private PreparedStatement preparedUpdate, preparedInsert;
+//    private DefaultTableModel tableModelTP;
 
     private JMyComboBox cbTPtype;
     private JCheckBox chTPtype;
     
-    private PreparedStatement preparedFilter;
-
     String[][] tptypes;
 
     protected TP(ConnectionEquipment connection, int size) {
 	super(connection, size);
-//	init_components();
+    }
+
+    @Override
+    protected void setConstants(){
+	select = PREPARE_SELECT_ALL;
+        insert = PREPARE_INSERT;
+        tableTooltip = "";
     }
 
 
     @Override
-    protected void init_components() {
+    protected void init() {
+        font = new Font("Arial", Font.PLAIN, fontsize);
+        date = new Datum();
+        table_columns = new String[]{ID, DATE, SYSTEM, TP, NOTE};
+        table_column_width = new int[]{4*fontsize, 8*fontsize, 8*fontsize, 8*fontsize, 70*fontsize};
 	if (connection != null) {
 	    setLayout(new BorderLayout());
+            setConstants();
 	    getTPtypes();
 	    getSystems();
 	    createTable();
 	    createPanelInput();
 	    add(pInput, BorderLayout.NORTH);
-	    add(scrPaneTable, BorderLayout.CENTER);
 	    add(lMessage, BorderLayout.SOUTH);
-	    add(scrPaneTable, BorderLayout.CENTER);
+	    add(scrTable, BorderLayout.CENTER);
 	    setVisible(true);
 //	    filter();
 	} else {
-	    JOptionPane.showMessageDialog(this, "No connection!", "Error!", JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
-    private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{ID, DATE, SYSTEM, TP, NOTE}, 0);
-	table = new JTable(tableModel);
-        table.setFont(font);
-        table.getTableHeader().setFont(font);
-	table.setAutoCreateRowSorter(false);
-	table.setDefaultEditor(Object.class, null);
-        table.addMouseListener(this);
-	table.getSelectionModel().addListSelectionListener(this);
-	setColumnsWidths();
-	tableModel.setRowCount(1);
-//	setzt_dieUeberschriften();
-	scrPaneTable = new JScrollPane(table);
-    }
-
-    private void setColumnsWidths() {
-	TableColumn column;
-	column = null;
-	for (int i = 0; i < table.getColumnCount(); i++) {
-	    column = table.getColumnModel().getColumn(i);
-	    if (tableModel.getColumnName(i).equals(ID)) {
-		column.setMaxWidth(60);
-		column.setPreferredWidth(50);
-	    } else if (tableModel.getColumnName(i).equals(NOTE)) {
-		column.setPreferredWidth(200);
-	    } else {
-                    column.setMaxWidth(200);
-                    column.setPreferredWidth(100);
-		}
-//	    switch (i) {
-//		case 0:
-//		    dieSpalte.setPreferredWidth(20);
-//		    break;
-//		case 3:
-//		    dieSpalte.setPreferredWidth(500);
-//		    break;
-//	    }
-	}
-    }
-
-//    private void setzt_dieUeberschriften(){
-//	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));
-//        table.getColumnModel().getColumn(1).setHeaderValue("<html>Der<br>Typ</html>");
-//    }
     @Override
     protected void createPanelInput() {
 	pInput = new JPanel(new BorderLayout());
@@ -126,7 +86,7 @@ public class TP extends Darbai {
 	pInput.add(pFields, BorderLayout.NORTH);
 	createPanelFilterButtons();
 	pInput.add(pnFIlterButtons, BorderLayout.SOUTH);
-	lMessage = new JLabelRechts(fontsize);
+	lMessage = new JLabelLeft(fontsize);
     }
 
     @Override
@@ -134,7 +94,6 @@ public class TP extends Darbai {
 	pFields = new JPanel(new GridBagLayout());
 	gbc = new GridBagConstraints();
 	gbc.fill = GridBagConstraints.HORIZONTAL;
-//		panelInput.setBackground(Color.lightGray);
 	gbc.insets = new Insets(0, 0, 5, 5);
 
 // Μια πρώτη σειρά
@@ -147,6 +106,7 @@ public class TP extends Darbai {
 	gbc.gridx = 1;
 //	gbc.weightx = 0;
 	tfDate = new JMyTextField(date.getToday(), 10, fontsize);
+        tfDate.setToolTipText("Dukart spragt – šiandiena");
 	tfDate.addMouseListener(this);
         tfDate.setToolTipText(date.getWeekday());
 	pFields.add(tfDate, gbc);
@@ -158,8 +118,8 @@ public class TP extends Darbai {
 
 	gbc.gridx = 3;
 //	gbc.weightx = 0.5;
-	cbSystem = new JMyComboBox(systems[1], fontsize);
-	pFields.add(cbSystem, gbc);
+	cbIrenginys = new JMyComboBox(systems[1], fontsize);
+	pFields.add(cbIrenginys, gbc);
 //
 	gbc.gridx = 4;
 //	gbc.weightx = 0;
@@ -201,13 +161,13 @@ public class TP extends Darbai {
 	gbc.gridx = 1;
 	gbc.weightx = 0.5;
 	gbc.gridwidth = 4;
-	taMessage = new JMyTextArea(15, 30, fontsize);
+	taMessage = new JMyTextArea_monospaced(15, 30, fontsize);
 	taMessage.addMouseListener(this);
 	taMessage.setLineWrap(true);
 	taMessage.setWrapStyleWord(true);
 	taMessage.setToolTipText("Dvigubas spragtelėjimas ištrina tekstą iš šio lauko");
-	scrPaneMessage = new JScrollPane(taMessage);
-	pFields.add(scrPaneMessage, gbc);
+	scrMessage = new JScrollPane(taMessage);
+	pFields.add(scrMessage, gbc);
 
 	gbc.gridx = 5;
 	gbc.gridwidth = 1;
@@ -219,7 +179,7 @@ public class TP extends Darbai {
 
     @Override
     protected void createPanelEditButtons() {
-	pEditButtons = new JPanel(new GridLayout(4, 1));
+	pEditButtons = new JPanel(new GridLayout(2, 1, 2, 5));
 	btChange = new JMyButton("Išsaugoti", fontsize);
 	btChange.setActionCommand("update");
 	btChange.addActionListener(this);
@@ -241,6 +201,7 @@ public class TP extends Darbai {
 	pnFIlterButtons = new JPanel();
 	btAll = new JMyButton("Naujausieji", fontsize);
 	btAll.setActionCommand("all");
+        btAll.setToolTipText(LIMIT + " paskutiniųjų");
 	btAll.addActionListener(this);
 	pnFIlterButtons.add(btAll);
 	btFilter = new JMyButton("Filtruoti", fontsize);
@@ -249,33 +210,7 @@ public class TP extends Darbai {
 	pnFIlterButtons.add(btFilter);
     }
 
-    protected void createPanelMessages() {
-	pMessage = new JPanel(new GridLayout(2, 1));
-	lMessage = new JLabelRechts("Aprašymas", fontsize);
-	chMessage = new JCheckBox();
-	pMessage.add(lMessage);
-	pMessage.add(chMessage);
-    }
-
-    private int getSystemID(String system) {
-	int i, n, id;
-	boolean found;
-	i = 0;
-	id = -1;
-	found = false;
-	n = systems.length;
-	while (i <= n & !found) {
-	    if (systems[1][i].equals(system)) {
-		found = true;
-		id = Integer.valueOf(systems[0][i]);
-	    } 
-	    else {
-		i++;
-	    }
-	}
-	return id;
-    }
-
+ 
     private void getTPtypes() {
 	try {
 	    tptypes = connection.getTPtypes();
@@ -284,59 +219,14 @@ public class TP extends Darbai {
 	}
     }
 
-    
-    private int getTPID(String tp) {
-	int i, n, id;
-	boolean found;
-	i = 0;
-	id = -1;
-	found = false;
-	n = tptypes.length;
-	while (i <= n & !found) {
-	    if (tptypes[1][i].equals(tp)) {
-		found = true;
-		id = Integer.valueOf(tptypes[0][i]);
-	    } 
-	    else {
-		i++;
-	    }
-	}
-	return id;
-	
-    }
-    
-    protected void filter() {
-	Object[] row;
-	int i, colcount;
-	tableModel.setRowCount(0);
-	StringBuilder sb;
-	ResultSet resultset;
-	try {
-	    sb = prepareFilter();
-	    preparedFilter = connection.prepareStatement(sb.toString());
-	    preparedFilter_setPrepared(sb);
-	    resultset = preparedFilter.executeQuery();
-	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
-	    while (resultset.next()) {
-		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
-		}
-		tableModel.addRow(row);
-	    }
-	    resultset.close();
-	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-	}
-    }
-
+     
 // SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID
     @Override
     protected StringBuilder prepareFilter() {
 	StringBuilder sb;
 	sb = new StringBuilder(SELECT);
 	if (chDate.isSelected() || chSystem.isSelected() || chTPtype.isSelected() || chMessage.isSelected()) {
-	    sb.append(" WHERE");
+	    sb.append(" WHERE ");
             if (chDate.isSelected()) {
 		sb.append(" tp.Data LIKE ?");
             }
@@ -360,17 +250,17 @@ public class TP extends Darbai {
     
     @Override
     protected void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
-	int i, n, idpr, id;
+	int i, n;
 	n = 0;
 	i = sb.indexOf(" tp.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, tfDate.getText());
+	    preparedFilter.setString(n, "%" + tfDate.getText() + "%");
 	}
 	i = sb.indexOf(" tp.Sistema = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));	    
+	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));	    
 	}
 	i = sb.indexOf(" tp.TP = ?");
 	if (i >= 0) {
@@ -380,19 +270,19 @@ public class TP extends Darbai {
 	i = sb.indexOf(" tp.Pastaba LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, taMessage.getText());
+	    preparedFilter.setString(n, "%" + taMessage.getText() + "%");
 	}
 
     }
 
      
-    protected void filter_all() {
+    protected void filter(String query) {
         Object[] row;
 	int i, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
 	try {
-	    resultset = connection.executeQuery(SELECT_ALL);
+	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
 	    row = new Object[colcount];
 	    while (resultset.next()) {
@@ -409,16 +299,17 @@ public class TP extends Darbai {
     }
 
 //UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?
-    private void update() {
+    @Override
+    protected void update() {
 	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
             try {
                 if (preparedUpdate == null) {
-                    preparedUpdate = connection.prepareStatement(UPDATE);
+                    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
                 }
                 preparedUpdate.setString(1, tfDate.getText());
-                preparedUpdate.setInt(2, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+                preparedUpdate.setInt(2, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
                 preparedUpdate.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
                 preparedUpdate.setString(4, taMessage.getText());
                 preparedUpdate.setInt(5, (int) table.getValueAt(row, 0));
@@ -437,12 +328,12 @@ public class TP extends Darbai {
     private void insert() {
         try {
             if (preparedInsert == null) {
-                preparedInsert = connection.prepareStatement(INSERT);
+                preparedInsert = connection.prepareStatement(insert);
             }
             preparedInsert.setString(1, tfDate.getText());
 //             System.out.println(systems[0][1]);
-//           System.out.println(cbSystem.getSelectedIndex());
-            preparedInsert.setInt(2, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+//           System.out.println(cbIrenginys.getSelectedIndex());
+            preparedInsert.setInt(2, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
             preparedInsert.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
             preparedInsert.setString(4, taMessage.getText());
              if (preparedInsert.executeUpdate() == 1) {
@@ -454,34 +345,13 @@ public class TP extends Darbai {
     }
 
 
-//    private void delete() {
-//	int row;
-//	row = table.getSelectedRow();
-//	if (row >= 0) {
-//	    try {
-//		if (preparedDelete == null) {
-//		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
-//		}
-//// ID, IT, Nr, Pavadinimas, Sistema
-//		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
-//		if (preparedDelete.execute()) {
-//		    filter();
-//		}
-//	    } catch (SQLException ex) {
-//		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-//	    }
-//	}  else {
-//	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-//	}
-//    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 	String derBefehl;
 	derBefehl = e.getActionCommand();
 	switch (derBefehl) {
 	    case "all":
-		filter_all();
+		filter(select);
 		break;
 	    case "update":
 		update();
@@ -497,28 +367,25 @@ public class TP extends Darbai {
     }
 
     @Override
-    public void valueChanged(ListSelectionEvent lse) {
-	selectedRow = table.getSelectedRow();
- 	if (selectedRow >= 0) {
-            tfDate.setText(table.getValueAt(selectedRow, 1).toString());
-	    setComboBoxItem(cbSystem, systems[1], (String) table.getValueAt(selectedRow, 2));
-	    setComboBoxItem(cbTPtype, tptypes[1], (String) table.getValueAt(selectedRow, 3));
-	    taMessage.setText((String) table.getValueAt(selectedRow, 4));
-            tfDate.setToolTipText(date.getWeekday(tfDate.getText())); //tfDate.repaint();
-        }
+    public void mouseClicked(MouseEvent me) {
+	if (me.getComponent().equals(tfDate) & me.getClickCount() == 2) {
+	    setCurrTime();
+	}
+	if (me.getComponent().equals(table)) {
+            row = table.getSelectedRow();
+            if (row >= 0) {
+                tfDate.setText(table.getValueAt(row, 1).toString());
+                setComboBoxItem(cbIrenginys, systems[1], (String) table.getValueAt(row, 2));
+                setComboBoxItem(cbTPtype, tptypes[1], (String) table.getValueAt(row, 3));
+                taMessage.setText((String) table.getValueAt(row, 4));
+                tfDate.setToolTipText(date.getWeekday(tfDate.getText())); //tfDate.repaint();
+            }
+	}
     }
-
 
 
     
     
 }
-//	int zeile, spalte;
-//	zeile = table.getSelectedRow();
-//	spalte = table.getSelectedColumn();
-//	if (lse.getValueIsAdjusting()) {
-//	    table.setValueAt((String.valueOf(table.getValueAt(zeile, spalte)).replace(",", ".")), zeile, spalte);
-//	}
-
 
 //	tableModel = new DefaultTableModel(new Object[]{"", "Datum", "<html>Fett<br>%</hmtl>", "<html>Muskeln<br>%</html>", "<html>Wasser<br>%</html>", "<html>Knochen<br>kg</html>", "<html>Masse<br>kg</html>", "<html>Energie0<br>kcal</html>", "<html>Energie1<br>kcal</html>", "<html>Bauch<br>cm</html>", "<html>Oberarm<br>cm</html>", "<html>Unterarm<br>cm</html>", "<html>Ober-<br>schenkel<br>cm</html>", "<html>Unter-<br>schenkel<br>cm</html>", "<html>Brust<br>cm</html>", "<html>Fettmasse<br>kg</html>", "<html>Muskel-<br>masse<br>kg</html>"}, 0);

@@ -15,8 +15,8 @@ public class MainFrameP extends MainFrame {
  
     protected MainFrameP(String host, int size) {
 	super(host, size);
- 	panelWorks = new WorksP(connection, fontsize);
-	tabbedpane.addTab("Darbai", panelWorks);
+// 	panelWorks = new WorksP(connection, fontsize);
+//	showWorks();
     }
 
     @Override
@@ -71,33 +71,53 @@ public class MainFrameP extends MainFrame {
 	menu_bar = new JMenuBar();
 
 	menuDatabase = new JMyMenu("Duombazė", fontsize);
-	menuItem_connect = new JMyMenuItem("Prisijungti", fontsize);
-	menuItem_connect.addActionListener(this);
-	menuItem_connect.setActionCommand("connect");
-	menItem_disconnect = new JMyMenuItem("Atsijungti", fontsize);
-	menItem_disconnect.setActionCommand("disconnect");
-	menItem_disconnect.addActionListener(this);
-	menuDatabase.add(menuItem_connect);
-	menuDatabase.add(menItem_disconnect);
+	miConnect = new JMyMenuItem("Prisijungti", fontsize);
+	miConnect.addActionListener(this);
+	miConnect.setActionCommand("connect");
+	miDisconnect = new JMyMenuItem("Atsijungti", fontsize);
+	miDisconnect.setActionCommand("disconnect");
+	miDisconnect.addActionListener(this);
+	menuDatabase.add(miConnect);
+	menuDatabase.add(miDisconnect);
 	menu_bar.add(menuDatabase);
         
 	menuTabs = new JMyMenu("Kortelės", fontsize);
-	menuItemWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
-	menuItemWorks.addActionListener(this);
-	menuItemWorks.setActionCommand("works");
-	menuItemWorks.setSelected(true);
-	menuTabs.add(menuItemWorks);
+	mcbWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
+	mcbWorks.addActionListener(this);
+	mcbWorks.setActionCommand("works");
+	mcbWorks.setSelected(true);
+	menuTabs.add(mcbWorks);
+        mcbLiftai = new JMyCheckBoxMenuItem("Liftai", fontsize);
+        mcbLiftai.addActionListener(this);
+        mcbLiftai.setActionCommand("liftai");
+	menuTabs.add(mcbLiftai);
+        mcbTP = new JMyCheckBoxMenuItem("TP", fontsize);
+        mcbTP.addActionListener(this);
+        mcbTP.setActionCommand("tp");
+        menuTabs.add(mcbTP);
 	menu_bar.add(menuTabs);
         
+// _______________Tinklai_______________
+        menuTinklai = new JMyMenu("Tinklai", fontsize);
+        mcbAdresai = new JMyCheckBoxMenuItem("Adresai", fontsize);
+        mcbAdresai.addActionListener(this);
+        mcbAdresai.setActionCommand("adresai");
+        menuTinklai.add(mcbAdresai);
+        mcbPotinkliai = new JMyCheckBoxMenuItem("Potinkliai", fontsize);
+        mcbPotinkliai.addActionListener(this);
+        mcbPotinkliai.setActionCommand("potinkliai");
+        menuTinklai.add(mcbPotinkliai);
+	menuTabs.add(menuTinklai);
+
         menuHelp = new JMyMenu("Pagalba", fontsize);
-        menuItemHelp = new JMyMenuItem("Aprašymas", fontsize);
-        menuItemHelp.addActionListener(this);
-        menuItemHelp.setActionCommand("help");
-        menuHelp.add(menuItemHelp);
-	menuItemAbout = new JMyMenuItem("Versija", fontsize);
-	menuItemAbout.addActionListener(this);
-	menuItemAbout.setActionCommand("about");
-	menuHelp.add(menuItemAbout);
+        miHelp = new JMyMenuItem("Aprašymas", fontsize);
+        miHelp.addActionListener(this);
+        miHelp.setActionCommand("help");
+        menuHelp.add(miHelp);
+	miAbout = new JMyMenuItem("Versija", fontsize);
+	miAbout.addActionListener(this);
+	miAbout.setActionCommand("about");
+	menuHelp.add(miAbout);
 
 	menu_bar.add(menuHelp);
         

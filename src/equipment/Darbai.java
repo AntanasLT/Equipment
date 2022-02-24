@@ -7,6 +7,8 @@ package equipment;
 
 import datum.Datum;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,6 +18,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,32 +32,29 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
  * @author a
  */
-public class Darbai extends JPanel implements ActionListener, ListSelectionListener, MouseListener {
+public class Darbai extends JPanel implements ActionListener, MouseListener {
 
-    private static final String PREPARE_SELECT_ALL = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ORDER BY d.ID DESC LIMIT 50";
-    private static final String PREPARE_SELECT = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID";
-    private static final String PREPARE_INFO = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE dt.ID = 6 ORDER BY d.ID DESC";
-//    private static final String PREPARE_INFO_ID = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Busena = 5 AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID";
-    private static final String PREPARE_UNFINISHED = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE ORDER BY d.ID DESC";
-    private static final String PREPARE_UNFINISHED_ID = "SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID DESC";
-    private static final String PREPARE_UPDATE = "UPDATE Darbai SET Data = ?, IDPr = ?,  Sistema = ?, Irenginys = ?, Darbas = ?, Pavadinimas = ?, Pastabos = ?, Baigta = ? WHERE ID = ?";
-    private static final String PREPARE_UPDATE_FINISH = "UPDATE Darbai SET Baigta = TRUE WHERE ID = ? OR IDpr = ?";
-    private static final String PREPARE_INSERT = "INSERT INTO Darbai (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String PREPARE_SELECT_ALL = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ORDER BY d.ID DESC LIMIT 50";
+    private static final String PREPARE_SELECT = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ";
+    private static final String PREPARE_INFO = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE dt.ID = 6 ORDER BY d.ID DESC";
+    private static final String PREPARE_UNFINISHED = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE ORDER BY d.ID DESC";
+//    private static final String PREPARE_UNFINISHED_ID = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID DESC";
+    private static final String PREPARE_UPDATE = "UPDATE Darbai SET Laikas = ?, IDPr = ?,  Sistema = ?, Irenginys = ?, Darbas = ?, Busena = ?, Pastabos = ?, Baigta = ? WHERE ID = ?";
+    private static final String PREPARE_FINISHED = "UPDATE Darbai SET Laikas = Laikas, Baigta = TRUE WHERE ID = ? OR IDpr = ?";
+    private static final String PREPARE_INSERT = "INSERT INTO Darbai (IDPr, Vartotojas, Laikas, Sistema, Irenginys, Darbas, Busena, Pastabos, Baigta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 //    private static final String PREPARE_SELECT = "";
     private static final String PREPARE_DELETE = "DELETE FROM Darbai WHERE ID = ?";
-    private static final String ID = "ID";
+    protected static final String ID = "ID";
     private static final String ID_PR = "Tąsa";
     private static final String USER = "Vartotojas";
-    private static final String DATA = "Data";
+    private static final String DATA = "Laikas";
     private static final String SISTEMA = "Sistema";
     private static final String IRENGINYS = "Irenginys";
     private static final String DARBAS = "Darbas";
@@ -59,43 +62,54 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
     private static final String APRASYMAS = "Aprašymas";
     private static final int BAIGTA = 3;
     private static final int SUSIPAZINAU = 5;
+    protected static String LIMIT = "50";
+    private static final String TABLE_TOOLTIP = "Dvigubas spragtelėjimas išfiltruoja susijusius įrašus";
 
 
     ConnectionEquipment connection;
     Datum date;
-    protected DefaultTableModel tableModel;
+    protected DefaultTableModel tableModel, tableModelElevators;
     GridBagConstraints gbc;
-    JCheckBox chDate, chSystem, chDevice, chWorktype, chMessage;
+    JCheckBox chDate, chSystem, chDevice, chWorktype;
     private JCheckBox chState;
-    JLabelRechts lMessage, lDate, lDevice, lSystem, lWork, lIDpr, lFilters;
+    JLabelLeft lMessage;
+    JLabelRechts lDate, lDevice, lSystem, lWork, lIDpr, lFilters;
     protected JMyButton bDelete, bAdd, btChange, btAcknowl, btFilter, btUnfinished, btAll, btInfo;
+    JMyCheckBox chMessage;
     JMyComboBox cbWorktype, cbState;
-    JMyComboBox cbSystem;
+    JMyComboBox cbIrenginys;
     protected JPanel pInput, pnFIlterButtons, pFields;
     JPanel pEditButtons, pMessage;
     protected PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete, preparedFilter, preparedUpdateFinish;
     JRadioButton radioButton1;
-    JScrollPane scrPaneTable, scrPaneMessage;
-    JTable table;
+    JScrollPane scrTable, scrMessage;
+    JTable table, tableElevators;
     JMyTextField tfDate, fName, tfIDpr, tfID;
-    JMyTextArea taMessage;
+    JMyTextArea_monospaced taMessage;
+    JMyMenuItem menuItemLiftai;
+    JMyPopupMenu popupLiftai;
+    JOptionPane elevatorSelectionPane;
 
-    int selectedRow, fontsize;
+    int row, fontsize;
+    int[] table_column_width;
     String user, message;
     String[][] systems, users;
     private String[][] states, worktypes;
+    String[] table_columns;    
     Font font;
+    protected String select, delete, insert, tableTooltip;
  
 
 
-    public Darbai(ConnectionEquipment the_connection, int size) {
+    protected Darbai(ConnectionEquipment the_connection, int size) {
         fontsize = size;
 	connection = the_connection;
-	init();
     }
 
     protected void init() {
         font = new Font("Arial", Font.PLAIN, fontsize);
+        table_columns = new String[]{ID, ID_PR, USER, DATA, SISTEMA, IRENGINYS, DARBAS, BUSENA, APRASYMAS};
+        table_column_width = new int[]{4*fontsize, 4*fontsize, 8*fontsize, 12*fontsize, 7*fontsize, 16*fontsize, 16*fontsize, 16*fontsize, 41*fontsize};
 	if (connection != null) {
 	    try {
 		users = connection.get_users();
@@ -104,24 +118,28 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	    }
 	    date = new Datum();
-	    init_components();
+            setLayout(new BorderLayout());
+            getSystems();
+            getWorktypes();
+            setConstants();
+            getStates();
+            createTable();
+            createPanelInput();
+            add(pInput, BorderLayout.NORTH);
+            add(scrTable, BorderLayout.CENTER);
+            add(lMessage, BorderLayout.SOUTH);
+            setVisible(true);
 	} else {
 	    JOptionPane.showMessageDialog(this, "Nerisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
     }
     
-    protected void init_components() {
-	setLayout(new BorderLayout());
-	getSystems();
-	getWorktypes();
-	getStates();
-	createTable();
-	createPanelInput();
-	add(pInput, BorderLayout.NORTH);
-	add(scrPaneTable, BorderLayout.CENTER);
-	add(lMessage, BorderLayout.SOUTH);
-	setVisible(true);
+    protected void setConstants(){
+	select = PREPARE_SELECT_ALL;
+        insert = PREPARE_INSERT;
+        tableTooltip = TABLE_TOOLTIP;
     }
+    
 
     protected void createPanelInput() {
         pInput = new JPanel(new BorderLayout());
@@ -129,15 +147,14 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
         pInput.add(pFields, BorderLayout.NORTH);
         createPanelFilterButtons();
         pInput.add(pnFIlterButtons, BorderLayout.SOUTH);
-        lMessage = new JLabelRechts(fontsize);
-//        updateComboBoxes();
+        lMessage = new JLabelLeft(fontsize);
     }
 
     protected void createPanelMessages() {
-	pMessage = new JPanel(new GridLayout(2, 1));
-	lMessage = new JLabelRechts("Aprašymas", fontsize);
-	chMessage = new JCheckBox();
-	pMessage.add(lMessage);
+	pMessage = new JPanel(new GridLayout(2, 1, 2, 2));
+//	lMessage = new JLabelLeft("Aprašymas", fontsize);
+	chMessage = new JMyCheckBox("Aprašymas", false, fontsize);
+//	pMessage.add(lMessage);
 	pMessage.add(chMessage);
     }
 
@@ -145,13 +162,16 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	pnFIlterButtons = new JPanel();
 	btAll = new JMyButton("Naujausieji", fontsize);
 	btAll.setActionCommand("all");
+        btAll.setToolTipText(LIMIT + " naujausiųjų");
 	btAll.addActionListener(this);
 	pnFIlterButtons.add(btAll);
 	btUnfinished = new JMyButton("Nebaigtieji", fontsize);
+        btUnfinished.setForeground(Color.RED);
 	btUnfinished.setActionCommand("unfinished");
 	btUnfinished.addActionListener(this);
 	pnFIlterButtons.add(btUnfinished);
 	btInfo = new JMyButton("Info", fontsize);
+        btInfo.setForeground(Color.MAGENTA);
 	btInfo.setActionCommand("info");
 	btInfo.addActionListener(this);
 	pnFIlterButtons.add(btInfo);
@@ -164,12 +184,17 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
     protected void createPanelEditButtons() {
 	pEditButtons = new JPanel(new GridLayout(3, 1));
 	btChange = new JMyButton("Išsaugoti", fontsize);
+        btChange.setForeground(Color.ORANGE);
+        btChange.setToolTipText("Išsaugomi pakeitimai");
 	btChange.setActionCommand("update");
 	btChange.addActionListener(this);
 	bAdd = new JMyButton("Naujas", fontsize);
+        bAdd.setToolTipText("Sukuriamas naujas įrašas iš laukuose esančių duomenų");
+        bAdd.setForeground(Color.BLUE);
 	bAdd.setActionCommand("insert");
 	bAdd.addActionListener(this);
 	btAcknowl = new JMyButton("Susipažinau", fontsize);
+        btAcknowl.setForeground(Color.GREEN);
 	btAcknowl.setActionCommand("acknowledge");
 	btAcknowl.addActionListener(this);
 	pEditButtons.add(btChange);
@@ -194,14 +219,15 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	gbc.gridx = 0;
 	gbc.gridy = 0;
 	gbc.weightx = 0;
-        lDate = new JLabelRechts("Data:", fontsize);
+	lDate = new JLabelRechts("Laikas:", fontsize);
 	pFields.add(lDate, gbc);
 
 	gbc.gridx = 1;
 	gbc.weightx = 0;
-	tfDate = new JMyTextField(date.getToday(), 10, fontsize);
+	tfDate = new JMyTextField("", 14, fontsize);
+	setCurrTime();
 	tfDate.addMouseListener(this);
-//	tfDate.setToolTipText("Dvigubas spragtelėjimas šiandienos datai");
+	tfDate.setToolTipText("Dukart spragt – dabartinis laikas");
 	pFields.add(tfDate, gbc);
 
 	gbc.gridx = 2;
@@ -211,19 +237,26 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
 	gbc.gridx = 3;
 	gbc.weightx = 0.5;
-	cbSystem = new JMyComboBox(systems[1], fontsize);
-	pFields.add(cbSystem, gbc);
+	cbIrenginys = new JMyComboBox(systems[1], fontsize);
+	pFields.add(cbIrenginys, gbc);
 //
 	gbc.gridx = 4;
 	gbc.weightx = 0;
 	lDevice = new JLabelRechts("Įrenginys", fontsize);
 	pFields.add(lDevice, gbc);
-
+        
 	gbc.gridx = 5;
 	gbc.weightx = 0.5;
 	fName = new JMyTextField(15, fontsize);
+        fName.setToolTipText("Šiam laukui yra kontekstinis meniu (liftų sąrašas)");
 	fName.addMouseListener(this);
 	pFields.add(fName, gbc);
+        popupLiftai = new JMyPopupMenu(fontsize);
+        menuItemLiftai = new JMyMenuItem("Liftų sąrašas", fontsize);
+        menuItemLiftai.setActionCommand("liftu_sarasas");
+        menuItemLiftai.addActionListener(this);
+        popupLiftai.add(menuItemLiftai);
+        fName.setComponentPopupMenu(popupLiftai);
 //
 	gbc.gridx = 6;
 	gbc.weightx = 0;
@@ -308,34 +341,22 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
 	gbc.gridx = 1;
 //	gbc.weightx = 0.5;
-        gbc.gridwidth = 9;
-	taMessage = new JMyTextArea(10, 45, fontsize);
-	taMessage.setFocusAccelerator('A');
+        gbc.gridwidth = 10;
+	taMessage = new JMyTextArea_monospaced(10, 45, fontsize);
+//	taMessage.setFocusAccelerator('A');
         taMessage.addMouseListener(this);
 	taMessage.setLineWrap(true);
 	taMessage.setWrapStyleWord(true);
 //        taMessage.setToolTipText("Dvigubas spragtelėjimas ištrina tekstą iš šio lauko");
-	scrPaneMessage = new JScrollPane(taMessage);
-	pFields.add(scrPaneMessage, gbc);
+	scrMessage = new JScrollPane(taMessage);
+	pFields.add(scrMessage, gbc);
 	
-	gbc.gridx = 12;
-	gbc.gridwidth = 2;
-	gbc.gridx = 10;
-	gbc.gridwidth = 2;
+//	gbc.gridx = 12;
+//	gbc.gridwidth = 2;
+	gbc.gridx = 11;
+	gbc.gridwidth = 1;
 	createPanelEditButtons();
 	pFields.add(pEditButtons, gbc);
-//
-//
-//
-//// Η τρίτη σειρά
-//	gbc.gridy = 2;
-//	gbc.gridx = 0;
-//	pFields.add(labelNotes, gbc);
-//	gbc.gridx = 1;
-//	gbc.gridwidth = 8;
-//	pFields.add(textAreaNotes, gbc);
-//
-//
     }
 
     public void setConnection(ConnectionEquipment the_connection) {
@@ -353,7 +374,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     protected void getSystems() {
 	try {
-	    systems = connection.getList("Sistemos");
+	    systems = connection.getList("Sistemos", "ID", "Pavadinimas", "Pavadinimas");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -361,7 +382,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     private void getWorktypes() {
 	try {
-	    worktypes = connection.getList("Darbotipis");
+	    worktypes = connection.getList("Darbotipis", "ID", "Pavadinimas", "Pavadinimas");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -369,63 +390,36 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 
     protected void getStates() {
 	try {
-	    states = connection.getList("Busenos");
+	    states = connection.getList("Busenos", "ID", "Pavadinimas", "Pavadinimas");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
+    
+    protected String replaceComma(String s){
+        return s.replace(',', '.');
+    }
 
-    private void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{ID, ID_PR, USER, DATA, SISTEMA, IRENGINYS, DARBAS, BUSENA, APRASYMAS}, 0);
+    protected void createTable() {
+	tableModel = new DefaultTableModel(table_columns, 0);
 	table = new JTable(tableModel);
         table.setFont(font);
         table.getTableHeader().setFont(font);
 	table.setDefaultEditor(Object.class, null);
         table.addMouseListener(this);
-        table.setToolTipText("Dvigubas spragtelėjimas išfiltruoja susijusius įrašus");
-//	table.setAutoCreateRowSorter(true);
-	table.getSelectionModel().addListSelectionListener(this);
-	setColumnsWidths();
-//	setzt_dieUeberschriften();
-	scrPaneTable = new JScrollPane(table);
-    }
-
-    private void setColumnsWidths() {
-	TableColumn column;
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            column = table.getColumnModel().getColumn(i);
-            switch (tableModel.getColumnName(i)) {
-                case BUSENA:
-                case DARBAS:
-                case USER:
-                    column.setMaxWidth(120);
-                    column.setPreferredWidth(100);
-                    break;
-                case ID:
-                case ID_PR:
-                    column.setMaxWidth(60);
-                    column.setPreferredWidth(50);
-                    break;
-                case SISTEMA:
-                case IRENGINYS:
-                    column.setMaxWidth(300);
-                    column.setPreferredWidth(150);
-                    break;
-                case APRASYMAS:
-                    column.setPreferredWidth(500);
-                    break;
-                default:
-                    column.setMaxWidth(200);
-                    column.setPreferredWidth(100);
-                    break;
-            }
+        if (!tableTooltip.isEmpty()) {
+            table.setToolTipText(tableTooltip);
         }
+	table.setAutoCreateRowSorter(true);
+	setColumnsWidths();
+	scrTable = new JScrollPane(table);
     }
 
-//    private void setzt_dieUeberschriften(){
-//	table.getTableHeader().setPreferredSize(new Dimension(table.getWidth(), 60));
-//        table.getColumnModel().getColumn(1).setHeaderValue("<html>Der<br>Typ</html>");
-//    }
+    protected void setColumnsWidths() {
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setPreferredWidth(table_column_width[i]);
+            }
+    }
 
     private void filter_all() {
         Object[] row;
@@ -434,7 +428,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
         ResultSet resultset;
 	try {
 	    if (preparedSelectAll == null) {
-		preparedSelectAll = connection.prepareStatement(PREPARE_SELECT_ALL);
+		preparedSelectAll = connection.prepareStatement(select);
 	    }
 	    resultset = preparedSelectAll.executeQuery();
 	    colcount = tableModel.getColumnCount();
@@ -451,25 +445,14 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	}
     }
     
-    protected void filter_unfinished() {
+    private void filter_unfinished() {
         Object[] row;
-	boolean idpr_ismepty;
 	int i, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
-	idpr_ismepty = tfIDpr.getText().isEmpty();
 	try {
-	    if (idpr_ismepty) {
 		preparedFilter = connection.prepareStatement(PREPARE_UNFINISHED);
 		resultset = preparedFilter.executeQuery();
-	    }
-	    else {
-		i = Integer.valueOf(tfIDpr.getText());
-		preparedFilter = connection.prepareStatement(PREPARE_UNFINISHED_ID);
-		preparedFilter.setInt(1, i);
-		preparedFilter.setInt(2, i);
-		resultset = preparedFilter.executeQuery();
-	    }
 	    colcount = tableModel.getColumnCount();
 	    row = new Object[colcount];
 	    while( resultset.next() ){
@@ -485,25 +468,14 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	}
     }
     
-    protected void filter_info() {
+    private void filter_info() {
         Object[] row;
-//	boolean idpr_ismepty;
 	int i, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
-//	idpr_ismepty = tfIDpr.getText().isEmpty();
 	try {
-//	    if (idpr_ismepty) {
 		preparedFilter = connection.prepareStatement(PREPARE_INFO);
 		resultset = preparedFilter.executeQuery();
-//	    }
-//	    else {
-//		i = Integer.valueOf(tfID.getText());
-//		preparedFilter = connection.prepareStatement(PREPARE_INFO_ID);
-//		preparedFilter.setInt(1, i);
-//		preparedFilter.setInt(2, i);
-//		resultset = preparedFilter.executeQuery();
-//	    }
 	    colcount = tableModel.getColumnCount();
 	    row = new Object[colcount];
 	    while( resultset.next() ){
@@ -513,7 +485,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 		tableModel.addRow(row);
 	    }
 	    resultset.close();
-	    preparedFilter.close();
+//	    preparedFilter.close();
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -528,25 +500,26 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
         ResultSet resultset;
 	try {
 	    sb = prepareFilter();
-	    preparedFilter = connection.prepareStatement(sb.toString());
-	    preparedFilter_setPrepared(sb);
-	    resultset = preparedFilter.executeQuery();
-	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
-	    while( resultset.next() ){
-		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
-		}
-		tableModel.addRow(row);
-	    }
-	    resultset.close();
-	    preparedFilter.close();
+            preparedFilter = connection.prepareStatement(sb.toString());
+            preparedFilter_setPrepared(sb);
+            resultset = preparedFilter.executeQuery();
+            colcount = tableModel.getColumnCount();
+            row = new Object[colcount];
+            while (resultset.next() ){
+                for (i = 0; i <= colcount - 1; i++) {
+                    row[i] = resultset.getObject(i + 1);
+                }
+                tableModel.addRow(row);
+            }
+            resultset.close();
+//            if (sb != null) {
+//            }
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
-//SELECT d.ID, d.IDpr, v.Vardas, d.Data, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID
+//SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID
     protected StringBuilder prepareFilter() {
 	StringBuilder sb;
 	sb = new StringBuilder(PREPARE_SELECT);
@@ -554,7 +527,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
             if (chDate.isSelected() || chDevice.isSelected() || chState.isSelected() || chSystem.isSelected() || chWorktype.isSelected() || chMessage.isSelected()) {
                 sb.append(" WHERE");
                 if (chDate.isSelected()) {
-                    sb.append(" d.Data LIKE ?");
+		    sb.append(" d.Laikas LIKE ?");
                 }
                 if (chSystem.isSelected()) {
                     appendAND(sb);
@@ -580,12 +553,12 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
                 if (!tfIDpr.getText().isEmpty()) {
                     sb.append(" WHERE d.ID = ? OR d.IDpr = ?");                      
                 } else {
-                    sb.append(" WHERE d.Sistema != 0");
+                    sb.append(" WHERE d.Sistema = -1");
+                    JOptionPane.showMessageDialog(this, "Neįvestas nė vienas filtravimo kriterijus", "Nepavyko", JOptionPane.INFORMATION_MESSAGE);
                 } 
             }
         }
 	sb.append(" ORDER BY d.ID DESC");
-//	System.out.println(sb.toString());
 	return sb;
     }
     
@@ -602,7 +575,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
         } else {
             id = 0;
         }
-	i = sb.indexOf(" d.Data LIKE ?");
+	i = sb.indexOf(" d.Laikas LIKE ?");
 	if (i >= 0) {
 	    n++;
 	    preparedFilter.setString(n, "%".concat(tfDate.getText().concat("%")));
@@ -610,7 +583,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	i = sb.indexOf(" d.Sistema = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));	    
+	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));	    
 	}
 	i = sb.indexOf(" d.Irenginys LIKE ?");
 	if (i >= 0) {
@@ -648,13 +621,6 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	
     }
 
-//    private void clearCheckboxes() {
-//	chDate.setSelected(false);
-//	chDevice.setSelected(false);
-//	chState.setSelected(false);
-//	chSystem.setSelected(false);
-//	chWorktype.setSelected(false);
-//    }
 
     protected void setLikeFilter() {
 	if (chDevice.isSelected()) {
@@ -688,7 +654,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	    preparedInsert.setInt(1, get_int(tfIDpr.getText()));
 	    preparedInsert.setInt(2, id);
 	    preparedInsert.setString(3, tfDate.getText());
-	    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+	    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
 	    preparedInsert.setString(5, fName.getText());
 	    preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
 	    preparedInsert.setInt(7, Integer.valueOf(states[0][cbState.getSelectedIndex()]));
@@ -702,37 +668,32 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 		update_finish(idpr);
 	    }
 	} catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida (insert)!", JOptionPane.ERROR_MESSAGE);
 	    }
 //	}
     }
 
     private void update_acknowledge() {
 	int id, idpr;
-        String newmessage;
+//        String newmessage;
         id = get_userid_by_name(connection.get_username());
         if (id < 0) {
             JOptionPane.showMessageDialog(this, "Tokio vartotojo nėra.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
 	try {
 	    idpr = get_int(tfID.getText(), tfIDpr.getText());
-            newmessage = taMessage.getText();
+//            newmessage = taMessage.getText();
 	    if (preparedInsert == null) {
 		preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 	    }
 //(IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta)
 	    preparedInsert.setInt(1, get_int(tfID.getText()));
 	    preparedInsert.setInt(2, id);
-	    preparedInsert.setString(3, date.getToday());
-	    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+	    preparedInsert.setString(3, date.getToday() + " " + date.getTime());
+	    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
 	    preparedInsert.setString(5, fName.getText());
 	    preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
 	    preparedInsert.setInt(7, SUSIPAZINAU);
-            if (message.equals(newmessage)) {
-                message = "";
-            } else {
-                message = newmessage;
-            }
 	    preparedInsert.setString(8, message);
 	    preparedInsert.setBoolean(9, true);
 	    if (preparedInsert.executeUpdate() == 1) {
@@ -746,7 +707,7 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
     }
     
 //    (Data, IDpr, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta, ID)
-    private void update() {
+    protected void update() {
 	int row, state, idpr;
 	boolean clossed;
 	row = table.getSelectedRow();
@@ -754,44 +715,46 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	    try {
 		idpr = get_int(tfIDpr.getText());
 		state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
-		if (preparedUpdate == null) {
-		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
-		};
-		preparedUpdate.setString(1, tfDate.getText());
-		preparedUpdate.setInt(2, idpr);
-		preparedUpdate.setInt(3, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
-		preparedUpdate.setString(4, fName.getText());
-		preparedUpdate.setInt(5, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
-		preparedUpdate.setInt(6, state);
-		preparedUpdate.setString(7, taMessage.getText());
 		clossed = state == BAIGTA;
-		preparedUpdate.setBoolean(8, clossed);
-		preparedUpdate.setInt(9, (int) table.getValueAt(row, 0));
-		if (preparedUpdate.executeUpdate() == 1) {
-		    filter_all();
-		}
+                if (preparedUpdate == null) {
+                    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
+                };
+                
+                preparedUpdate.setString(1, tfDate.getText());
+                preparedUpdate.setInt(2, idpr);
+                preparedUpdate.setInt(3, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+                preparedUpdate.setString(4, fName.getText());
+                preparedUpdate.setInt(5, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
+                preparedUpdate.setInt(6, state);
+                preparedUpdate.setString(7, taMessage.getText());
+                preparedUpdate.setBoolean(8, clossed);
+                preparedUpdate.setInt(9, (int) table.getValueAt(row, 0));
+                preparedUpdate.executeUpdate();    
 		if (clossed) {
 		    update_finish(idpr);
 		}
+                filter();
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
+        else {
+            JOptionPane.showMessageDialog(this, "Nepažymėta keičiama eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
+        }    
+        
     }
     
     private void update_finish(int idpr) {
 	if (idpr > 0) {
 	    try {
 		if (preparedUpdateFinish == null) {
-		    preparedUpdateFinish = connection.prepareStatement(PREPARE_UPDATE_FINISH);
+		    preparedUpdateFinish = connection.prepareStatement(PREPARE_FINISHED);
 		}
-//		System.out.println(idpr);
-		preparedUpdateFinish.setInt(1, idpr);
+                preparedUpdateFinish.setInt(1, idpr);
 		preparedUpdateFinish.setInt(2, idpr);
 		preparedUpdateFinish.executeUpdate();
-//		System.out.println(preparedUpdateFinish.executeUpdate());
 	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida (update_finish)!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
     }
@@ -837,28 +800,6 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-//	int [] rows;
-//        int l, i;
-//	StringBuilder statement;
-//	rows = table.getSelectedRows();
-//        l = rows.length;
-//	if (l >= 0) {
-//	    statement = new StringBuilder(DELETE);
-//            for (i = 1; i <= l; i++) {
-//                statement.append(table.getValueAt(rows[i-1], 0));
-//                if (i < l) {
-//                    statement.append(" OR ID = ");
-//                }
-//            }
-//	    try {
-//		if (connection.executeUpdate(statement.toString()) == 1) {
-//		    filter_all();
-//                    System.out.println();
-//		};
-//	    } catch (SQLException ex) {
-//		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-//	    }
-//	}
 
     private String getTableCellString(int row, int col) {
 	Object o;
@@ -870,14 +811,14 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 	}
     }
 
-    protected void setComboBoxItem(JComboBox cb, String[] s, String name) {
+    protected void setComboBoxItem(JComboBox cb, String[] cbItems, String item) {
 	int i, n;
 	boolean found;
 	i = 0;
 	found = false;
 	n = cb.getItemCount();
-	while (i <= n & !found) {
-	    if (s[i].equals(name)) {
+	while (i < n & !found) {
+	    if (cbItems[i].equals(item)) {
 		found = true;
 		cb.setSelectedIndex(i);
 	    }
@@ -906,6 +847,10 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
             id = -1;
         }
 	return id;
+    }
+
+    protected void setCurrTime() {
+	tfDate.setText(date.getToday() + " " + date.getTime());
 
     }
 
@@ -926,21 +871,97 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
     }
 
     private void enableChangeButton(boolean enabled) {
-//        tfDate.setEnabled(enabled);
-//        tfEquipment.setEnabled(enabled);
-//        tfIDpr.setEnabled(enabled);
-//        taMessage.setEnabled(enabled);
-//        cbState.setEnabled(enabled);
-//        cbSystem.setEnabled(enabled);
-//        cbWorkType.setEnabled(enabled);
         btChange.setEnabled(enabled);
     }
 
+
+    public void saveFile(String filename, String text) {
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(filename));
+            writer.write(text);
+            writer.close();
+            JOptionPane.showMessageDialog(this, "Įrašyta į failą " + filename);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void showElevators() {
+        JScrollPane spTable;
+        String SELECT = "SELECT RegNr, Vieta, Pavadinimas FROM Liftai";
+        String NR = "Reg. Nr.";
+        String VIETA = "Vieta";
+        String PAVADINIMAS = "Pavadinimas";
+	ResultSet resultset;
+	resultset = null;
+        elevatorSelectionPane = new JOptionPane(); 
+	tableModelElevators = new DefaultTableModel(new Object[]{NR, VIETA, PAVADINIMAS}, 0);
+	tableElevators = new JTable(tableModelElevators);
+	tableElevators.setFont(font);
+	tableElevators.getTableHeader().setFont(font);
+	tableElevators.setDefaultEditor(Object.class, null);
+        tableElevators.addMouseListener(this);
+	tableElevators.setAutoCreateRowSorter(true);
+	spTable = new JScrollPane(tableElevators);
+	    try {
+                resultset = connection.executeQuery(SELECT);
+	    } catch (SQLException ex) {
+		JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
+	    }
+	if (resultset != null) {
+	    try {
+                fillTable(resultset);
+		resultset.close();
+	    } catch (SQLException ex) {
+	JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
+	    }
+	}
+        if (elevatorSelectionPane.showConfirmDialog(this, spTable, "Parinkimas", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+            tableElevators.getSelectionModel().addListSelectionListener(elevListSelectionListener());
+            fName.setText(String.valueOf(elevatorSelectionPane.getValue()));
+        }
+        
+    }
+
+    private void fillTable(ResultSet rs) throws SQLException {
+	int i, colcount;
+        float sum;
+	Object[] row;
+	colcount = tableModelElevators.getColumnCount();
+	row = new Object[colcount];
+	while (rs.next()) {
+		for (i = 0; i <= colcount - 1; i++) {
+		    row[i] = rs.getObject(i + 1);
+		}
+		tableModelElevators.addRow(row);
+	    }
+    }
+
+    private void setSystem() {
+        cbIrenginys.setSelectedItem("Liftai");
+    }
+    
+    protected void openFile(String folder, String filename) {
+        try {
+            File file = new File(folder, filename);
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                throw new IOException(filename + ": nėra!");
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-	String derBefehl;
-	derBefehl = e.getActionCommand();
-	switch (derBefehl) {
+	String command;
+	command = e.getActionCommand();
+	switch (command) {
 	    case "update":
 		update();
 		break;
@@ -966,72 +987,57 @@ public class Darbai extends JPanel implements ActionListener, ListSelectionListe
 		delete();
 		filter_all();
 		break;
-//	    case "chDevice":
-//		setLikeFilter();
-//		break;
+	    case "liftu_sarasas":
+		showElevators();
+                setSystem();
+		break;
 	}
 
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent lse) {
-	selectedRow = table.getSelectedRow();
-	if (selectedRow >= 0) {
-	    if (!user.equals(table.getValueAt(selectedRow, 2))) {
-		enableChangeButton(false);
-	    } else {
-                enableChangeButton(true);
-	    }
-            message = getTableCellString(selectedRow, 8);
-            tfID.setText(getTableCellString(selectedRow, 0));
-	    tfIDpr.setText(getTableCellString(selectedRow, 1));
-	    tfDate.setText(getTableCellString(selectedRow, 3));
-	    setComboBoxItem(cbSystem, systems[1], getTableCellString(selectedRow, 4));
-	    fName.setText(getTableCellString(selectedRow, 5));
-	    setComboBoxItem(cbWorktype, worktypes[1], getTableCellString(selectedRow, 6));
-	    setComboBoxItem(cbState, states[1], getTableCellString(selectedRow, 7));
-	    taMessage.setText(message);
-	    }
-	}
-//	int zeile, spalte;
-//	zeile = table.getSelectedRow();
-//	spalte = table.getSelectedColumn();
-//	if (lse.getValueIsAdjusting()) {
-//	    table.setValueAt((String.valueOf(table.getValueAt(zeile, spalte)).replace(",", ".")), zeile, spalte);
-//	}
-//    }
+    private ListSelectionListener elevListSelectionListener() {
+        int row;
+        row = tableElevators.getSelectedRow();
+        if (row > 0) {
+            elevatorSelectionPane.setValue(tableElevators.getValueAt(row, 0) + " " + tableElevators.getValueAt(row, 1));
+        }
+        return null;
+    }
 
-//    private void updateComboBoxes() {
-//    }
+
     @Override
     public void mouseClicked(MouseEvent me) {
 	if (me.getComponent().equals(tfDate) & me.getClickCount() == 2) {
-	    tfDate.setText(date.getToday());
+	    setCurrTime();
 	}
         if (me.getComponent().equals(tfID)) {
           tfIDpr.setText(tfID.getText());
         }
-//	if (me.getComponent().equals(fName) & me.getClickCount() == 4) {
-//	    fName.setText("%%");
-//	}
 	if (me.getComponent().equals(tfIDpr)) {
           tfIDpr.setText("");
         }
-//	if (me.getComponent().equals(lFilters)) {
-//	    clearCheckboxes();
-//        }
-// 	if (me.getComponent().equals(taMessage)) {
-////	    if (me.getClickCount() == 2) {
-////		taMessage.setText("");
-////	    }
-//	    if (me.getClickCount() == 4) {
-//		taMessage.setText("%%");
-//	    }
-//	}
 	if (me.getComponent().equals(table) & me.getClickCount() == 2) {
 	    filter();
-        }	
-        
+        }
+	if (me.getComponent().equals(table)) {
+	row = table.getSelectedRow();
+            if (row >= 0) {
+                if (!user.equals(table.getValueAt(row, 2))) {
+                    enableChangeButton(false);
+                } else {
+                    enableChangeButton(true);
+                }
+                message = getTableCellString(row, 8);
+                tfID.setText(getTableCellString(row, 0));
+                tfIDpr.setText(getTableCellString(row, 1));
+                tfDate.setText(getTableCellString(row, 3));
+                setComboBoxItem(cbIrenginys, systems[1], getTableCellString(row, 4));
+                fName.setText(getTableCellString(row, 5));
+                setComboBoxItem(cbWorktype, worktypes[1], getTableCellString(row, 6));
+                setComboBoxItem(cbState, states[1], getTableCellString(row, 7));
+                taMessage.setText(message);
+            }
+        }
     }
 
     @Override

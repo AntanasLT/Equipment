@@ -6,6 +6,7 @@
 
 package equipment;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 /**
@@ -25,7 +26,10 @@ public class MainFrame_test extends MainFrame {
 	connection = new ConnectionEquipment(the_host, database, username);
 	try {
 	    labelMessage.setText(connection.connect(password));
-	} catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
+	} catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
+
+        
+//        } catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
 	    connection = null;
 	    password = "";
 	    labelMessage.setText(ex.getMessage());

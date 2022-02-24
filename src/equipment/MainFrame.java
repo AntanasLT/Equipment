@@ -7,22 +7,12 @@
 package equipment;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import static java.nio.file.StandardOpenOption.READ;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -40,72 +30,71 @@ public class MainFrame extends JFrame implements ActionListener{
     String the_host, password, username;
 
     public ConnectionEquipment connection;
-    Message message;
+//    Message message;
 
     public JTabbedPane tabbedpane;
-    Irangos_tipai panelEquipmentTypes;
-    Sistemos panelSystems;
-    Vartotojai panelUsers;
-    Darbu_rusys panelWorktypes;
+    
+    ID_auto panelKontrahentai;
+    ID_noauto panelStates, panelLocations, panelGen_busenos, panelWorktypes, panelJSG_vietos,panelEquipmentTypes, panelTPrusys, panelUsers, panelVeiklos;
+    IDString panelPotinkliai;
+    IDString_n panelSystems, panelIntroskopai, panelLiftai, panelRSCdarbai, panelDozimetrija;
+    ID_TextArea panelDarbeliai;
+    Biudzetas panelBiudzetas;
+    Sutartys panelSutartys;
+    Saskaitos panelSaskaitos;
+
     Darbai panelWorks;
     Turtas panelIT;
     TP panelTP;
-    Vietos panelLocations;
-    Generatoriai panelGeneratoriai;
-    Introskopai panelIntroskopai;
-    Gen_busenos panelGen_busenos;
-    Busenos panelStates;
-    Veiklos panelVeiklos;
+    Ataskaita_liftai fr_ataskaitos_liftai;
+    Liftu_darbai panelLiftu_darbai;
+    Tinklai panelAdresai;
+    JSG panelJSG;
     Help frHelp;
     protected About frAbout;
     
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
 // –––––––––––––––––––––––   
-    public JMyMenu menuDatabase;
-    public JMyMenuItem menuItem_connect, menItem_disconnect;
+    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miPlatus, miAtstata, miHelp, miAbout;
 // –––––––––––––––––––––––
-    public JMyMenu menuTabs, menuRSC;
+    public JMyMenu menuTabs, menuRSC, menuPagalbines, menuDatabase, menuIT, menuBuhalterija, menuIreginiai, menuAtaskaitos, menuLiftai, menuTinklai, menuVaizdas, menuHelp;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
-    public JMyCheckBoxMenuItem menuItemUsers, menuItemSystems, menuItemIT, menuItemWorks, menuItemStates, menuItemWorktypes, menuItemEquipmentTypes, menuItemTP, menuItemLocations,            menuItemGenerators, menuItemGeneratorStates, menuItemIntroscopes,
-            
-            menuItemCodes,
-	    
-	    menuItemContracts, menuItemAccounts,
-            menuItemPartners, menuItemBudget, menuItemOrders;
-// –––––––––––––––––––––––
-    public JMyMenu menuIT;
-    public JMyMenu menuIreginiai;
-    public JMyMenuItem menuItemBarcode;
-// –––––––––––––––––––––––    
-    public JMyMenu menuHelp;
-    public JMyMenuItem menuItemHelp, menuItemAbout;
+    public JMyCheckBoxMenuItem mcbWorks,  
+            mcbLiftai, mcbLiftu_darbai, 
+            mcbAdresai, mcbPotinkliai, 
+            mcbGenerators, mcbGeneratorStates, mcbIntroscopes, mcbDozimetrija, mcbJSG_vietos, mcbRSCdarbai,
+            mcbIT, mcbVeiklos, mcbDarbeliai, 
+            mcbUsers, mcbSystems, mcbWorktypes, mcbEquipmentTypes, mcbStates, mcbLocations,
+            mcbBiudzetas, mcbIslaidos, mcbSaskaitos, mcbSutartys, mcbKontrahentai, 
+            mcbTP, mcbTPrusys;
 // –––––––––––––––––––––––
     
     DialogPassword dialogPassword;
     protected JLabelLeft labelMessage;
 // –––––––––––––––––––––––
     public int fontsize;
+    private int window_width, window_heigth;
 // –––––––––––––––––––––––
 
     protected MainFrame(String host, int size) {
         fontsize = size;
         the_host = host;
 	connection = null;
-	tabbedpane = new JMyTabbedPane(fontsize);
-	init();
-//        panelWorks = new Works(connection);
-//	tabbedpane.addTab("Darbai", panelWorks);
-	add(tabbedpane, BorderLayout.CENTER);
-	add(labelMessage, BorderLayout.SOUTH);
 //	panelOutlays = new Accounts(connection);
     }
 	
-    private void init() {
+    public void init() {
 	password = "";
 	username = "";
 	setLayout(new BorderLayout());
+	tabbedpane = new JMyTabbedPane(fontsize);
+//	init();
+//        panelWorks = new Works(connection);
+//	tabbedpane.addTab("Darbai", panelWorks);
+	add(tabbedpane, BorderLayout.CENTER);
 	labelMessage = new JLabelLeft(fontsize);
+	add(labelMessage, BorderLayout.SOUTH);
 	addWindowListener(new WindowAdapter() {
 	    @Override
 	    public void windowClosing(WindowEvent e) {
@@ -120,124 +109,202 @@ public class MainFrame extends JFrame implements ActionListener{
 	menu_bar = new JMenuBar();
 //  _______________Duombazė_______________
 	menuDatabase = new JMyMenu("Duombazė", fontsize);
-	menuItem_connect = new JMyMenuItem("Prisijungti", fontsize);
-	menuItem_connect.addActionListener(this);
-	menuItem_connect.setActionCommand("connect");
-	menItem_disconnect = new JMyMenuItem("Atsijungti", fontsize);
-	menItem_disconnect.setActionCommand("disconnect");
-	menItem_disconnect.addActionListener(this);
-	menuDatabase.add(menuItem_connect);
-	menuDatabase.add(menItem_disconnect);
+	miConnect = new JMyMenuItem("Prisijungti", fontsize);
+	miConnect.addActionListener(this);
+	miConnect.setActionCommand("connect");
+	miDisconnect = new JMyMenuItem("Atsijungti", fontsize);
+	miDisconnect.setActionCommand("disconnect");
+	miDisconnect.addActionListener(this);
+	menuDatabase.add(miConnect);
+	menuDatabase.add(miDisconnect);
 	menu_bar.add(menuDatabase);
 //	menuData.addSeparator();
 
 //  _______________Kortelės_______________
 	menuTabs = new JMyMenu("Kortelės", fontsize);
-        menuItemWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
-	menuItemWorks.addActionListener(this);
-	menuItemWorks.setActionCommand("works");
-	menuTabs.add(menuItemWorks);
-	menuItemUsers = new JMyCheckBoxMenuItem("Vartotojai", fontsize);
-	menuItemUsers.addActionListener(this);
-	menuItemUsers.setActionCommand("users");
-	menuTabs.add(menuItemUsers);	
-	menuItemSystems = new JMyCheckBoxMenuItem("Sistemos", fontsize);
-	menuItemSystems.addActionListener(this);
-	menuItemSystems.setActionCommand("systems");
-	menuTabs.add(menuItemSystems);
-        menuItemWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys", fontsize);
-        menuItemWorktypes.addActionListener(this);
-        menuItemWorktypes.setActionCommand("worktypes");
-        menuTabs.add(menuItemWorktypes);
-        menuItemEquipmentTypes = new JMyCheckBoxMenuItem("Įrangos tipai", fontsize);
-        menuItemEquipmentTypes.addActionListener(this);
-        menuItemEquipmentTypes.setActionCommand("equipmenttypes");
-        menuTabs.add(menuItemEquipmentTypes);
-        menuItemStates = new JMyCheckBoxMenuItem("Būsenos", fontsize);
-        menuItemStates.addActionListener(this);
-        menuItemStates.setActionCommand("states");
-	menuTabs.add(menuItemStates);
-	menuItemLocations = new JMyCheckBoxMenuItem("Vietos", fontsize);
-	menuItemLocations.addActionListener(this);
-        menuItemLocations.setActionCommand("locations");
-        menuTabs.add(menuItemLocations);
+        mcbWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
+	mcbWorks.addActionListener(this);
+	mcbWorks.setActionCommand("works");
+	menuTabs.add(mcbWorks);
 	
-// _____________________________
-	menuTabs.addSeparator();
+// _______________Liftai_______________
+//	menuTabs.addSeparator();
+        menuLiftai = new JMyMenu("Liftai", fontsize);
+        mcbLiftai = new JMyCheckBoxMenuItem("Liftai", fontsize);
+        mcbLiftai.addActionListener(this);
+        mcbLiftai.setActionCommand("liftai");
+        menuLiftai.add(mcbLiftai);
+        mcbLiftu_darbai = new JMyCheckBoxMenuItem("Liftų darbai", fontsize);
+        mcbLiftu_darbai.addActionListener(this);
+        mcbLiftu_darbai.setActionCommand("liftu_darbai");
+        menuLiftai.add(mcbLiftu_darbai);
+	menuTabs.add(menuLiftai);
+        
+// _______________Tinklai_______________
+        menuTinklai = new JMyMenu("Tinklai", fontsize);
+        mcbAdresai = new JMyCheckBoxMenuItem("Adresai", fontsize);
+        mcbAdresai.addActionListener(this);
+        mcbAdresai.setActionCommand("adresai");
+        menuTinklai.add(mcbAdresai);
+        mcbPotinkliai = new JMyCheckBoxMenuItem("Potinkliai", fontsize);
+        mcbPotinkliai.addActionListener(this);
+        mcbPotinkliai.setActionCommand("potinkliai");
+        menuTinklai.add(mcbPotinkliai);
+	menuTabs.add(menuTinklai);
+        
+// _______________RSC______________
+//	menuTabs.addSeparator();
         menuRSC = new JMyMenu("RSC", fontsize);
-	menuItemGenerators = new JMyCheckBoxMenuItem("Generatoriai", fontsize);
-	menuItemGenerators.addActionListener(this);
-	menuItemGenerators.setActionCommand("generators");
-        menuRSC.add(menuItemGenerators);
-	menuItemIntroscopes = new JMyCheckBoxMenuItem("Introskopai", fontsize);
-	menuItemIntroscopes.addActionListener(this);
-	menuItemIntroscopes.setActionCommand("introscopes");
-        menuRSC.add(menuItemIntroscopes);
-	menuItemGeneratorStates = new JMyCheckBoxMenuItem("Generatorių būsenos", fontsize);
-	menuItemGeneratorStates.addActionListener(this);
-	menuItemGeneratorStates.setActionCommand("generatorStates");
-        menuRSC.add(menuItemGeneratorStates);
+	mcbGenerators = new JMyCheckBoxMenuItem("JSG", fontsize);
+	mcbGenerators.addActionListener(this);
+	mcbGenerators.setActionCommand("generators");
+        menuRSC.add(mcbGenerators);
+	mcbIntroscopes = new JMyCheckBoxMenuItem("Introskopai", fontsize);
+	mcbIntroscopes.addActionListener(this);
+	mcbIntroscopes.setActionCommand("introscopes");
+        menuRSC.add(mcbIntroscopes);
+	mcbDozimetrija = new JMyCheckBoxMenuItem("Dozimetrija", fontsize);
+	mcbDozimetrija.addActionListener(this);
+	mcbDozimetrija.setActionCommand("dozimetrija");
+        menuRSC.add(mcbDozimetrija);
+	mcbRSCdarbai = new JMyCheckBoxMenuItem("Darbai", fontsize);
+	mcbRSCdarbai.addActionListener(this);
+	mcbRSCdarbai.setActionCommand("rsc_darbai");
+        menuRSC.add(mcbRSCdarbai);
+	mcbGeneratorStates = new JMyCheckBoxMenuItem("JSG būsenos", fontsize);
+	mcbGeneratorStates.addActionListener(this);
+	mcbGeneratorStates.setActionCommand("generatorStates");
+        menuRSC.add(mcbGeneratorStates);
+	mcbJSG_vietos = new JMyCheckBoxMenuItem("JSG vietos", fontsize);
+	mcbJSG_vietos.addActionListener(this);
+	mcbJSG_vietos.setActionCommand("jsg_vietos");
+        menuRSC.add(mcbJSG_vietos);
+        
         menuTabs.add(menuRSC);
 // _______________Turtas_______________
-	menuTabs.addSeparator();
+//	menuTabs.addSeparator();
 	menuIT = new JMyMenu("Turtas", fontsize);
-	menuItemIT = new JMyCheckBoxMenuItem("IT", fontsize);
-	menuItemIT.addActionListener(this);
-	menuItemIT.setActionCommand("it");
-        menuIT.add(menuItemIT);
-	menuItemCodes = new JMyCheckBoxMenuItem("Veiklos kodai", fontsize);
-	menuItemCodes.addActionListener(this);
-        menuItemCodes.setActionCommand("codes");
-        menuIT.add(menuItemCodes);
-	menuItemBarcode = new JMyMenuItem("Brūkšniai kodai", fontsize);
-	menuItemBarcode.addActionListener(this);
-	menuItemBarcode.setActionCommand("barcodes");
-	menuIT.add(menuItemBarcode);
+	mcbIT = new JMyCheckBoxMenuItem("IT", fontsize);
+	mcbIT.addActionListener(this);
+	mcbIT.setActionCommand("it");
+        menuIT.add(mcbIT);
+	mcbVeiklos = new JMyCheckBoxMenuItem("Veiklos kodai", fontsize);
+	mcbVeiklos.addActionListener(this);
+        mcbVeiklos.setActionCommand("veiklos");
+        menuIT.add(mcbVeiklos);
+	miBarcode = new JMyMenuItem("Brūkšniai kodai", fontsize);
+	miBarcode.addActionListener(this);
+	miBarcode.setActionCommand("barcodes");
+	menuIT.add(miBarcode);
+	miExportIT = new JMyMenuItem("Į failą", fontsize);
+	miExportIT.addActionListener(this);
+	miExportIT.setActionCommand("exportIT");
+	menuIT.add(miExportIT);
 	menuTabs.add(menuIT);
-// _____________________________
-	menuTabs.addSeparator();
-        menuItemTP = new JMyCheckBoxMenuItem("TP", fontsize);
-        menuItemTP.addActionListener(this);
-        menuItemTP.setActionCommand("tp");
-        menuTabs.add(menuItemTP);
-	
+// _______________Buhalterija_______________
+        menuBuhalterija = new JMyMenu("Buhalterija", fontsize);
+        mcbBiudzetas = new JMyCheckBoxMenuItem("Biudžetas", fontsize);
+	mcbBiudzetas.addActionListener(this);
+	mcbBiudzetas.setActionCommand("biudzetas");
+        menuBuhalterija.add(mcbBiudzetas);        
+        mcbIslaidos = new JMyCheckBoxMenuItem("Išlaidos", fontsize);
+	mcbIslaidos.addActionListener(this);
+	mcbIslaidos.setActionCommand("islaidos");
+        menuBuhalterija.add(mcbIslaidos);
+        mcbSaskaitos = new JMyCheckBoxMenuItem("Sąskaitos", fontsize);
+	mcbSaskaitos.addActionListener(this);
+	mcbSaskaitos.setActionCommand("saskaitos");
+        menuBuhalterija.add(mcbSaskaitos);
+        mcbSutartys = new JMyCheckBoxMenuItem("Sutartys", fontsize);
+	mcbSutartys.addActionListener(this);
+	mcbSutartys.setActionCommand("sutartys");
+        menuBuhalterija.add(mcbSutartys);
+        mcbKontrahentai = new JMyCheckBoxMenuItem("Kontrahentai", fontsize);
+	mcbKontrahentai.addActionListener(this);
+	mcbKontrahentai.setActionCommand("kontrahentai");
+        menuBuhalterija.add(mcbKontrahentai);
+        menuTabs.add(menuBuhalterija);
+        
+// ______________TP_______________
+//	menuTabs.addSeparator();
+        mcbTP = new JMyCheckBoxMenuItem("TP", fontsize);
+        mcbTP.addActionListener(this);
+        mcbTP.setActionCommand("tp");
+        menuTabs.add(mcbTP);
 	menu_bar.add(menuTabs);
+
+// ______________Pagalbinės________________
+	menuTabs.addSeparator();
+        menuPagalbines = new JMyMenu("Pagalbinės", fontsize);
+	mcbUsers = new JMyCheckBoxMenuItem("Vartotojai", fontsize);
+	mcbUsers.addActionListener(this);
+	mcbUsers.setActionCommand("users");
+	menuPagalbines.add(mcbUsers);	
+	mcbSystems = new JMyCheckBoxMenuItem("Sistemos", fontsize);
+	mcbSystems.addActionListener(this);
+	mcbSystems.setActionCommand("systems");
+	menuPagalbines.add(mcbSystems);
+        mcbWorktypes = new JMyCheckBoxMenuItem("Darbų rūšys", fontsize);
+        mcbWorktypes.addActionListener(this);
+        mcbWorktypes.setActionCommand("worktypes");
+        menuPagalbines.add(mcbWorktypes);
+        mcbEquipmentTypes = new JMyCheckBoxMenuItem("Įrangos tipai", fontsize);
+        mcbEquipmentTypes.addActionListener(this);
+        mcbEquipmentTypes.setActionCommand("equipmenttypes");
+        menuPagalbines.add(mcbEquipmentTypes);
+        mcbStates = new JMyCheckBoxMenuItem("Būsenos", fontsize);
+        mcbStates.addActionListener(this);
+        mcbStates.setActionCommand("states");
+	menuPagalbines.add(mcbStates);
+	mcbLocations = new JMyCheckBoxMenuItem("Vietos", fontsize);
+        menuPagalbines.add(mcbLocations);
+	mcbTPrusys = new JMyCheckBoxMenuItem("TP rūšys", fontsize);
+	mcbTPrusys.addActionListener(this);
+        mcbTPrusys.setActionCommand("tprusys");
+        menuPagalbines.add(mcbTPrusys);        
+        menuPagalbines.addSeparator();
+        mcbDarbeliai = new JMyCheckBoxMenuItem("Darbeliai", fontsize);
+	mcbDarbeliai.addActionListener(this);
+        mcbDarbeliai.setActionCommand("darbeliai");
+        menuPagalbines.add(mcbDarbeliai);        
+        menuTabs.add(menuPagalbines);
+        
+// _______________ Ataskaitos _______________
+	menuAtaskaitos = new JMyMenu("Ataskaitos", fontsize);
+	menuLiftai = new JMyMenu("Liftai, eskalatoriai", fontsize);
+	miLifu_prastovos = new JMyMenuItem("Liftai ...", fontsize);
+	miLifu_prastovos.addActionListener(this);
+	miLifu_prastovos.setActionCommand("prastovos");
+	menuLiftai.add(miLifu_prastovos);
+	menuAtaskaitos.add(menuLiftai);
+	menu_bar.add(menuAtaskaitos);
+
+// _______________ Langas _______________
+        menuVaizdas = new JMyMenu("Vaizdas", fontsize);
+        miPlatus = new JMyMenuItem("Ekrano pločio", fontsize);
+        miPlatus.addActionListener(this);
+        miPlatus.setActionCommand("platus");
+        menuVaizdas.add(miPlatus);
+        miAtstata = new JMyMenuItem("Pločio atstata", fontsize);
+        miAtstata.addActionListener(this);
+        miAtstata.setActionCommand("atstata");
+        menuVaizdas.add(miAtstata);
+	menu_bar.add(menuVaizdas);
    
 // __________Pagalba___________________
         menuHelp = new JMyMenu("Pagalba", fontsize);
-        menuItemHelp = new JMyMenuItem("Aprašymas", fontsize);
-        menuItemHelp.addActionListener(this);
-        menuItemHelp.setActionCommand("help");
-        menuHelp.add(menuItemHelp);
-        menuItemAbout = new JMyMenuItem("Versija", fontsize);
-        menuItemAbout.addActionListener(this);
-        menuItemAbout.setActionCommand("about");
-        menuHelp.add(menuItemAbout);
-
+        miHelp = new JMyMenuItem("Aprašymas", fontsize);
+        miHelp.addActionListener(this);
+        miHelp.setActionCommand("help");
+        menuHelp.add(miHelp);
+        miAbout = new JMyMenuItem("Versija", fontsize);
+        miAbout.addActionListener(this);
+        miAbout.setActionCommand("about");
+        menuHelp.add(miAbout);
         menu_bar.add(menuHelp);
 
 	return menu_bar;
     }
-//	menuItemBudget = new JMyCheckBoxMenuItem("Biudžetas");
-//	menuItemBudget.addActionListener(this);
-//	menuItemBudget.setActionCommand("budget");
-//	menuData.add(menuItemBudget);
-//        menuItemPartners = new JMyCheckBoxMenuItem("Kontrahentai");
-//        menuItemPartners.addActionListener(this);
-//        menuItemPartners.setActionCommand("partners");
-//        menuData.add(menuItemPartners);
-//        menuItemAccounts = new JMyCheckBoxMenuItem("Sąskaitos");
-//        menuItemAccounts.addActionListener(this);
-//        menuItemAccounts.setActionCommand("accounts");
-//        menuData.add(menuItemAccounts);
-//        menuItemContracts = new JMyCheckBoxMenuItem("Sutartys");
-//        menuItemContracts.addActionListener(this);
-//        menuItemContracts.setActionCommand("works");
-//        menuData.add(menuItemContracts);
-//        menuItemOrders = new JMyCheckBoxMenuItem("Užsakymai");
-//        menuItemOrders.addActionListener(this);
-//        menuItemOrders.setActionCommand("orders");
-//        menuData.add(menuItemOrders);
 
 // _________ Οι γενικοί μεθόδοι ___________
     
@@ -257,7 +324,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	connection = new ConnectionEquipment(the_host, database, username);
 	try {
 	    labelMessage.setText(connection.connect(password));
-	} catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
+	} catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
 	    connection = null;
 	    password = "";
 	    labelMessage.setText(ex.getMessage());
@@ -265,21 +332,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	return connection;
     }
 
-//    protected ConnectionEquipment connect(String database) {
-//        password = "i--Logic15325";
-//        username = "Antanas";
-//	connection = new ConnectionEquipment(the_host, database, username);
-//	try {
-//	    labelMessage.setText(connection.connect(password));
-//	} catch (ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
-//	    connection = null;
-//	    password = "";
-//	    labelMessage.setText(ex.getMessage());
-//	}
-//	return connection;
-//    }
-    
-    
     protected void disconnect() {
 	if (connection != null) {
 	    labelMessage.setText(connection.disconnect());
@@ -289,51 +341,43 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	if (panelWorks != null) {
 	    panelWorks.disconnect();
-	    menuItemWorks.setSelected(false);
+	    mcbWorks.setSelected(false);
 	    tabbedpane.remove(panelWorks);
 	    showWorks();
 	}
 	if (panelIT != null) {
 	    panelIT.disconnect();
-	    menuItemIT.setSelected(false);
+	    mcbIT.setSelected(false);
 	    tabbedpane.remove(panelIT);
 	    showIT();
 	}
 	if (panelEquipmentTypes != null) {
 	    panelEquipmentTypes.disconnect();
-	    menuItemEquipmentTypes.setSelected(false);
+	    mcbEquipmentTypes.setSelected(false);
 	    tabbedpane.remove(panelEquipmentTypes);
-	    showEquipmentTypes();
 	}
 	if (panelSystems != null) {
 	    panelSystems.disconnect();
-	    menuItemSystems.setSelected(false);
+	    mcbSystems.setSelected(false);
 	    tabbedpane.remove(panelSystems);
-	    showSystems();
 	}
 	if (panelUsers != null) {
 	    panelUsers.disconnect();
-	    menuItemUsers.setSelected(false);
+	    mcbUsers.setSelected(false);
 	    tabbedpane.remove(panelUsers);
-	    showUsers();
 	}
 	if (panelStates != null) {
 	    panelStates.disconnect();
-	    menuItemStates.setSelected(false);
+	    mcbStates.setSelected(false);
 	    tabbedpane.remove(panelStates);
-	    showSystems();
 	}
 	if (panelWorktypes != null) {
 	    panelWorktypes.disconnect();
-	    menuItemWorktypes.setSelected(false);
+	    mcbWorktypes.setSelected(false);
 	    tabbedpane.remove(panelWorktypes);
-	    showWorktypes();
 	}
 	menuTabs.setVisible(false);
 	password = "";
-//	    dialogPassword.dispose();
-//	    panelOutlays.disconnect();
-            
     }
 
     public void setzt_dieMeldung(String dieMeldung) {
@@ -368,233 +412,177 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (panelLocations != null) {
 	    panelLocations.setConnection(connection);
 	}
-
-//	renewTypes();
     }
 
-    private String bekommt_letztenDatensatz(String einDateiname) {
-	final int DIEZEILELZENGE = 64;
-	int gelesen;
-	String zk;
-	Path dieDatei;
-	FileChannel derDateiKanal;
-	ByteBuffer derBytePuffer;
-	zk = null;
-	derBytePuffer = ByteBuffer.allocate(DIEZEILELZENGE);
-	dieDatei = FileSystems.getDefault().getPath(einDateiname);
-	try {
-	    derDateiKanal = FileChannel.open(dieDatei, READ);
-	    derDateiKanal.position(derDateiKanal.size() - DIEZEILELZENGE);
-	    do {
-		gelesen = derDateiKanal.read(derBytePuffer);
-	    } while (gelesen != -1 && derBytePuffer.hasRemaining());
-	    zk = new String(derBytePuffer.array(), Charset.forName("UTF-8"));
-	    zk = zk.substring(zk.indexOf("\n") + 1);
-	} catch (IOException ex) {
-	    setzt_dieMeldung(labelMessage.getText().concat("; ").concat(ex.toString()));
-	}
-	return zk;
-    }
-    
-    private String bekommt_erstenDatensatz(String einDateiname) {
-	int x;
-	StringBuilder sb;
-	Reader r;
-	sb = new StringBuilder(einDateiname).append(": \n");
-	try {
-	    r = new FileReader(einDateiname);
-	    do {
-		x = r.read();
-		sb.append((char) x);
-	    } while (x != -1 && x != 10);
-	} catch (FileNotFoundException ex) {
-	    zeigt_dieFehlermeldung(ex.toString());
-	} catch (IOException ex) {
-	    zeigt_dieFehlermeldung(ex.toString());
-	}
-	return sb.toString();
-    }
-    
-    private void zeigt_dieFehlermeldung(String dieMeldung) {
-	JOptionPane.showMessageDialog(this, dieMeldung, "Klaida!", JOptionPane.ERROR_MESSAGE);
-    }
-
-    
-    private void loescht_dat(String einDateiname) {
-        int loeschen;
-        Path dieDatei;
-        dieDatei = Paths.get(einDateiname);
-	if (Files.exists(dieDatei)) {
-            loeschen = JOptionPane.showConfirmDialog(this, einDateiname.concat(" šalinti?"));
-            if (loeschen == JOptionPane.YES_OPTION) {
-                try {
-                    Files.delete(dieDatei);
-                } catch (IOException ex) {
-                    zeigt_dieFehlermeldung(ex.toString());
-                }
-            }
-	}
-    }
-    
-    private void showEquipmentTypes() {
-	if (panelEquipmentTypes == null & menuItemEquipmentTypes.isSelected()) {
-	    panelEquipmentTypes = new Irangos_tipai(connection, fontsize);
-	    tabbedpane.addTab("Įrangos tipai", panelEquipmentTypes);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelEquipmentTypes != null & !menuItemEquipmentTypes.isSelected()) {
-	    tabbedpane.remove(panelEquipmentTypes);
-	    panelEquipmentTypes = null;
-	}
-    }
-    
-    private void showSystems() {
-	if (panelSystems == null & menuItemSystems.isSelected()) {
-	    panelSystems = new Sistemos(connection, fontsize);
-	    tabbedpane.addTab("Sistemos", panelSystems);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelSystems != null & !menuItemSystems.isSelected()) {
-	    tabbedpane.remove(panelSystems);
-	    panelSystems = null;
-	}
-    }
-
-    private void showStates() {
-	if (panelStates == null & menuItemStates.isSelected()) {
-	    panelStates = new Busenos(connection, fontsize);
-	    tabbedpane.addTab("Būsenos", panelStates);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelStates != null & !menuItemStates.isSelected()) {
-	    tabbedpane.remove(panelStates);
-	    panelStates = null;
-	}
-    }
-    
-    private void showUsers() {
-	if (panelUsers == null & menuItemUsers.isSelected()) {
-	    panelUsers = new Vartotojai(connection, fontsize);
-	    tabbedpane.addTab("Vartotojai", panelUsers);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelUsers != null & !menuItemUsers.isSelected()) {
-	    tabbedpane.remove(panelUsers);
-	    panelUsers = null;
-	}
-    }
-
-    protected void showWorks() {
-	if (panelWorks == null & menuItemWorks.isSelected()) {
+   
+    public void showWorks() {
+	if (panelWorks == null & mcbWorks.isSelected()) {
 	    panelWorks = new Darbai(connection, fontsize);
+            panelWorks.init();
 	    tabbedpane.addTab("Darbai", panelWorks);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
-	if (panelWorks != null & !menuItemWorks.isSelected()) {
+	if (panelWorks != null & !mcbWorks.isSelected()) {
 	    tabbedpane.remove(panelWorks);
 	    panelWorks = null;
 	}
     }
     
-    private void showWorktypes() {
-	if (panelWorktypes == null & menuItemWorktypes.isSelected()) {
-	    panelWorktypes = new Darbu_rusys(connection, fontsize);
-	    tabbedpane.addTab("Darbų rūšys", panelWorktypes);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelWorktypes != null & !menuItemWorktypes.isSelected()) {
-	    tabbedpane.remove(panelWorktypes);
-	    panelWorktypes = null;
-	}
-    }
-
     private void showIT() {
-	if (panelIT != null & !menuItemIT.isSelected()) {
+	if (panelIT != null & !mcbIT.isSelected()) {
 	    tabbedpane.remove(panelIT);
 	    panelIT = null;
 	}
-	if (panelIT == null & menuItemIT.isSelected()) {
+	if (panelIT == null & mcbIT.isSelected()) {
 	    panelIT = new Turtas(connection, fontsize);
+            panelIT.init();
 	    tabbedpane.addTab("IT", panelIT);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
     }
     
     private void showTP() {
-	if (panelTP == null & menuItemTP.isSelected()) {
+	if (panelTP == null & mcbTP.isSelected()) {
 	    panelTP = new TP(connection, fontsize);
+            panelTP.init();
 	    tabbedpane.addTab("TP", panelTP);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
-	if (panelTP != null & !menuItemTP.isSelected()) {
+	if (panelTP != null & !mcbTP.isSelected()) {
 	    tabbedpane.remove(panelTP);
 	    panelTP = null;
 	}
     }
     
-    
-    private void showLocations() {
-	if (panelLocations == null & menuItemLocations.isSelected()) {
-	    panelLocations = new Vietos(connection, fontsize);
-	    tabbedpane.addTab("Vietos", panelLocations);
+    private void showSaskaitos() {
+	if (panelSaskaitos == null & mcbSaskaitos.isSelected()) {
+	    panelSaskaitos = new Saskaitos(connection, fontsize);
+            panelSaskaitos.init();
+	    tabbedpane.addTab("Saskaitos", panelSaskaitos);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
-	if (panelLocations != null & !menuItemLocations.isSelected()) {
-	    tabbedpane.remove(panelLocations);
-	    panelLocations = null;
+	if (panelSaskaitos != null & !mcbSaskaitos.isSelected()) {
+	    tabbedpane.remove(panelSaskaitos);
+	    panelSaskaitos = null;
 	}
     }
-    
-    private void showGenerators() {
-	if (panelGeneratoriai == null & menuItemGenerators.isSelected()) {
-	    panelGeneratoriai = new Generatoriai(connection, fontsize);
-	    tabbedpane.addTab("Generatoriai", panelGeneratoriai);
+        
+    private void showSutartys() {
+	if (panelSutartys == null & mcbSutartys.isSelected()) {
+	    panelSutartys = new Sutartys(connection, fontsize);
+            panelSutartys.init();
+	    tabbedpane.addTab("Sutartys", panelSutartys);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
-	if (panelGeneratoriai != null & !menuItemGenerators.isSelected()) {
-	    tabbedpane.remove(panelGeneratoriai);
-	    panelGeneratoriai = null;
+	if (panelSutartys != null & !mcbSutartys.isSelected()) {
+	    tabbedpane.remove(panelSutartys);
+	    panelSutartys = null;
 	}
+        
+    }
+
+    
+    /**
+     *
+     * @param tab JPanel to create
+     * @param menuItem JMyCheckBoxMenuItem 
+     * @param dbTable database table
+     * @param tabName name of created tab
+     */
+    private ID_auto createTab_ID_auto(ID_auto tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName) {
+        if (tab == null & menuItem.isSelected()) {
+            tab = new ID_auto(connection, fontsize, dbTable);
+            tab.init();
+            tabbedpane.addTab(tabName, tab);
+            tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+        }
+        if (!menuItem.isSelected()) {
+            tabbedpane.remove(tab);
+            tab = null;
+        }
+        return tab;
     }
     
-    private void showIntroscopes() {
-	if (panelIntroskopai == null & menuItemIntroscopes.isSelected()) {
-	    panelIntroskopai = new Introskopai(connection, fontsize);
-	    tabbedpane.addTab("Introskopai", panelIntroskopai);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelIntroskopai != null & !menuItemIntroscopes.isSelected()) {
-	    tabbedpane.remove(panelIntroskopai);
-	    panelIntroskopai = null;
-	}
-    }    
-    
-    private void showGeneratorStates() {
-	if (panelGen_busenos == null & menuItemGeneratorStates.isSelected()) {
-	    panelGen_busenos = new Gen_busenos(connection, fontsize);
-	    tabbedpane.addTab("Generatorių būsenos", panelGen_busenos);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelGen_busenos != null & !menuItemGeneratorStates.isSelected()) {
-	    tabbedpane.remove(panelGen_busenos);
-	    panelGen_busenos = null;
-	}
-    }    
-    
-    private void showCodes() {
-	if (panelVeiklos == null & menuItemCodes.isSelected()) {
-	    panelVeiklos = new Veiklos(connection, fontsize);
-	    tabbedpane.addTab("Veiklos", panelVeiklos);
-	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
-	}
-	if (panelVeiklos != null & !menuItemCodes.isSelected()) {
-	    tabbedpane.remove(panelVeiklos);
-	    panelVeiklos = null;
-	}
+    /**
+     *
+     * @param tab JPanel to create
+     * @param menuItem JMyCheckBoxMenuItem 
+     * @param dbTable database table
+     * @param tabName name of created tab
+     */
+    private ID_noauto createTab_ID_noauto(ID_noauto tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName) {
+        if (tab == null & menuItem.isSelected()) {
+            tab = new ID_noauto(connection, fontsize, dbTable);
+            tab.init();
+            tabbedpane.addTab(tabName, tab);
+            tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+        }
+        if (!menuItem.isSelected()) {
+            tabbedpane.remove(tab);
+            tab = null;
+        }
+        return tab;
     }
     
+    private Biudzetas createTabBiudzetas(Biudzetas tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with) {
+        if (tab == null & menuItem.isSelected()) {
+            tab = new Biudzetas(connection, fontsize, dbTable, dbFields, tbl_cols, col_with);
+            tab.init();
+            tabbedpane.addTab(tabName, tab);
+            tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+        }
+        if (!menuItem.isSelected()) {
+            tabbedpane.remove(tab);
+            tab = null;
+        }
+        return tab;
+        
+    }
     
-    private void showHelp() {
+    private IDString createTab_IDString(IDString tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String dbField1, String dbField2, String col1, String col2) {
+        if (tab == null & menuItem.isSelected()) {
+            tab = new IDString(connection, fontsize, dbTable, dbField1, dbField2, col1, col2);
+            tab.init();
+            tabbedpane.addTab(tabName, tab);
+            tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+        }
+        if (!menuItem.isSelected()) {
+            tabbedpane.remove(tab);
+            tab = null;
+        }
+        return tab;
+    }
+
+    private IDString_n createTab_IDString_n(IDString_n tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment) {
+        if (tab == null & menuItem.isSelected()) {
+            tab = new IDString_n(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment);
+            tab.init();
+            tabbedpane.addTab(tabName, tab);
+            tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+        }
+        if (!menuItem.isSelected()) {
+            tabbedpane.remove(tab);
+            tab = null;
+        }
+        return tab;
+    }
+    
+    private ID_TextArea createTab_IDTextArea(ID_TextArea tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment, String taField) {
+        if (tab == null & menuItem.isSelected()) {
+            tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField);
+            tab.init();
+            tabbedpane.addTab(tabName, tab);
+            tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+        }
+        if (!menuItem.isSelected()) {
+            tabbedpane.remove(tab);
+            tab = null;
+        }
+        return tab;
+    }
+    
+
+    protected void showHelp() {
 	if (frHelp == null) {
 	    frHelp = new Help();
 	    frHelp.setSize(600, 800);
@@ -617,77 +605,220 @@ public class MainFrame extends JFrame implements ActionListener{
 	    frAbout.setVisible(true);
 	}
     }
+
+    private void showLiftu_ataskaitos() {
+	if (fr_ataskaitos_liftai == null) {
+	    fr_ataskaitos_liftai = new Ataskaita_liftai(connection, fontsize);
+	    fr_ataskaitos_liftai.setSize(800, 600);
+	    fr_ataskaitos_liftai.setTitle("Liftų prastovos ataskaita");
+	} else {
+	    fr_ataskaitos_liftai.setVisible(true);
+	}
+    }
+    
+    private void showLiftu_darbai() {
+	if (panelLiftu_darbai == null & mcbLiftu_darbai.isSelected()) {
+	    panelLiftu_darbai = new Liftu_darbai(connection, fontsize);
+            panelLiftu_darbai.init();
+	    tabbedpane.addTab("Liftų darbai", panelLiftu_darbai);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+	}
+	if (panelLiftu_darbai != null & !mcbLiftu_darbai.isSelected()) {
+	    tabbedpane.remove(panelLiftu_darbai);
+	    panelLiftu_darbai = null;
+	}
+    }
+    
+    private void showAdresai() {
+	if (panelAdresai == null & mcbAdresai.isSelected()) {
+	    panelAdresai = new Tinklai(connection, fontsize);
+            panelAdresai.init();
+	    tabbedpane.addTab("Adresai", panelAdresai);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+	}
+	if (panelAdresai != null & !mcbAdresai.isSelected()) {
+	    tabbedpane.remove(panelAdresai);
+	    panelAdresai = null;
+	}
+    }
+
+    private void showJSG() {
+	if (panelJSG == null & mcbGenerators.isSelected()) {
+	    panelJSG = new JSG(connection, fontsize);
+            panelJSG.init();
+	    tabbedpane.addTab("JSG", panelJSG);
+	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+	}
+	if (panelJSG != null & !mcbGenerators.isSelected()) {
+	    tabbedpane.remove(panelJSG);
+	    panelJSG = null;
+	}
+    }
+    
+    private void exportIT() {
+        mcbIT.setSelected(true);
+        showIT();
+        panelIT.exportIT();
+    }
+    
+    private void setWindow(boolean wide) {
+        if (wide) {
+            window_width = getWidth();
+            window_heigth = getHeight();
+            setSize((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), window_heigth);
+        } else {
+            setSize(window_width, window_heigth);
+        }
+    }
+    
     
     @Override
     public void actionPerformed(ActionEvent e) {
 	String command;
 	command = e.getActionCommand();
 	switch (command) {
+//  Duombazė
 	    case "connect":
 		connect_Equipment();
 		break;
 	    case "disconnect":
 		disconnect();
 		break;
-	    case "users":
-		connect_Equipment();
-		showUsers();
-		break;
-	    case "systems":
-		connect_Equipment();
-		showSystems();
-		break;		
-	    case "states":
-		connect_Equipment();
-		showStates();
-		break;		
-	    case "worktypes":
-		connect_Equipment();
-		showWorktypes();
-		break;		
+//  Kortelės                
 	    case "works":
 		connect_Equipment();
 		showWorks();
 		break;		
-	    case "it":
+//      Liftai
+            case "liftai":
 		connect_Equipment();
-		showIT();
+		panelLiftai = createTab_IDString_n(panelLiftai, mcbLiftai, "Liftai", "Liftai", new String[]{"RegNr", "Pavadinimas", "GamNr", "Vieta", "DTP", "PTP", "Busena"}, new String[]{"Reg. Nr.", "Pavadinimas", "Gam. Nr.", "Vieta", "DTP", "PTP", "Būsena"}, new int[]{3*fontsize, 18*fontsize, 3*fontsize, 12*fontsize, 2*fontsize, 2*fontsize, 30*fontsize}, false );
 		break;		
-            case "equipmenttypes":
+	    case "liftu_darbai":
 		connect_Equipment();
-		showEquipmentTypes();
-		break;
-	    case "tp":
-		connect_Equipment();
-		showTP();
+		showLiftu_darbai();
 		break;		
-	    case "locations":
+//      Tinklai
+            case "adresai":
 		connect_Equipment();
-		showLocations();
+ 		showAdresai();
 		break;		
-	    case "generators":
+	    case "potinkliai":
 		connect_Equipment();
-		showGenerators();
+ 		panelPotinkliai = createTab_IDString(panelPotinkliai, mcbPotinkliai, "Potinkliai", "Potinkliai", "IP", "VLAN", "IP", "VLAN");
+		break;		
+//      RSC
+            case "generators":
+		connect_Equipment();
+                showJSG();
 		break;
 	    case "introscopes":
 		connect_Equipment();
-		showIntroscopes();
+                panelIntroskopai = createTab_IDString_n(panelIntroskopai, mcbIntroscopes, "Introskopai", "Introskopai", new String[]{"Nr", "Pavadinimas", "Vamzdziu_skc", "IT", "Vieta", "Rezimas", "Pastaba", "Yra"}, new String[]{"Nr", "Pavadinimas", "Vamzdžių skaičius", "IT", "Vieta", "Režimas", "Pastaba", "Yra"}, new int[]{100, 200, 50, 100, 200, 100, 600, 30}, false);
+		break;		
+	    case "rsc_darbai":
+		connect_Equipment();
+                panelRSCdarbai = createTab_IDString_n(panelRSCdarbai, mcbRSCdarbai, "RSCdarbai", "RSC", new String[]{"ID", "Data", "Vamzdis", "IntrNr", "DVS", "Pastaba"}, new String[]{"ID", "Data", "Vamzdis", "Introsk. Nr.", "DVS Nr.", "Pastaba"}, new int[]{10, 60, 150, 150, 100, 300}, true);
+		break;		
+	    case "dozimetrija":
+		connect_Equipment();
+                panelDozimetrija = createTab_IDString_n(panelDozimetrija, mcbDozimetrija, "Dozimetrija", "Dozimetrija", new String[]{"ID", "Data", "Introskopas", "Operat", "Pries", "Uz", "Virsuj", "Generat", "metras"}, new String[]{"ID", "Data", "Introskopas", "Prie operat.", "Prieš tun.", "Už tun.", "Viršuj", "Prie generat.", "Už metro"}, new int[]{1*fontsize, 1*fontsize, 3*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize}, true);
 		break;		
 	    case "generatorStates":
 		connect_Equipment();
-		showGeneratorStates();
-		break;                
-	    case "codes":
+                panelGen_busenos = createTab_ID_noauto(panelGen_busenos, mcbGeneratorStates, "Gen_busenos", "Generatorių būsenos");
+		break;
+	    case "jsg_vietos":
 		connect_Equipment();
-		showCodes();
+                panelJSG_vietos = createTab_ID_noauto(panelJSG_vietos, mcbJSG_vietos, "JSGvietos", "Introskopų vietos");
+		break;
+//      IT
+            case "it":
+		connect_Equipment();
+		showIT();
+		break;	
+            case "veiklos":
+		connect_Equipment();
+		panelVeiklos = createTab_ID_noauto(panelVeiklos, mcbVeiklos, "Veiklos", "Veiklos");
+		break;                
+	    case "exportIT":
+		connect_Equipment();
+ 		exportIT();
 		break;		
 	    case "barcodes":
 		connect_Equipment();
-		menuItemIT.setSelected(true);
+		mcbIT.setSelected(true);
 		showIT();
 		panelIT.create_barcodes_file();
 		break;		
-	    case "help":
+//      Buhalterija
+            case "biudzetas":
+                panelBiudzetas = createTabBiudzetas(panelBiudzetas, mcbBiudzetas, "Biudzetas", "Biudžetas", new String[]{"Kodas", "Pavadinimas", "Sau", "Vas", "Kov", "Bal", "Geg", "Bir", "Lie", "Rgp", "Rgs", "Spa", "Lap", "Gru", "M", "Metai"}, new String[]{"Kodas", "Pavadinimas", "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužė", "Birželis", "Liepa", "Rugpjūtis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis", "Metams", "Metai"}, new int[]{2*fontsize, 15*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, fontsize} );
+		break;
+            case "islaidos":
+                JOptionPane.showMessageDialog(this, "Bus apibendrinanti lentelė iš sąskaitų lentelės užklausos");
+		break;
+            case "saskaitos":
+                showSaskaitos();
+		break;
+            case "sutartys":
+                showSutartys();
+		break;
+            case "kontrahentai":
+		connect_Equipment();
+		panelKontrahentai = createTab_ID_auto(panelKontrahentai, mcbKontrahentai, "Kontrahentai", "Kontrahentai");
+		break;                
+//      Pagalbinės
+            case "users":
+		connect_Equipment();
+		panelUsers = createTab_ID_noauto(panelUsers, mcbUsers, "Vartotojai", "Vartotojai");
+		break;
+	    case "systems":
+		connect_Equipment();
+		panelSystems = createTab_IDString_n(panelSystems, mcbSystems, "Sistemos", "Sistemos", new String[]{"ID", "Pavadinimas", "IT"}, new String[]{"ID", "Pavadinimas", "IT"}, new int[]{100, 800, 100}, false);
+		break;		
+	    case "worktypes":
+		connect_Equipment();
+		panelWorktypes = createTab_ID_noauto(panelWorktypes, mcbWorktypes, "Darbotipis", "Darbų rūšys");
+		break;		
+           case "equipmenttypes":
+		connect_Equipment();
+		panelEquipmentTypes = createTab_ID_noauto(panelEquipmentTypes, mcbEquipmentTypes, "IrangosTipai", "Įrangos tipai");
+		break;
+ 	    case "states":
+		connect_Equipment();
+		panelStates = createTab_ID_noauto(panelStates, mcbStates, "Busenos", "Darbų būsenos");
+		break;		
+	    case "locations":
+		connect_Equipment();
+		panelLocations = createTab_ID_noauto(panelLocations, mcbLocations, "Vietos", "Vietos");
+		break;		
+	    case "tprusys":
+		connect_Equipment();
+		panelTPrusys = createTab_ID_noauto(panelTPrusys, mcbTPrusys, "TPrusys", "TP rūšys");
+		break;             
+	    case "darbeliai":
+		connect_Equipment();
+		panelDarbeliai = createTab_IDTextArea(panelDarbeliai, mcbDarbeliai, "Darbeliai", "Darbeliai", new String[]{"ID", "Data", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas");
+		break;		
+//      TP
+            case "tp":
+		connect_Equipment();
+		showTP();
+		break;
+//  Ataskaitos
+            case "prastovos":
+		connect_Equipment();
+		showLiftu_ataskaitos();
+		break;
+//  Vaizdas
+            case "platus":
+                setWindow(true);
+                break;
+            case "atstata":
+                setWindow(false);
+                break;//  Pagalba
+            case "help":
 		showHelp();
 		break;
 	    case "about":
@@ -698,8 +829,6 @@ public class MainFrame extends JFrame implements ActionListener{
 
 }
     
-    
-
     /*
   CharBuffer c;
   Reader f = null;

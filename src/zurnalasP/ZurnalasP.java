@@ -53,12 +53,14 @@ public class ZurnalasP {
 //            l = l > 1600 ? 1600 : l;
         l = size * 102;
         h1 = 800;
+        mainFrame.init();
         mainFrame.setSize(l, h1);
         mainFrame.setMinimumSize(new Dimension(l, h1/2));
         mainFrame.setJMenuBar(mainFrame.menuBar());
         mainFrame.setTitle("Žurnalas");
         mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("/home/a/Programme/java/berufliche/Equipment/zurnalas.png"));
         mainFrame.setVisible(true);
+        mainFrame.showWorks();
     }
 	
 }

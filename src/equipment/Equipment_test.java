@@ -49,6 +49,8 @@ public class Equipment_test {
 //            l = l > 1600 ? 1600 : l;
         l = size * 102;
         h1 = 700;
+        mainFrame.init();
+        mainFrame.pack();
         mainFrame.setMinimumSize(new Dimension(850, h1/2));
         mainFrame.setSize(l, h1);
 //	    mainFrame.setMinimumSize(new Dimension(1040, 600));

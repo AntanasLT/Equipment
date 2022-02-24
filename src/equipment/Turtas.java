@@ -7,32 +7,27 @@ package equipment;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 /**
  *
  * @author a
  */
-public class Turtas extends Sistemos {
+public class Turtas extends Darbai {
 
     private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID ORDER BY i.IT";
     private static final String SELECT = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID";
@@ -51,6 +46,7 @@ public class Turtas extends Sistemos {
     private static final String TEX_END = "\n\\end{supertabular}\n"
 	    + "\\end{document}";
     private static final String BARCODES_FILE = "Barcodes";
+    private static final String IT_CSV = "IT.csv";
     private static final int TEX_COL_COUNT = 4;
 //    private static final String ID = "ID (auto)";
     private static final String IT = "IT";
@@ -62,6 +58,9 @@ public class Turtas extends Sistemos {
     private static final String PASTABA = "Pastaba";
     private static final String DATA = "Data";
     private static final String VEIKLA = "Veikla";
+    private static final String TABLE = "Irenginiai ";
+    private static final String PAVADINIMAS = "Pavadinimas";
+    static final String ID = "ID (auto)";
     
     private JCheckBox chLocation, chMark, chIT, chNr, chName;
     private JLabelRechts lMark, lIT;
@@ -70,26 +69,31 @@ public class Turtas extends Sistemos {
     protected JMyComboBox cbLocations;
     private JTextField fMark, fIT, fNr;
     private JTextArea ta_Message;
+    protected JPanel pButtons;
+    protected JMyButton btInsert, btEdit, btDelete;
 
 //    protected DefaultTableModel tableModel;
-    protected PreparedStatement preparedUpdate, preparedInsert, preparedFilter;
+//    protected PreparedStatement preparedUpdate, preparedInsert, preparedFilter;
     
     protected String[][] locations, codes;
 
     protected Turtas(ConnectionEquipment connection, int size) {
 	super(connection, size);
 	fontsize = size;
-//	init();
     }
 
     @Override
     protected void init() {
+        font = new Font("Arial", Font.PLAIN, fontsize);
+        table_columns = new String[]{ID, IT, NR, PAVADINIMAS, SISTEMA, VIETA, POZYMIS, PASTABA, DATA, VEIKLA};
+        table_column_width = new int[]{4*fontsize, 8*fontsize, 8*fontsize, 25*fontsize, 8*fontsize, 8*fontsize, 2*fontsize, 16*fontsize, 8*fontsize, 12*fontsize};
 	if (connection != null) {
 	    setLayout(new BorderLayout());
+	    setConstants();
 	    createTable();
 	    createPanelInput();
 	    add(pInput, BorderLayout.NORTH);
-	    add(scrPaneTable, BorderLayout.CENTER);
+	    add(scrTable, BorderLayout.CENTER);
 	    setVisible(true);
 	    filter_all(SELECT_ALL);
 	} else {
@@ -98,53 +102,82 @@ public class Turtas extends Sistemos {
     }
     
     @Override
+    protected void setConstants() {
+	select = SELECT_ALL;
+        delete = "DELETE FROM " + TABLE + "WHERE ID = ?";
+        tableTooltip = "";
+    }
+
+    @Override
     protected void createPanelInput() {
 	pInput = new JPanel(new BorderLayout());
 	createPanelFields();
 	pInput.add(pFields, BorderLayout.NORTH);
 	createPanelButtons();
 	pInput.add(pButtons, BorderLayout.CENTER);
-	lMessage = new JLabelRechts(fontsize);
+	lMessage = new JLabelLeft(fontsize);
     }
 
-    @Override
-    protected void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{ID, IT, NR, PAVADINIMAS, SISTEMA, VIETA, POZYMIS, PASTABA, DATA, VEIKLA}, 0);
-	table = new JTable(tableModel);
-	table.setAutoCreateRowSorter(true);
-        table.setFont(font);
-        table.getTableHeader().setFont(font);
-	table.setDefaultEditor(Object.class, null);
-	table.addMouseListener(this);
-	table.getSelectionModel().addListSelectionListener(this);
-	setColumnsWidths();
-	tableModel.setRowCount(1);
-//	setzt_dieUeberschriften();
-	scrPaneTable = new JScrollPane(table);
+    protected void createPanelButtons() {
+	pButtons = new JPanel();
+	super.btFilter = new JMyButton("Rodyti", fontsize);
+        btFilter.setMnemonic('R');
+	super.btFilter.setActionCommand("filter");
+	super.btFilter.addActionListener(this);
+ 	pButtons.add(super.btFilter);
+	btEdit = new JMyButton("Pakeisti", fontsize);
+        btEdit.setMnemonic('P');
+ 	btEdit.addActionListener(this);
+	btEdit.setActionCommand("update");
+	pButtons.add(btEdit);
+	btInsert = new JMyButton("Naujas", fontsize);
+        btInsert.setMnemonic('N');
+	btInsert.addActionListener(this);
+	btInsert.setActionCommand("insert");
+	pButtons.add(btInsert);
+	btDelete = new JMyButton("Šalinti", fontsize);
+	btDelete.addActionListener(this);
+	btDelete.setActionCommand("delete");
+	pButtons.add(btDelete);
     }
-
-    private void setColumnsWidths() {
-	TableColumn dieSpalte;
-	dieSpalte = null;
-	for (int i = 0; i < table.getColumnCount(); i++) {
-	    dieSpalte = table.getColumnModel().getColumn(i);
-	    switch (tableModel.getColumnName(i)) {
-		case PAVADINIMAS:
-		    dieSpalte.setPreferredWidth(300);
-		    break;
-		case ID:
-		    dieSpalte.setPreferredWidth(20);
-		    break;
-		case POZYMIS:
-		    dieSpalte.setPreferredWidth(13);
-		    break;
-	    }
-	}
-    }
+    
+//    protected void createTable() {
+//	tableModel = new DefaultTableModel(new Object[]{ID, IT, NR, PAVADINIMAS, SISTEMA, VIETA, POZYMIS, PASTABA, DATA, VEIKLA}, 0);
+//	table = new JTable(tableModel);
+//	table.setAutoCreateRowSorter(true);
+//        table.setFont(font);
+//        table.getTableHeader().setFont(font);
+//	table.setDefaultEditor(Object.class, null);
+//	table.addMouseListener(this);
+//	table.getSelectionModel().addListSelectionListener(this);
+//	setColumnsWidths();
+//	tableModel.setRowCount(1);
+////	setzt_dieUeberschriften();
+//	scrTable = new JScrollPane(table);
+//    }
+//
+//    private void setColumnsWidths() {
+//	TableColumn dieSpalte;
+//	dieSpalte = null;
+//	for (int i = 0; i < table.getColumnCount(); i++) {
+//	    dieSpalte = table.getColumnModel().getColumn(i);
+//	    switch (tableModel.getColumnName(i)) {
+//		case PAVADINIMAS:
+//		    dieSpalte.setPreferredWidth(300);
+//		    break;
+//		case ID:
+//		    dieSpalte.setPreferredWidth(20);
+//		    break;
+//		case POZYMIS:
+//		    dieSpalte.setPreferredWidth(13);
+//		    break;
+//	    }
+//	}
+//    }
     
     private void getLocations() {
 	try {
-	    locations = connection.getList("Vietos");
+	    locations = connection.getList("Vietos", "ID", "Pavadinimas", "Pavadinimas");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -152,7 +185,7 @@ public class Turtas extends Sistemos {
     
     private void getCodes(){
 	try {
-	    codes = connection.getList("Veiklos");
+	    codes = connection.getList("Veiklos", "ID", "Pavadinimas", "Pavadinimas");
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -191,8 +224,8 @@ public class Turtas extends Sistemos {
 
 	gbc.gridx = 3;
 	gbc.weightx = 0;
-	cbSystem = new JMyComboBox(systems[1], fontsize);
-	pFields.add(cbSystem, gbc);
+	cbIrenginys = new JMyComboBox(systems[1], fontsize);
+	pFields.add(cbIrenginys, gbc);
 //
 	gbc.gridx = 4;
 	gbc.weightx = 0;
@@ -305,8 +338,8 @@ public class Turtas extends Sistemos {
 	ta_Message.setLineWrap(true);
 	ta_Message.setWrapStyleWord(true);
 //	ta_Message.setToolTipText("Dvigubas spragtelėjimas ištrina tekstą iš šio lauko");
-	scrPaneMessage = new JScrollPane(ta_Message);
-	pFields.add(scrPaneMessage, gbc);
+	scrMessage = new JScrollPane(ta_Message);
+	pFields.add(scrMessage, gbc);
         
 	
     }
@@ -320,6 +353,7 @@ public class Turtas extends Sistemos {
 //    }
 //
 
+    @Override
     protected void filter() {
         if (chDate.isSelected() || chSystem.isSelected() || chName.isSelected() || chLocation.isSelected() || chMark.isSelected() || chIT.isSelected() || chNr.isSelected()) {
             filter_by();
@@ -376,6 +410,7 @@ public class Turtas extends Sistemos {
     }
 
 //SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pastaba, i.Pozymis, i.Data FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.Pavadinimas
+    @Override
     protected StringBuilder prepareFilter() {
 	StringBuilder sb;
 	sb = new StringBuilder(SELECT);
@@ -410,17 +445,16 @@ public class Turtas extends Sistemos {
 	if (chMessage.isSelected()) {
 	    appendAND(sb);
             sb.append(" i.Pastaba LIKE ?");
-	System.out.println(sb.toString());
         }
 	sb.append(" ORDER BY i.IT");
 	return sb;
     }
     
 //SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pastaba, i.Pozymis, i.Data FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.Pavadinimas
+    @Override
     protected void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
 	int i, n;
 	n = 0;
-//System.out.println(sb.toString());
 	i = sb.indexOf(" i.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
@@ -429,7 +463,7 @@ public class Turtas extends Sistemos {
 	i = sb.indexOf(" i.Sistema = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));	    
+	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));	    
 	}
 	i = sb.indexOf(" i.Pavadinimas LIKE ?");
 	if (i >= 0) {
@@ -465,7 +499,8 @@ public class Turtas extends Sistemos {
     }
 
 //    
-    private void update() {
+    @Override
+    protected void update() {
 	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
@@ -476,7 +511,7 @@ public class Turtas extends Sistemos {
 		preparedUpdate.setString(1, fIT.getText());
 		preparedUpdate.setString(2, fNr.getText());
 		preparedUpdate.setString(3, fName.getText());
-		preparedUpdate.setInt(4, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
+		preparedUpdate.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
                 preparedUpdate.setString(5, tfDate.getText());
 		preparedUpdate.setInt(6, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
 		preparedUpdate.setString(7, fMark.getText());
@@ -496,7 +531,7 @@ public class Turtas extends Sistemos {
     }
 
 // INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema, Data, Vieta, Pozymis, Pastaba, Veikla) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    private void insert() {
+    protected void insert() {
 	int row;
 	row = table.getSelectedRow();
 	if (row >= 0) {
@@ -504,15 +539,15 @@ public class Turtas extends Sistemos {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 		}
-		preparedUpdate.setString(1, fIT.getText());
-		preparedUpdate.setString(2, fNr.getText());
-		preparedUpdate.setString(3, fName.getText());
-		preparedUpdate.setInt(4, Integer.valueOf(systems[0][cbSystem.getSelectedIndex()]));
-                preparedUpdate.setString(5, tfDate.getText());
-		preparedUpdate.setInt(6, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
-		preparedUpdate.setString(7, fMark.getText());
-		preparedUpdate.setString(8, ta_Message.getText());
-		preparedUpdate.setInt(9, Integer.valueOf(codes[0][cbCode.getSelectedIndex()]));
+		preparedInsert.setString(1, fIT.getText());
+		preparedInsert.setString(2, fNr.getText());
+		preparedInsert.setString(3, fName.getText());
+		preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+                preparedInsert.setString(5, tfDate.getText());
+		preparedInsert.setInt(6, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
+		preparedInsert.setString(7, fMark.getText());
+		preparedInsert.setString(8, ta_Message.getText());
+		preparedInsert.setInt(9, Integer.valueOf(codes[0][cbCode.getSelectedIndex()]));
                 if (preparedInsert.executeUpdate() == 1) {
 		    filter();
 		}
@@ -524,18 +559,6 @@ public class Turtas extends Sistemos {
 	}
     }
 
-
-    private void saveFile(String filename, String text) {
-        BufferedWriter writer;
-        try {
-            writer = new BufferedWriter(new FileWriter(filename));
-            writer.write(text);
-            writer.close();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
     private void delete_temp_files(){
         Runtime r;
         Process pr;
@@ -576,9 +599,9 @@ public class Turtas extends Sistemos {
 	sb = new StringBuilder(TEX_START);
 	if (JOptionPane.showConfirmDialog(this, "Sukurti brūkšninių kodų pdf?", "Sukurti pdf?", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
 	    r = Runtime.getRuntime();
+	    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	    try {
 		for (i = 0; i < rows; i++) {
-		    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		    barcode_cmd[2] = (String) table.getValueAt(i, 1);
 		    name[col] = (String) table.getValueAt(i, 3);
 		    note[col] = (String) table.getValueAt(i, 7);
@@ -617,36 +640,79 @@ public class Turtas extends Sistemos {
 //		pr.waitFor(3, TimeUnit.SECONDS);
 		res = pr.exitValue();
 		pr.destroy();
-		setCursor(Cursor.getDefaultCursor());
 	    } catch (IOException | InterruptedException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	    }
-	    JOptionPane.showMessageDialog(this, "Failas ".concat(BARCODES_FILE).concat(".pdf: ").concat(String.valueOf(res)));
+	    JOptionPane.showMessageDialog(this, "Failas " + System.getProperty("user.dir") + BARCODES_FILE + ".pdf: " + String.valueOf(res));
 	    delete_temp_files();
+	    setCursor(Cursor.getDefaultCursor());
 	}
     }
 
-//    private void delete() {
-//	int row;
-//	row = table.getSelectedRow();
-//	if (row >= 0) {
-//	    try {
-//		if (preparedDelete == null) {
-//		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
-//		}
-//// ID, IT, Nr, Pavadinimas, Sistema
-//		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
-//		if (preparedDelete.execute()) {
-//		    filter();
-//		}
-//	    } catch (SQLException ex) {
-//		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-//	    }
-//	}  else {
-//	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-//	}
-//    }
+     
+    public void exportIT() {
+        String filename, s;
+        StringBuilder sb, sb_tmp;
+        filename = JOptionPane.showInputDialog(this, "CSV failo vardas", IT_CSV);
+        sb_tmp = new StringBuilder();
+        sb = new StringBuilder("ID\tIT\tNr\tPavadinimas\tSistema\tVieta\tŽyma\tPastaba\tData\tVeikla\n");
+        for (int i = 0; i < table.getRowCount(); i++) {
+            for (int j = 0; j < table.getColumnCount(); j++) {
+                s = String.valueOf(table.getValueAt(i, j));
+                s = s.replaceAll("\n", "");
+                sb.append(s + "\t");
+            }
+            sb.append("\n");
+        }
+        saveFile(filename, sb.toString());
+    }
 
+   
+    
+    protected void delete() {
+	int row;
+	row = table.getSelectedRow();
+	if (row >= 0) {
+	    try {
+		if (preparedDelete == null) {
+		    preparedDelete = connection.prepareStatement(delete);
+		}
+// ID, Pavadinimas
+		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
+		if (preparedDelete.execute()) {
+		    filter(select);
+		}
+	    } catch (SQLException ex) {
+		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    }
+	} else {
+	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	}
+    }
+    
+    protected void filter(String query) {
+	Object[] row;
+	int i, colcount;
+	tableModel.setRowCount(0);
+	ResultSet resultset;
+	try {
+	    resultset = connection.executeQuery(query);
+	    colcount = tableModel.getColumnCount();
+	    row = new Object[colcount];
+	    while (resultset.next()) {
+		for (i = 0; i <= colcount - 1; i++) {
+		    row[i] = resultset.getObject(i + 1);
+		}
+		tableModel.addRow(row);
+	    }
+	    resultset.close();
+	} catch (SQLException ex) {
+	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+	}
+    }
+	
+
+    
     @Override
     public void actionPerformed(ActionEvent e) {
 	String derBefehl;
@@ -661,33 +727,32 @@ public class Turtas extends Sistemos {
 	    case "insert":
 		insert();
 		break;	
-//	    case "delete":
-//		delete();
-//		filter();
-//		break;
+	    case "delete":
+		delete();
+		filter();
+		break;
 	}
 	
     }
 
+
+
     @Override
-    public void valueChanged(ListSelectionEvent lse) {
-	selectedRow = table.getSelectedRow();
- 	if (selectedRow >= 0) {
-            tfDate.setText(table.getValueAt(selectedRow, tableModel.findColumn(DATA)).toString());
-	    setComboBoxItem(cbSystem, systems[1], (String) table.getValueAt(selectedRow, tableModel.findColumn(SISTEMA)));
-            fName.setText(table.getValueAt(selectedRow, tableModel.findColumn(PAVADINIMAS)).toString());
-	    setComboBoxItem(cbLocations, locations[1], (String) table.getValueAt(selectedRow, tableModel.findColumn(VIETA)));
-            fMark.setText(table.getValueAt(selectedRow, tableModel.findColumn(POZYMIS)).toString());
-            fIT.setText(table.getValueAt(selectedRow, tableModel.findColumn(IT)).toString());
-            fNr.setText(table.getValueAt(selectedRow, tableModel.findColumn(NR)).toString());
-            setComboBoxItem(cbCode, codes[1], (String) table.getValueAt(selectedRow, tableModel.findColumn(VEIKLA)));
-	    ta_Message.setText(table.getValueAt(selectedRow, tableModel.findColumn(PASTABA)).toString());
+    public void mouseClicked(MouseEvent me) {
+	if (me.getComponent().equals(table)){
+            row = table.getSelectedRow();
+            if (row >= 0) {
+                tfDate.setText(table.getValueAt(row, tableModel.findColumn(DATA)).toString());
+                setComboBoxItem(cbIrenginys, systems[1], (String) table.getValueAt(row, tableModel.findColumn(SISTEMA)));
+                fName.setText(table.getValueAt(row, tableModel.findColumn(PAVADINIMAS)).toString());
+                setComboBoxItem(cbLocations, locations[1], (String) table.getValueAt(row, tableModel.findColumn(VIETA)));
+                fMark.setText(table.getValueAt(row, tableModel.findColumn(POZYMIS)).toString());
+                fIT.setText(table.getValueAt(row, tableModel.findColumn(IT)).toString());
+                fNr.setText(table.getValueAt(row, tableModel.findColumn(NR)).toString());
+                setComboBoxItem(cbCode, codes[1], (String) table.getValueAt(row, tableModel.findColumn(VEIKLA)));
+                ta_Message.setText(table.getValueAt(row, tableModel.findColumn(PASTABA)).toString());
+            }
         }
     }
-
-
-
-    
-    
+     
 }
-//	tableModel = new DefaultTableModel(new Object[]{"", "Datum", "<html>Fett<br>%</hmtl>", "<html>Muskeln<br>%</html>", "<html>Wasser<br>%</html>", "<html>Knochen<br>kg</html>", "<html>Masse<br>kg</html>", "<html>Energie0<br>kcal</html>", "<html>Energie1<br>kcal</html>", "<html>Bauch<br>cm</html>", "<html>Oberarm<br>cm</html>", "<html>Unterarm<br>cm</html>", "<html>Ober-<br>schenkel<br>cm</html>", "<html>Unter-<br>schenkel<br>cm</html>", "<html>Brust<br>cm</html>", "<html>Fettmasse<br>kg</html>", "<html>Muskel-<br>masse<br>kg</html>"}, 0);

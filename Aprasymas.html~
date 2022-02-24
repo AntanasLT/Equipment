@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Aprašymas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Aprašymas</h1>
+        <h2>Bendrieji principai</h2>
+        <p>Į „Žurnalą“ rašome:
+        <ul>
+        <li>tai, ką norime perduoti kitiems, </li>
+        <li>informaciją, kurios gali kada nors prireikti (užrašai: kas nuimta, kur padėta ir pan.),</li>
+        <li>darbus, kuriuos pradėjome, bet nebaigėme,</li>
+        <li>darbus, kuriuos reikia atlikti, bet kitą pamainą, ne šiandien.</li>
+        </ul> 
+        </p>
+        
+        <h2>Naudojimas</h2>
+        <p>Įrašus galima pridėti arba, savo, redaguoti. Pašalinti – ne.</p>
+		<h3>Spartieji klavišai</h3>
+		<ul>
+		<li>Nuo vieno prie kito redaguojamo lauko galima pereiti ne tik pele, bet ir Tab klavišu.</li>
+		<li>Pasirenkame sąraše greitai pereiti prie reikiamo elemento galima renkant to elemento tekstą. 
+		Tai ypač patogu, kai sąrašas ilgas. Pvz.: nuo datos lauko klavišu Tab perėjus į sistemų sąrašą renkame „pri“: iškart sąraše išrenkamas elementas „Priešgaisrinė sign.“.</li>
+		</ul>
+        
+		<h3>Laukai ir mygtukai</h3>
+		<ul>
+		<li>Laukas „<b>Data</b>“. Paleidus programą, į lauką automatiškai įrašoma šiandienos data. 
+		Taip pat šiandienos datą galima įrašyti dvigubu spragtelėjimu šiame lauke.</li>
+		<li>Laukas „<b>Įrenginys</b>“. Lauko ilgis – 255. Laukas skirtas įrašyti konkretaus įrenginio pavadinimą, gal IT numerį ar serijos numerį, 
+		kad, vėliau kada nors ieškant kas buvo daryta su tuo įrenginiu, būtų galima lengiau surasti.</li>
+		<li>Sąrašas „<b>Darbas</b>“. Jei sąraše nėra reikiamo įrašo, – pasirinti „Kita“. Jei susikaups daugiau darbų,
+		priskirtų kategorijai „Kita“, tai bus galima sukurti reikiamas konkrečias kategorijas.</li>
+		<!--<li>Sąrašas „<b>Būsena</b>“</li>-->
+		<li>Laukas „<b>Tąsa</b>“. Jei tęsiamas kažkoks darbas, tai šiame lauke įrašomas pradinio įrašo nr. 
+		Vėliau, filtruojant, paprasta atrinkti visus su tuo darbu susijusius įrašus.<br>
+		Spragtelėjimas šiame lauke jį išvalo.
+		</li>
+		<li>Laukas <b>ID</b>. Neredaguojamas. Ant jo spragtelėjus, reikšmė nukopijuojama į lauką „Tąsa“ (kad būtų patogiau).</li>
+		<li>Laukas „<b>Aprašymas</b>“. Galimas teksto ilgis – 2^16 (65536) simboliai.<br>
+		Dvigubas spragtelėjimas šiame lauke jį išvalo.</li>
+		<li><input type="submit" name="όνομα" value="Naujas"> į duomenų bazę prideda naujas įrašas, suformuotas iš aukščiau aprašytų laukų. ID reikšmė priskiriama automatiškai.</li>
+		<li><input type="submit" name="όνομα" value="Išsaugoti"> išsaugo lentelėje pažymėtos eilutės įrašą. Naudojamas savo įrašų redagavimui: pažymėjus lentelėje reikiamą įrašą, jo duomenys atsiranda aukščiau aprašytuose redagavimo laukuose. Čia juos galima pakeisti ir išsaugoti mygtuku „Išsaugoti“.</li>
+		<li><input type="submit" name="όνομα" value="Susipažinau"> skirtas paprastai padaryti įrašą apie susipažinimą su informacija: pažymėjus lentelėje eilutę, su kuria susipažįstama, paspaudžiamas šis mygtukas; automatiškai suformuojamas įrašas su susipažinimo žyme.<br>
+		Vėliau, filtruojant, paprasta pažiūrėti, kas susipažino su šiuo įrašu.</li>
+		<li><input type="submit" name="όνομα" value="Visi"></li>
+		<li><input type="submit" name="όνομα" value="Nebaigti"></li>
+		<li><input type="submit" name="όνομα" value="Info"></li>
+		<li><input type="submit" name="όνομα" value="Filtruoti"></li>
+		</ul>
+		
+        <h3>Įrašų peržiūra (filtravimas)</h3>
+        
+        <h3>Naujas įrašas</h3>
+        <h3>Įrašo keitimas</h3>
+        
+    </body>
+</html>

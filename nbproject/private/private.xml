@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="354">
+        <file>
+            <url>src/equipment/ConnectionEquipment.java</url>
+            <bookmark id="8">
+                <name/>
+                <line>24</line>
+                <key/>
+            </bookmark>
+            <bookmark id="110">
+                <name/>
+                <line>315</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Introsk_darbai.java</url>
+            <bookmark id="216">
+                <name/>
+                <line>43</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Accounts.java</url>
+            <bookmark id="32">
+                <name/>
+                <line>57</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Works.java</url>
+            <bookmark id="84">
+                <name/>
+                <line>41</line>
+                <key/>
+            </bookmark>
+            <bookmark id="99">
+                <name/>
+                <line>41</line>
+                <key/>
+            </bookmark>
+            <bookmark id="142">
+                <name/>
+                <line>122</line>
+                <key/>
+            </bookmark>
+            <bookmark id="132">
+                <name/>
+                <line>507</line>
+                <key/>
+            </bookmark>
+            <bookmark id="119">
+                <name/>
+                <line>529</line>
+                <key/>
+            </bookmark>
+            <bookmark id="126">
+                <name/>
+                <line>677</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Outlays.java</url>
+            <bookmark id="2">
+                <name/>
+                <line>75</line>
+                <key/>
+            </bookmark>
+            <bookmark id="1">
+                <name/>
+                <line>125</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Generators.java</url>
+            <bookmark id="157">
+                <name/>
+                <line>32</line>
+                <key/>
+            </bookmark>
+            <bookmark id="140">
+                <name/>
+                <line>44</line>
+                <key/>
+            </bookmark>
+            <bookmark id="143">
+                <name/>
+                <line>156</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Darbai.java</url>
+            <bookmark id="328">
+                <name/>
+                <line>65</line>
+                <key/>
+            </bookmark>
+            <bookmark id="327">
+                <name/>
+                <line>412</line>
+                <key/>
+            </bookmark>
+            <bookmark id="281">
+                <name/>
+                <line>813</line>
+                <key/>
+            </bookmark>
+            <bookmark id="236">
+                <name/>
+                <line>921</line>
+                <key/>
+            </bookmark>
+            <bookmark id="234">
+                <name/>
+                <line>1001</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/IDString_n.java</url>
+            <bookmark id="288">
+                <name/>
+                <line>192</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Generatoriai.java</url>
+            <bookmark id="213">
+                <name/>
+                <line>25</line>
+                <key/>
+            </bookmark>
+            <bookmark id="159">
+                <name/>
+                <line>27</line>
+                <key/>
+            </bookmark>
+            <bookmark id="214">
+                <name/>
+                <line>107</line>
+                <key/>
+            </bookmark>
+            <bookmark id="184">
+                <name/>
+                <line>114</line>
+                <key/>
+            </bookmark>
+            <bookmark id="185">
+                <name/>
+                <line>220</line>
+                <key/>
+            </bookmark>
+            <bookmark id="181">
+                <name/>
+                <line>220</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Sutartys.java</url>
+            <bookmark id="299">
+                <name/>
+                <line>37</line>
+                <key/>
+            </bookmark>
+            <bookmark id="303">
+                <name/>
+                <line>399</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Biudzetas.java</url>
+            <bookmark id="335">
+                <name/>
+                <line>115</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Liftu_darbai.java</url>
+            <bookmark id="241">
+                <name/>
+                <line>32</line>
+                <key/>
+            </bookmark>
+            <bookmark id="282">
+                <name/>
+                <line>228</line>
+                <key/>
+            </bookmark>
+            <bookmark id="283">
+                <name/>
+                <line>339</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Ataskaita_liftai.java</url>
+            <bookmark id="202">
+                <name/>
+                <line>39</line>
+                <key/>
+            </bookmark>
+            <bookmark id="203">
+                <name/>
+                <line>201</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Irenginiai.java</url>
+            <bookmark id="154">
+                <name/>
+                <line>51</line>
+                <key/>
+            </bookmark>
+            <bookmark id="156">
+                <name/>
+                <line>577</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/TP.java</url>
+            <bookmark id="113">
+                <name/>
+                <line>41</line>
+                <key/>
+            </bookmark>
+            <bookmark id="300">
+                <name/>
+                <line>179</line>
+                <key/>
+            </bookmark>
+            <bookmark id="153">
+                <name/>
+                <line>212</line>
+                <key/>
+            </bookmark>
+            <bookmark id="331">
+                <name/>
+                <line>228</line>
+                <key/>
+            </bookmark>
+            <bookmark id="122">
+                <name/>
+                <line>390</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/EquipmentTypes.java</url>
+            <bookmark id="11">
+                <name/>
+                <line>33</line>
+                <key/>
+            </bookmark>
+            <bookmark id="16">
+                <name/>
+                <line>171</line>
+                <key/>
+            </bookmark>
+            <bookmark id="10">
+                <name/>
+                <line>181</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Tinklai.java</url>
+            <bookmark id="264">
+                <name/>
+                <line>65</line>
+                <key/>
+            </bookmark>
+            <bookmark id="263">
+                <name/>
+                <line>285</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Introskopai.java</url>
+            <bookmark id="186">
+                <name/>
+                <line>25</line>
+                <key/>
+            </bookmark>
+            <bookmark id="215">
+                <name/>
+                <line>134</line>
+                <key/>
+            </bookmark>
+            <bookmark id="209">
+                <name/>
+                <line>169</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Turtas.java</url>
+            <bookmark id="224">
+                <name/>
+                <line>651</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Saskaitos.java</url>
+            <bookmark id="308">
+                <name/>
+                <line>41</line>
+                <key/>
+            </bookmark>
+            <bookmark id="354">
+                <name/>
+                <line>423</line>
+                <key/>
+            </bookmark>
+            <bookmark id="353">
+                <name/>
+                <line>453</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Liftai.java</url>
+            <bookmark id="220">
+                <name/>
+                <line>29</line>
+                <key/>
+            </bookmark>
+            <bookmark id="239">
+                <name/>
+                <line>143</line>
+                <key/>
+            </bookmark>
+            <bookmark id="219">
+                <name/>
+                <line>157</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Devices.java</url>
+            <bookmark id="63">
+                <name/>
+                <line>32</line>
+                <key/>
+            </bookmark>
+            <bookmark id="135">
+                <name/>
+                <line>49</line>
+                <key/>
+            </bookmark>
+            <bookmark id="138">
+                <name/>
+                <line>247</line>
+                <key/>
+            </bookmark>
+            <bookmark id="62">
+                <name/>
+                <line>323</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/MainFrame.java</url>
+            <bookmark id="338">
+                <name/>
+                <line>70</line>
+                <key/>
+            </bookmark>
+            <bookmark id="352">
+                <name/>
+                <line>165</line>
+                <key/>
+            </bookmark>
+            <bookmark id="351">
+                <name/>
+                <line>722</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Liftu_sarasas.java</url>
+            <bookmark id="231">
+                <name/>
+                <line>39</line>
+                <key/>
+            </bookmark>
+            <bookmark id="230">
+                <name/>
+                <line>150</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Potinkliai.java</url>
+            <bookmark id="254">
+                <name/>
+                <line>22</line>
+                <key/>
+            </bookmark>
+            <bookmark id="253">
+                <name/>
+                <line>23</line>
+                <key/>
+            </bookmark>
+            <bookmark id="261">
+                <name/>
+                <line>98</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/zurnalas/MainFrame_Zurnalas.java</url>
+            <bookmark id="51">
+                <name/>
+                <line>203</line>
+                <key/>
+            </bookmark>
+            <bookmark id="53">
+                <name/>
+                <line>251</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Sistemos.java</url>
+            <bookmark id="227">
+                <name/>
+                <line>84</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/Location.java</url>
+            <bookmark id="145">
+                <name/>
+                <line>28</line>
+                <key/>
+            </bookmark>
+            <bookmark id="144">
+                <name/>
+                <line>113</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/JSG.java</url>
+            <bookmark id="330">
+                <name/>
+                <line>30</line>
+                <key/>
+            </bookmark>
+            <bookmark id="348">
+                <name/>
+                <line>333</line>
+                <key/>
+            </bookmark>
+            <bookmark id="346">
+                <name/>
+                <line>386</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/equipment/ID_auto.java</url>
+            <bookmark id="285">
+                <name/>
+                <line>38</line>
+                <key/>
+            </bookmark>
+            <bookmark id="286">
+                <name/>
+                <line>101</line>
+                <key/>
+            </bookmark>
+            <bookmark id="287">
+                <name/>
+                <line>154</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/a/Programme/java/berufliche/Equipment/src/equipment/Sutartys.java</file>
+        </group>
+    </open-files>
+</project-private>

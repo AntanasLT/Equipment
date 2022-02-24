@@ -7,12 +7,12 @@ zurnalaS="/home/a/Programme/java/berufliche/Equipment/ZurnalaS"
 function a () {
 	rm -rf $dest/*
 	cp -R $dist/* $dest/
-	if [[ `mount|grep 'OneDrive'` != "" ]]; then
-		b="Programme/java/berufliche/Equipment/$config"
-		rsync -avu --delete /home/a/$b/ /home/a/OneDrive/$b; echo `date`': /home/a/'"$b/" >> /home/a/OneDrive/letzte.txt
-	else
-		echo 'Καμιά σύνδεση με Ονε δρίωε'
-	fi
+#	if [[ `mount|grep 'OneDrive'` != "" ]]; then
+#		b="Programme/java/berufliche/Equipment/$config"
+#		rsync -avu --delete /home/a/$b/ /home/a/OneDrive/$b; echo `date`': /home/a/'"$b/" >> /home/a/OneDrive/letzte.txt
+#	else
+#		echo 'Καμιά σύνδεση με Ονε δρίωε'
+#	fi
 }
 
 read -p 'I – η εφαρμογή μου
