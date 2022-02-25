@@ -201,6 +201,7 @@ public class TP extends Darbai {
 	pnFIlterButtons = new JPanel();
 	btAll = new JMyButton("Naujausieji", fontsize);
 	btAll.setActionCommand("all");
+        btAll.setToolTipText("Limit 100");
         btAll.setToolTipText(LIMIT + " paskutiniųjų");
 	btAll.addActionListener(this);
 	pnFIlterButtons.add(btAll);
@@ -243,7 +244,7 @@ public class TP extends Darbai {
 		sb.append(" tp.Pastaba LIKE ?");
             }
 	}
-	sb.append(" ORDER BY tp.Data DESC");
+	sb.append(" ORDER BY tp.Data DESC LIMIT 100");
 //	System.out.println(sb.toString());
 	return sb;
     }
