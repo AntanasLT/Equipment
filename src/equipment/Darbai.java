@@ -640,36 +640,47 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     private void insert() {
 	int id, state, idpr;
 	boolean clossed;
+        String idPr;
         id = get_userid_by_name(connection.get_username());
+        idPr = tfIDpr.getText();
+        row = table.getSelectedRow();
         if (id < 0) {
             JOptionPane.showMessageDialog(this, "Tokio vartotojo nėra.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
-	try {
-	    idpr = get_int(tfIDpr.getText());
-	    state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
-	    if (preparedInsert == null) {
-		preparedInsert = connection.prepareStatement(PREPARE_INSERT);
-	    }
-//    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigtas)
-	    preparedInsert.setInt(1, get_int(tfIDpr.getText()));
-	    preparedInsert.setInt(2, id);
-	    preparedInsert.setString(3, tfDate.getText());
-	    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
-	    preparedInsert.setString(5, fName.getText());
-	    preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
-	    preparedInsert.setInt(7, Integer.valueOf(states[0][cbState.getSelectedIndex()]));
-	    clossed = state == BAIGTA;
-	    preparedInsert.setString(8, taMessage.getText());
-	    preparedInsert.setBoolean(9, clossed);
-	    if (preparedInsert.executeUpdate() == 1) {
-		filter_all();
-	    }
-	    if (clossed) {
-		update_finish(idpr);
-	    }
-	} catch (SQLException ex) {
-	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida (insert)!", JOptionPane.ERROR_MESSAGE);
-	    }
+        System.out.println((String) cbState.getSelectedItem());
+        if (!((String) cbState.getSelectedItem()).equals("Užregistruota")) {
+            idPr = JOptionPane.showInputDialog(this, "Tęsiamo įrašo nr.", table.getValueAt(row, tableModel.findColumn(ID)));
+        }
+        if (idPr != null) {
+            try {
+                idpr = get_int(tfIDpr.getText());
+                state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
+                if (preparedInsert == null) {
+                    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
+                }
+    //    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigtas)
+                preparedInsert.setInt(1, get_int(idPr));
+                preparedInsert.setInt(2, id);
+                preparedInsert.setString(3, tfDate.getText());
+                preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+                preparedInsert.setString(5, fName.getText());
+                preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
+                preparedInsert.setInt(7, Integer.valueOf(states[0][cbState.getSelectedIndex()]));
+                clossed = state == BAIGTA;
+                preparedInsert.setString(8, taMessage.getText());
+                preparedInsert.setBoolean(9, clossed);
+                if (preparedInsert.executeUpdate() == 1) {
+                    filter_all();
+                }
+                if (clossed) {
+                    update_finish(idpr);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, ex.toString(), "Klaida (insert)!", JOptionPane.ERROR_MESSAGE);
+                }            
+        } else {
+            JOptionPane.showMessageDialog(this, "Naujas įrašas neįvestas", "Atšaukta", JOptionPane.INFORMATION_MESSAGE);
+        }
 //	}
     }
 
