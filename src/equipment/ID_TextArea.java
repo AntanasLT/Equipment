@@ -30,6 +30,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
     
     String taField;
     String[] dbCols, tblCols;
+    Dimension taSize;
     int[] tblColWidth;
     int i0;
 
@@ -44,13 +45,14 @@ public class ID_TextArea extends ID_auto implements MouseListener {
      * @param id_auto_increment
      * @param textArea_field
      */
-    public ID_TextArea (ConnectionEquipment the_connection, int size, String tbl, String[] db_fields, String[] tbl_cols, int[] tbl_col_with, boolean id_auto_increment, String textArea_field) {
+    public ID_TextArea (ConnectionEquipment the_connection, int size, String tbl, String[] db_fields, String[] tbl_cols, int[] tbl_col_with, boolean id_auto_increment, String textArea_field, Dimension texAreaSize) {
         super(the_connection, size, tbl);
         dbCols = db_fields;
         tblCols = tbl_cols;
         tblColWidth = tbl_col_with;
         i0 = id_auto_increment ? 1 : 0;
         taField = textArea_field;
+        taSize = texAreaSize;
     }
 
     @Override
@@ -100,18 +102,18 @@ public class ID_TextArea extends ID_auto implements MouseListener {
 	chSearch = new JMyCheckBox("Paieška:", true, fontsize);
         pButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 2, 2));
         pButtons.add(chSearch);
-        taText = new JMyTextArea(3, 50, fontsize);
+        taText = new JMyTextArea(taSize.height, taSize.width, fontsize);
         taText.setLineWrap(true);
         taText.setWrapStyleWord(true);
         scrPane = new JScrollPane(taText);
-        scrPane.setMinimumSize(new Dimension(55, 3));
+        scrPane.setMinimumSize(taSize);
 	pButtons.add(scrPane);	
         btFilter = new JMyButton("Rodyti", fontsize);
         btFilter.setMnemonic('R');
 	btFilter.setActionCommand("filter");
 	btFilter.addActionListener(this);
  	pButtons.add(btFilter);
-        pButtons.add(Box.createHorizontalStrut(100));
+        pButtons.add(Box.createHorizontalStrut(20));
 	btEdit = new JMyButton("Pakeisti", fontsize);
         btEdit.setMnemonic('P');
  	btEdit.addActionListener(this);

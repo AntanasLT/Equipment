@@ -7,6 +7,7 @@
 package equipment;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -569,7 +570,7 @@ public class MainFrame extends JFrame implements ActionListener{
     
     private ID_TextArea createTab_IDTextArea(ID_TextArea tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment, String taField) {
         if (tab == null & menuItem.isSelected()) {
-            tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField);
+            tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField, new Dimension(70, 10));
             tab.init();
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
