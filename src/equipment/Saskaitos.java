@@ -30,7 +30,7 @@ public class Saskaitos extends Liftu_darbai {
 
     private static final String SELECT = "SELECT s.NR, s.Data, s.Ivesta, s.DVSNr, k.Pavadinimas, sut.Pavadinimas, s.BiudKodas, b.Pavadinimas, s.UzsNr, s.UzsData, s.UzsSuma, s.UzsPastabos, s.Suma, s.Prekes, s.Paslaugos, s.IT, s.Pastabos, s.Failas, s.Failas2, s.Failas3, s.Filialas  FROM Saskaitos s INNER JOIN Biudzetas b ON s.BiudKodas = b.Kodas INNER JOIN Sutartys sut ON s.DVSNr = sut.RegNr INNER JOIN Kontrahentai k ON sut.Kontrahentas = k.ID"; // συνολικά 18
     private static final String INSERT = "INSERT INTO Saskaitos (NR, Data, Ivesta, DVSNr, BiudKodas, UzsNr, UzsData, UzsSuma, UzsPastabos, Suma, Prekes, Paslaugos, IT, Pastabos, Failas, Failas2, Failas3, Filialas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // συνολικά 15
-    private static final String UPDATE = "UPDATE Saskaitos SET Data = ?, Ivesta = ?, DVSNr = ?, BiudKodas = ?, UzsNr = ?, UzsData = ?, UzsSuma = ?, UzsPastabos = ?, Suma = ?, Prekes = ?, Paslaugos = ?, IT = ?, Pastabos = ?, Failas = ?, Failas2 = ?, Failas3 = ?, Filialas = ? WHERE NR = ?";
+    private static final String UPDATE = "UPDATE Saskaitos SET Data = ?, Ivesta = ?, DVSNr = ?, BiudKodas = ?, NR = ?, UzsData = ?, UzsSuma = ?, UzsPastabos = ?, Suma = ?, Prekes = ?, Paslaugos = ?, IT = ?, Pastabos = ?, Failas = ?, Failas2 = ?, Failas3 = ?, Filialas = ? WHERE Uzsnr = ?";
     private static final String FOLDER = "Saskaitos";
 
 //"Nr.", "Data", "DVS Nr.", "Kontrahentas", "Sutarties pavadinimas", "Biud. kodas", "Biud. pavadinimas", "Užs. Nr.", "Užs. data", "Užs. suma", "Užs. pastabos", "Sąsk. suma", "Prekės", "Paslaugos", "IT", "Pastabos sąskaitai", "Failas", "Filialas"
@@ -580,7 +580,7 @@ public class Saskaitos extends Liftu_darbai {
             preparedUpdate.setString(1, tfDate.getText());
             preparedUpdate.setString(3, (String) cbSutNr.getSelectedItem());
             preparedUpdate.setString(4, (String) cbBiuKodai.getSelectedItem());
-            preparedUpdate.setString(5, tfUzsNr.getText());
+            preparedUpdate.setString(5, tfNr.getText());
             preparedUpdate.setString(6, tfUzsData.getText());
             preparedUpdate.setFloat(7, Float.valueOf(replaceComma(tfUzsSuma.getText())));
 //            preparedUpdate.setFloat(6, Float.valueOf(tfUzsSuma.getText()));
@@ -594,7 +594,7 @@ public class Saskaitos extends Liftu_darbai {
             preparedUpdate.setString(15, tfFailas2.getText());
             preparedUpdate.setString(16, tfFailas3.getText());
             preparedUpdate.setString(17, tfFilialas.getText());
-            preparedUpdate.setString(18, tfNr.getText());
+            preparedUpdate.setString(18, tfUzsNr.getText());
                 if (preparedUpdate.executeUpdate() == 1) {
                     filter();
                 }

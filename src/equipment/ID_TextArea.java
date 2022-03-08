@@ -7,16 +7,11 @@ package equipment;
 
 import datum.Datum;
 import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.SQLException;
 import javax.swing.Box;
 import javax.swing.JOptionPane;
@@ -62,6 +57,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         i0 = id_auto_increment ? 1 : 0;
         taField = textArea_field;
         taSize = texAreaSize;
+        folder = FOLDER;
     }
 
     @Override
@@ -69,7 +65,10 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         font = new Font("Arial", Font.PLAIN, fontsize);
 	if (connection != null) {
 	    setLayout(new BorderLayout());
+            createPopup();
 	    createTable();
+            table.setComponentPopupMenu(menuPop);
+            table.add(menuPop);
 	    createPanelButtons();
 	    add(pButtons, BorderLayout.NORTH);
 	    add(scrTable, BorderLayout.CENTER);
@@ -161,7 +160,8 @@ public class ID_TextArea extends ID_auto implements MouseListener {
     @Override
     protected void setPrepared() {
         String txt;
-        txt = "%" + taText.getText() + "%";
+        txt = taText.getText();
+        txt = txt.length() == 1 ? txt : "%" + txt + "%";
         try {
             for (int i = 1; i <= dbCols.length; i++) {
                 preparedSelect.setString(i, txt);
@@ -322,45 +322,35 @@ public class ID_TextArea extends ID_auto implements MouseListener {
 	}
     }
 
-    protected void openFile(String folder, String filename) {
-        try {
-            if (filename.startsWith("http") || filename.contains("www")) {
-                Desktop.getDesktop().browse(new URL(filename).toURI());
-            } else {
-                File file = new File(folder, filename);
-                if (file.exists()) {
-//                    if (filename.endsWith("txt")) {
-//                        Desktop.getDesktop().edit(file);
-//                    }
-                    Desktop.getDesktop().open(file);
-                } else {
-                    throw new IOException(filename + ": nėra!");
-                }
-            }
-        } catch (IOException | URISyntaxException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     @Override
     public void mouseClicked(MouseEvent me) {
         int col, row;
         if (me.getComponent().equals(table)) {
             col = table.getSelectedColumn();
             row = table.getSelectedRow();
-            taText.setText((String) table.getValueAt(table.getSelectedRow(), tableModel.findColumn(taField)));
-            if (me.getButton() == 2 && col == tableModel.findColumn("Data")) {
-                Datum date = new Datum();
-                table.setValueAt(date.getDate(), row, col);
+            if (row >= 0) {
+                taText.setText((String) table.getValueAt(table.getSelectedRow(), tableModel.findColumn(taField)));
+                if (me.getButton() == 2 && col == tableModel.findColumn("Data")) {
+                    Datum date = new Datum();
+                    table.setValueAt(date.getDate(), row, col);
+                }               
             }
         }
-        if ((me.getComponent().equals(taText)) & me.getButton() == 3) {
-            openFile(FOLDER, taText.getSelectedText());
+        if (me.getComponent().equals(taText)) {
+            switch (me.getButton()) {
+                case 2:
+                    taText.setText("");
+                    break;
+                case 3:
+                    openFile(FOLDER, taText.getSelectedText());                   
+                    break;
+            }
         }
     }
 
     @Override
     public void mousePressed(MouseEvent me) {
+        
     }
 
     @Override

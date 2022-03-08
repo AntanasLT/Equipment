@@ -649,7 +649,6 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
         if (id < 0) {
             JOptionPane.showMessageDialog(this, "Tokio vartotojo nėra.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println((String) cbState.getSelectedItem());
         if (!((String) cbState.getSelectedItem()).equals("Užregistruota")) {
             s0 = tfIDpr.getText();
             s1 = tfID.getText();
@@ -957,22 +956,24 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     }
     
     protected void openFile(String folder, String filename) {
-        try {
-            if (filename.startsWith("http") || filename.contains("www")) {
-                Desktop.getDesktop().browse(new URL(filename).toURI());
-            } else {
-                File file = new File(folder, filename);
-                if (file.exists()) {
-//                    if (filename.endsWith("txt")) {
-//                        Desktop.getDesktop().edit(file);
-//                    }
-                    Desktop.getDesktop().open(file);
+        if (filename != null) {
+            try {
+                if (filename.startsWith("http") || filename.contains("www")) {
+                    Desktop.getDesktop().browse(new URL(filename).toURI());
                 } else {
-                    throw new IOException(filename + ": nėra!");
+                    File file = new File(folder, filename);
+                    if (file.exists()) {
+    //                    if (filename.endsWith("txt")) {
+    //                        Desktop.getDesktop().edit(file);
+    //                    }
+                        Desktop.getDesktop().open(file);
+                    } else {
+                        throw new IOException(filename + ": nėra!");
+                    }
                 }
+            } catch (IOException | URISyntaxException ex) {
+                JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (IOException | URISyntaxException | NullPointerException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -1018,7 +1019,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     private ListSelectionListener elevListSelectionListener() {
         int row_nr;
         row_nr = tableElevators.getSelectedRow();
-        if (row_nr > 0) {
+        if (row_nr >= 0) {
             elevatorSelectionPane.setValue(tableElevators.getValueAt(row_nr, 0) + " " + tableElevators.getValueAt(row_nr, 1));
         }
         return null;

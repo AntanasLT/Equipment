@@ -6,10 +6,17 @@
 package equipment;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,17 +34,37 @@ import javax.swing.table.TableColumn;
  */
 public class ID_auto extends JPanel implements ActionListener {
     
+    private static final String HTML_START = "<!DOCTYPE html>\n" +
+"<!--\n" +
+"To change this license header, choose License Headers in Project Properties.\n" +
+"To change this template file, choose Tools | Templates\n" +
+"and open the template in the editor.\n" +
+"-->\n" +
+"<html>\n" +
+"    <head>\n" +
+"        <title>Darbeliai</title>\n" +
+"        <meta charset=\"UTF-8\">\n" +
+"        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+"    </head>\n" +
+"    <body>\n" +
+"       <table border=\"1\">\n";
+    private static final String HTML_END = "</table>\n    </body>\n</html>";
+    private static final String HTML_FILE = "Ivairus/Darbeliai.html";
+    private static String FOLDER = "";
+    
     Font font;
     ConnectionEquipment connection;
     protected PreparedStatement preparedUpdate, preparedInsert, preparedSelect, preparedDelete;
     
     
     int fontsize;
-    String select, delete, update, insert, table_name, id_name;
+    String select, delete, update, insert, table_name, id_name, folder;
 
     DefaultTableModel tableModel;
     JMyButton btInsert, btEdit, btDelete, btFilter;
     JMyCheckBox chSearch;
+    JMyPopupMenu menuPop;
+    JMyMenuItem miHtml;
     JMyTextField tfSearch;
     JPanel pButtons;
     JScrollPane scrTable;
@@ -54,6 +81,7 @@ public class ID_auto extends JPanel implements ActionListener {
 	connection = the_connection;
         table_name = tbl;
         id_name = this.getClass().getSimpleName();
+        folder = FOLDER;
 //	init();
     }
 
@@ -61,7 +89,10 @@ public class ID_auto extends JPanel implements ActionListener {
         font = new Font("Arial", Font.PLAIN, fontsize);
 	if (connection != null) {
 	    setLayout(new BorderLayout());
+            createPopup();
 	    createTable();
+            table.setComponentPopupMenu(menuPop);
+            table.add(menuPop);
 	    createPanelButtons();
 	    add(pButtons, BorderLayout.NORTH);
 	    add(scrTable, BorderLayout.CENTER);
@@ -94,6 +125,7 @@ public class ID_auto extends JPanel implements ActionListener {
     protected void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{id_name, "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
+        
         table.setFont(font);
         table.getTableHeader().setFont(font);
 	table.setAutoCreateRowSorter(true);
@@ -266,6 +298,74 @@ public class ID_auto extends JPanel implements ActionListener {
 	connection = null;
         enableButtons(false);
     }
+    
+    protected void createPopup() {
+        miHtml = new JMyMenuItem("Kurti html", fontsize);
+        miHtml.addActionListener(this);
+        miHtml.setActionCommand("html");
+        menuPop = new JMyPopupMenu(fontsize);
+        menuPop.add(miHtml);
+    }
+    
+    protected void create_html() {
+        StringBuilder sb;
+        sb = new StringBuilder(HTML_START);
+        for (int row : table.getSelectedRows()) {
+            sb.append("<tr>\n");
+            for (int col = 0; col < table.getColumnCount(); col++) {
+                sb.append("<td>").append(String.valueOf(table.getValueAt(row, col))).append("</td>\n");
+            }
+            sb.append("</tr>\n");
+        }
+        sb.append(HTML_END);
+        saveFile(HTML_FILE, sb.toString());
+    }
+
+    private void saveFile(String filename, String text) {
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(filename));
+            writer.write(text);
+            writer.close();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            if (JOptionPane.showConfirmDialog(this,  "Failas " + System.getProperty("user.dir") + System.getProperty("file.separator") + filename + " sukurtas. Rodyti?", "Sukurtas failas", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
+                openFile(folder, filename);
+            }
+        }    
+    }
+    
+    protected void openFile(String folder, String filename) {
+        if (filename == null) {          
+            filename = "";
+        }
+        try {
+            if (filename.startsWith("http") || filename.contains("www")) {
+                Desktop.getDesktop().browse(new URL(filename).toURI());
+            } else if (filename.endsWith("html")) {
+                filename = "file://" + System.getProperty("user.dir") + System.getProperty("file.separator") + filename;
+                Desktop.getDesktop().browse((new URL(filename).toURI()));
+            } else {
+                if (!filename.isEmpty()){
+                    File file = new File(folder, filename);
+                    if (file.exists()) {
+    //                    if (filename.endsWith("txt")) {
+    //                        Desktop.getDesktop().edit(file);
+    //                    }
+                        Desktop.getDesktop().open(file);
+                    } else {
+                        throw new IOException(filename + ": nėra!");
+                    }
+                }
+            }
+        } catch (IOException | URISyntaxException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -285,6 +385,9 @@ public class ID_auto extends JPanel implements ActionListener {
 	    case "delete":
 		delete();
 		filter();
+		break;	
+	    case "html":
+                create_html();
 		break;	
 	}
     }

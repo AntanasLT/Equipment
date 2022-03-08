@@ -1,1 +1,5 @@
+Άλλαξα τον  πίνακα Saskaitos της βάσης δεδομένων : PRIMARY KEY από NR στο UzsNr· ανάλογα άλαξα Saskaitos.java. 
+Μετακίνησα τη μέθοδο openFile από ID_TextArea στο ID_auto. Δημιούργησα τη μέθοδο create_html() στο ID_auto.
+ID_TextArea: Αν στη TextArea βρίσκεται μόνο ένα σύμβολο, αναζητεί μόνο στη στήλη Būsena.
+
 Άνοιγμα των αρχείων και τις σελίδας του διαδικτύου στις σελίδας «Adresai, Darbai, Darbeliai>· άυξησα τις απόστασεις ανάμεσα των κουπιών «išsaugoti, Naujas, Susipažinau»· άλλαξα την ερώτηση πριν εγγραφή σύνολου δεδομένων.
