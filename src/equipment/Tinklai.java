@@ -97,13 +97,19 @@ public class Tinklai extends Turtas {
     @Override
     protected void createTable() {
 	tableModel = new DefaultTableModel(table_columns, 0);
-	table = new JTable(tableModel);
+	table = new JTable(tableModel) {
+            @Override
+            public boolean isCellEditable (int row, int col) {
+                return col != 11;
+            }
+        };
         table.setFont(font);
         table.getTableHeader().setFont(font);
 //	table.setDefaultEditor(Object.class, null);
         table.addMouseListener(this);
 //        table.setToolTipText("Dvigubas spragtelėjimas išfiltruoja susijusius įrašus");
 	table.setAutoCreateRowSorter(true);
+//        table.setd
 	setColumnsWidths();
 	scrTable = new JScrollPane(table);
     }

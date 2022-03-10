@@ -213,29 +213,26 @@ public class IDString_n extends ID_auto {
 
     @Override
     protected void delete() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
-	    try {
-		if (preparedDelete == null) {
-		    preparedDelete = connection.prepareStatement(delete);
-		}
-// ID, Pavadinimas
+	int[] rows;
+	rows = table.getSelectedRows();
+        try {
+            if (preparedDelete == null) {
+                preparedDelete = connection.prepareStatement(delete);
+            }
+            for (int row : rows) {
                 if (i0 == 0) {
                     preparedDelete.setString(1, (String) table.getValueAt(row, 0));
                 } else {
                     preparedDelete.setInt(1, Integer.parseInt(String.valueOf(table.getValueAt(row, 0))));
                 }
-		
-		if (preparedDelete.execute()) {
-		    filter();
-		}
-	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    }
-	} else {
-	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	}
+                preparedDelete.execute();
+            }
+            if (preparedDelete.execute()) {
+                filter();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     

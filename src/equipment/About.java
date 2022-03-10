@@ -29,7 +29,7 @@ public class About extends JFrame {
     JTextPane tpane;
     Style s, def, regular, italic, bold;
 
-    String[] initString = {"Versija 2.7.0\n", "2022-03-08"};
+    String[] initString = {"Versija 2.7.2\n", "2022-03-10"};
     String[] initStyles = {"caption", "regular"}; //
     
     public About () {

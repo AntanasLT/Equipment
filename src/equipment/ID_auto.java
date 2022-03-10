@@ -50,7 +50,7 @@ public class ID_auto extends JPanel implements ActionListener {
 "       <table border=\"1\">\n";
     private static final String HTML_END = "</table>\n    </body>\n</html>";
     private static final String HTML_FILE = "Ivairus/Darbeliai.html";
-    private static String FOLDER = "";
+    private static final String FOLDER = "";
     
     Font font;
     ConnectionEquipment connection;
@@ -262,24 +262,22 @@ public class ID_auto extends JPanel implements ActionListener {
     }
 
     protected void delete() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
-	    try {
-		if (preparedDelete == null) {
-		    preparedDelete = connection.prepareStatement(delete);
-		}
-// ID, Pavadinimas
-		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
-		if (preparedDelete.execute()) {
-		    filter();
-		}
-	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	    }
-	} else {
-	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
-	}
+	int[] rows;
+	rows = table.getSelectedRows();
+        try {
+            if (preparedDelete == null) {
+                preparedDelete = connection.prepareStatement(delete);
+            }
+            for (int row : rows) {
+                preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
+                preparedDelete.execute();
+            }
+            if (preparedDelete.execute()) {
+                filter();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     protected void enableButtons(boolean enabled) {
@@ -310,6 +308,11 @@ public class ID_auto extends JPanel implements ActionListener {
     protected void create_html() {
         StringBuilder sb;
         sb = new StringBuilder(HTML_START);
+        sb.append("\n<tr>\n");
+            for (int col = 0; col < table.getColumnCount(); col++) {
+                sb.append("<th>").append(String.valueOf(table.getColumnName(col))).append("</thja>\n");
+            }
+        sb.append("\n</tr>\n");
         for (int row : table.getSelectedRows()) {
             sb.append("<tr>\n");
             for (int col = 0; col < table.getColumnCount(); col++) {
