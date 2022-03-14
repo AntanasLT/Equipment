@@ -202,8 +202,10 @@ public class Sutartys extends TP {
 	gbc.gridx = 1;
 	gbc.gridwidth = 6;
 	taMessage = new JMyTextArea_monospaced(3, 30, fontsize);
+        taMessage.setToolTipText("Με το δεξιό πλήκτρο του ποντικιού ανοίξτε το επιλεγμένο αρχείο");
 	taMessage.setLineWrap(true);
 	taMessage.setWrapStyleWord(true);
+        taMessage.addMouseListener(this);
 	scrMessage = new JScrollPane(taMessage);
 	pFields.add(scrMessage, gbc);
 
@@ -453,6 +455,9 @@ public class Sutartys extends TP {
                 tfRenge.setText((String) table.getValueAt(row, 10));
             }
 	}
+	if (me.getComponent().equals(taMessage) & me.getButton() == 3){
+            openFile("Sutartys", taMessage.getSelectedText());
+        }
     }
 
 
