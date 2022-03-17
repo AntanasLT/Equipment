@@ -217,7 +217,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 //		panelInput.setBackground(Color.lightGray);
 	gbc.insets = new Insets(0, 0, 5, 5);
 
-// Μια πρώτη σειρά
+// Η πρώτη σειρά
 	gbc.gridx = 0;
 	gbc.gridy = 0;
 	gbc.weightx = 0;

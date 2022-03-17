@@ -48,6 +48,7 @@ public class MainFrame extends JFrame implements ActionListener{
     Turtas panelIT;
     TP panelTP;
     Ataskaita_liftai fr_ataskaitos_liftai;
+    Ataskaita_RSC fr_matavimu_protokolas;
     Liftu_darbai panelLiftu_darbai;
     Tinklai panelAdresai;
     JSG panelJSG;
@@ -57,9 +58,9 @@ public class MainFrame extends JFrame implements ActionListener{
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
 // –––––––––––––––––––––––   
-    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miPlatus, miAtstata, miHelp, miAbout;
+    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miDoziMatav, miPlatus, miAtstata, miHelp, miAbout;
 // –––––––––––––––––––––––
-    public JMyMenu menuTabs, menuRSC, menuPagalbines, menuDatabase, menuIT, menuBuhalterija, menuIreginiai, menuAtaskaitos, menuLiftai, menuTinklai, menuVaizdas, menuHelp;
+    public JMyMenu menuTabs, menuRSC, menuAtaskRSC, menuPagalbines, menuDatabase, menuIT, menuBuhalterija, menuIreginiai, menuAtaskaitos, menuLiftai, menuTinklai, menuVaizdas, menuHelp;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
     public JMyCheckBoxMenuItem mcbWorks,  
             mcbLiftai, mcbLiftu_darbai, 
@@ -278,6 +279,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	miLifu_prastovos.setActionCommand("prastovos");
 	menuLiftai.add(miLifu_prastovos);
 	menuAtaskaitos.add(menuLiftai);
+	miDoziMatav = new JMyMenuItem("Dozimetriniai matavimai", fontsize);
+	miDoziMatav.addActionListener(this);
+	miDoziMatav.setActionCommand("dozes");
+        menuAtaskRSC = new JMyMenu("RSC", fontsize);
+        menuAtaskRSC.add(miDoziMatav);
+	menuAtaskaitos.add(menuAtaskRSC);
 	menu_bar.add(menuAtaskaitos);
 
 // _______________ Langas _______________
@@ -657,6 +664,17 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
     }
     
+    private void showMatavimuProtokolas() {
+	if (fr_matavimu_protokolas == null) {
+	    fr_matavimu_protokolas = new Ataskaita_RSC(connection, fontsize);
+            fr_matavimu_protokolas.init();
+	    fr_matavimu_protokolas.setSize(1000, 800);
+	    fr_matavimu_protokolas.setTitle("Dozimetrinių matavimų protokolas");
+	} else {
+	    fr_matavimu_protokolas.setVisible(true);
+	}
+    }
+
     private void exportIT() {
         mcbIT.setSelected(true);
         showIT();
@@ -812,6 +830,10 @@ public class MainFrame extends JFrame implements ActionListener{
             case "prastovos":
 		connect_Equipment();
 		showLiftu_ataskaitos();
+		break;
+            case "dozes":
+		connect_Equipment();
+		showMatavimuProtokolas();
 		break;
 //  Vaizdas
             case "platus":

@@ -59,6 +59,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
     private static final String TEX_END = "\n\\end{supertabular}\n"
 	    + "\\end{document}\n";
     private static final String PDF_FILE = "Prastovos";
+    private static final String PDF_DIR = "/home/a/dasDokument/dasSchreiben/dieAusschreibung/meine/dieFahrstuhle/2021/Ivairus/";
     
 
     PreparedStatement preparedSelect;
@@ -70,7 +71,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
     DefaultTableModel tableModel;
     JTable table;
     JScrollPane spTable;
-    JPanel panelButtons;
+    JPanel panelTop;
     JLabelLeft lMessage;
     JMyTextField tfMonth;
     JMyButton btClear, btPDF, btSelect;
@@ -99,8 +100,8 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
     
     protected void init_components() {
 	setLayout(new BorderLayout());
-	createPanelButtons();
-	add(panelButtons, BorderLayout.NORTH);
+	createTopPanel();
+	add(panelTop, BorderLayout.NORTH);
 	createTable();
 	add(spTable, BorderLayout.CENTER);
 	lMessage = new JLabelLeft(fontsize);
@@ -110,22 +111,22 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 	tfMonth.setCaretPosition(5);
     }
 
-    protected void createPanelButtons() {
-	panelButtons = new JPanel();
+    protected void createTopPanel() {
+	panelTop = new JPanel();
 	btClear = new JMyButton("Išvalyti", fontsize);
 	btClear.setActionCommand("clear");
 	btClear.addActionListener(this);
-	panelButtons.add(btClear);
+	panelTop.add(btClear);
 	tfMonth = new JMyTextField(String.valueOf(Year.now().getValue()) + "-%", 8, fontsize);
-	panelButtons.add(tfMonth);
+	panelTop.add(tfMonth);
 	btSelect = new JMyButton("Rodyti", fontsize);
 	btSelect.setActionCommand("select");
 	btSelect.addActionListener(this);
-	panelButtons.add(btSelect);
+	panelTop.add(btSelect);
 	btPDF = new JMyButton("PDF", fontsize);
 	btPDF.setActionCommand("pdf");
 	btPDF.addActionListener(this);
-	panelButtons.add(btPDF);
+	panelTop.add(btPDF);
     }
 
     protected void createTable() {
@@ -227,20 +228,20 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
     }
     
 
-    private void clearTable() {
+    protected void clearTable() {
 	tableModel.setRowCount(0);
     }
     
-    private void create_pdf() {
+    protected void create_pdf() {
 	StringBuilder sb;
-        String pdf, pdf_to;
+        String pdf_name, pdf_pathname;
         Runtime r;
         Process pr;
         Datum date;
 	int res, colcount, rowcount, row, col;
         date = new Datum();
-        pdf = PDF_FILE + date.getMonth_before();
-	String[] run_pdflatex = {"pdflatex", "-synctex=1", "-interaction=nonstopmode", pdf.concat(".tex")};
+        pdf_name = PDF_FILE + date.getMonth_before();
+	String[] run_pdflatex = {"pdflatex", "-synctex=1", "-interaction=nonstopmode", pdf_name.concat(".tex")};
 	res = -1;
 	rowcount = table.getRowCount();
 	colcount = tableModel.getColumnCount();
@@ -257,7 +258,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 		    sb.append("\\\\\\hline\n");
 		}
 		sb.append(TEX_END);
-		saveFile(pdf.concat(".tex"), sb.toString());
+		saveFile(pdf_name.concat(".tex"), sb.toString());
 		pr = r.exec(run_pdflatex);
 		pr.waitFor();
 //		pr.waitFor(3, TimeUnit.SECONDS);
@@ -267,11 +268,11 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 	    } catch (IOException | InterruptedException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	    }
-            pdf_to = "/home/a/dasDokument/dasSchreiben/dieAusschreibung/meine/dieFahrstuhle/2021/Ivairus/" + pdf + ".pdf";
-	    if (JOptionPane.showConfirmDialog(this, pdf + " rezultatas: " + String.valueOf(res) + ". Kopijuoti į /home/a/dasDokument/dasSchreiben/dieAusschreibung/meine/dieFahrstuhle/2021/Ivairus/ ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            pdf_pathname = PDF_DIR +  pdf_name + ".pdf";
+	    if (JOptionPane.showConfirmDialog(this, pdf_name + " rezultatas: " + String.valueOf(res) + ". Kopijuoti į " + PDF_DIR + " ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 try {
-                    pdf_to = JOptionPane.showInputDialog(this, "Failo vardas", pdf_to);
-                    Files.copy(Paths.get(pdf + ".pdf"), Paths.get(pdf_to));
+                    pdf_pathname = JOptionPane.showInputDialog(this, "Failo vardas", pdf_pathname);
+                    Files.copy(Paths.get(pdf_name + ".pdf"), Paths.get(pdf_pathname));
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Klaida", JOptionPane.ERROR_MESSAGE);
                 }
@@ -281,7 +282,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 	}
     }
 
-    private void saveFile(String filename, String text) {
+    protected void saveFile(String filename, String text) {
         BufferedWriter writer;
         try {
             writer = new BufferedWriter(new FileWriter(filename));
@@ -292,7 +293,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
         }
     }
 
-    private void delete_temp_files(){
+    protected void delete_temp_files(){
         Runtime r;
         Process pr;
 	String[] del_cmd = {"rm", "-f", "*ps"};
