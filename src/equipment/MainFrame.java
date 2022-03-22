@@ -673,6 +673,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	} else {
 	    fr_matavimu_protokolas.setVisible(true);
 	}
+        fr_matavimu_protokolas.tfData.requestFocusInWindow();
     }
 
     private void exportIT() {
