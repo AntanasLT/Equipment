@@ -7,6 +7,7 @@ package equipment;
 
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfDocumentInfo;
 import com.itextpdf.kernel.pdf.PdfVersion;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
@@ -29,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -46,7 +48,8 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
 
     private static final String SELECT = "SELECT i.Pavadinimas, i.Nr, i.Rezimas, v.Pavadinimas, d.Operat, d.Pries, d.Uz, d.Virsuj, d.Generat, d.metras FROM Introskopai i LEFT JOIN JSGvietos v ON i.Vieta = v.Pavadinimas LEFT JOIN Dozimetrija d ON i.Nr = d.Introskopas WHERE d.Data LIKE ?";
     private static final String[] PDF_TABLE_HEADER = new String[] {"Eil. Nr.", "Pavadinimas", "Gamyklinis numeris", "Darbo režimas", "Vieta", "Operat. darbo vieta", "Prieš tunelį", "Už tunelio", "Įrenginio viršuje", "Prie generatoriaus", "1 m atstumu nuo įrenginio"};
-    private static final String PDF_FILE = "RSC/Matavimai";
+    private static final String DIR = "RSC/";
+    private static final String FILENAME = "Matavimai";
     private static final String PDF_DIR = "/home/a/dasDokument/dasSchreiben/derStrahlenschutz/dieAngaben/2022/";
     private static final String PRIEDAS = "Radiologinių incidentų ir avarijų prevencijos ir padarinių likvidavimo tvarkos \n 2 Priedas";
     private static final String IMONE = "\n \n \n \n VALSTYBĖS ĮMONĖS LIETUVOS ORO UOSTŲ VILNIAUS FILIALAS \n Įmonės kodas 303316259, Rodūnios kelias 10A, Vilnius, tel. 8 5 273 9326, faks. 8 5 232 9122, e-paštas: info@vno.lt \n \n DOZIMETRINIŲ MATAVIMŲ PROTOKOLAS \n \n";
@@ -267,19 +270,24 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
         Cell cell;
         Paragraph par;
 //        AreaBreak ab = new AreaBreak();
-        String pdf_name, pdf_pathname;
+        String pdf_name, copy_to;
         Datum date;
 	int colcount, rowcount, row, col;
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         final FontSet set = new FontSet();
         date = new Datum();
-        pdf_name = PDF_FILE + date.getDate() + ".pdf";
+        pdf_name = FILENAME + date.getDate() + ".pdf";
         WriterProperties wp = new WriterProperties();
+        wp.addXmpMetadata();
         wp.setPdfVersion(PdfVersion.PDF_2_0);
         try {
-            pdfwriter = new PdfWriter(pdf_name, wp);
+            pdfwriter = new PdfWriter(DIR + pdf_name, wp);
             PdfDocument pdfDoc = new PdfDocument(pdfwriter);
             pdfDoc.setDefaultPageSize(PageSize.A4.rotate());
+            PdfDocumentInfo info = pdfDoc.getDocumentInfo();
+            info.setTitle("Dozimetrinių matavimų protokolas");
+            info.setAuthor("Antanas Kvietkauskas");
+            info.setSubject("Radiacinė sauga");
             Document doc = new Document(pdfDoc);
             set.addFont(FONT);
             doc.setFontProvider(new FontProvider(set));
@@ -335,10 +343,10 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
             par = new Paragraph(ISVADOS).addTabStops().add(TIKRINO);
             doc.add(par);
             doc.close();
-            pdf_pathname = PDF_DIR +  pdf_name + ".pdf";
-            if (JOptionPane.showConfirmDialog(this, pdf_name + " kopijuoti į " + PDF_DIR + " ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                pdf_pathname = JOptionPane.showInputDialog(this, "Failo vardas", pdf_pathname);
-                Files.copy(Paths.get(pdf_name + ".pdf"), Paths.get(pdf_pathname));
+            copy_to = PDF_DIR +  pdf_name;
+            if (JOptionPane.showConfirmDialog(this, pdf_name + " kopijuoti į " + copy_to + " ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                copy_to = JOptionPane.showInputDialog(this, "Failo vardas", copy_to);
+                Files.copy(Paths.get(DIR + pdf_name), Paths.get(copy_to), StandardCopyOption.REPLACE_EXISTING); 
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex, "Klaida", JOptionPane.ERROR_MESSAGE);
@@ -346,55 +354,6 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
         setCursor(Cursor.getDefaultCursor());
     }
     
-    
-//    @Override
-//    protected void create_pdf() {
-//	StringBuilder sb;
-//        String pdf_name, pdf_pathname;
-//        Runtime r;
-//        Process pr;
-//        Datum date;
-//	int res, colcount, rowcount, row, col;
-//        date = new Datum();
-//        pdf_name = PDF_FILE + date.getDate();
-//	String[] run_pdflatex = {"pdflatex", "-synctex=1", "-interaction=nonstopmode", pdf_name.concat(".tex")};
-//	res = -1;
-//	rowcount = table.getRowCount();
-//	colcount = tableModel.getColumnCount();
-//	sb = new StringBuilder(TEX_0);
-//        r = Runtime.getRuntime();
-//        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//        try {
-//            for (row = 0; row < rowcount; row++) {
-//                for (col = 0; col < colcount - 1; col++) {
-//                    sb.append(table.getValueAt(row, col)).append(" & ");
-//                }
-//                sb.append(table.getValueAt(row, col));
-//                sb.append("\\\\\\hline\n");
-//            }
-////		sb.append(TEX_END);
-//            saveFile(pdf_name.concat(".tex"), sb.toString());
-//            pr = r.exec(run_pdflatex);
-//            pr.waitFor();
-////		pr.waitFor(3, TimeUnit.SECONDS);
-//            res = pr.exitValue();
-//            pr.destroy();
-//
-//        } catch (IOException | InterruptedException ex) {
-//            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
-//        }
-//        pdf_pathname = PDF_DIR +  pdf_name + ".pdf";
-//        if (JOptionPane.showConfirmDialog(this, pdf_name + " rezultatas: " + String.valueOf(res) + ". Kopijuoti į " + PDF_DIR + " ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-//            try {
-//                pdf_pathname = JOptionPane.showInputDialog(this, "Failo vardas", pdf_pathname);
-//                Files.copy(Paths.get(pdf_name + ".pdf"), Paths.get(pdf_pathname));
-//            } catch (IOException ex) {
-//                JOptionPane.showMessageDialog(this, ex, "Klaida", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
-//        delete_temp_files();
-//        setCursor(Cursor.getDefaultCursor());
-//    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
