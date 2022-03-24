@@ -48,9 +48,9 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
 
     private static final String SELECT = "SELECT i.Pavadinimas, i.Nr, i.Rezimas, v.Pavadinimas, d.Operat, d.Pries, d.Uz, d.Virsuj, d.Generat, d.metras FROM Introskopai i LEFT JOIN JSGvietos v ON i.Vieta = v.Pavadinimas LEFT JOIN Dozimetrija d ON i.Nr = d.Introskopas WHERE d.Data LIKE ?";
     private static final String[] PDF_TABLE_HEADER = new String[] {"Eil. Nr.", "Pavadinimas", "Gamyklinis numeris", "Darbo režimas", "Vieta", "Operat. darbo vieta", "Prieš tunelį", "Už tunelio", "Įrenginio viršuje", "Prie generatoriaus", "1 m atstumu nuo įrenginio"};
-    private static final String DIR = "RSC/";
+    private static final String DIR = "RSC";
     private static final String FILENAME = "Matavimai";
-    private static final String PDF_DIR = "/home/a/dasDokument/dasSchreiben/derStrahlenschutz/dieAngaben/2022/";
+    private static final String PDF_DIR = "dasDokument/dasSchreiben/derStrahlenschutz/dieAngaben/2022/";
     private static final String PRIEDAS = "Radiologinių incidentų ir avarijų prevencijos ir padarinių likvidavimo tvarkos \n 2 Priedas";
     private static final String IMONE = "\n \n \n \n VALSTYBĖS ĮMONĖS LIETUVOS ORO UOSTŲ VILNIAUS FILIALAS \n Įmonės kodas 303316259, Rodūnios kelias 10A, Vilnius, tel. 8 5 273 9326, faks. 8 5 232 9122, e-paštas: info@vno.lt \n \n DOZIMETRINIŲ MATAVIMŲ PROTOKOLAS \n \n";
     private static final String ADRESAS = "Įrenginio buvimo adresas: keleivių terminalas (Rodūnios kelias 2, Vilnius) \n";
@@ -58,7 +58,7 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
     private static final String DOZIM_PATIKROS_DATA = ", patikra atlikta ";
     private static final String DOZIM_PATIKROS_NR = ", patikros liudijimo Nr. ";
     private static final String MATAVIMU_DATA = "Matavimų data: ";
-    private static final String FONT = "/home/a/.fonts/Palem-nm.ttf";
+    private static final String FONT = ".fonts/Palem-nm.ttf";
 //    private static final String FONT = "/home/a/.fonts/PFHandbookProRegular.ttf";
     private static final String ISVADOS = "Išvada: įrenginys tinka naudojimui, darbuotojų ir gyventojų radiacinė sauga užtikrinama.\n";
     private static final String TIKRINO = "Tikrino: Inžinerijos ir eksploatacijos skyriaus inžinierius-automatikas \t \t Antanas Kvietkauskas";
@@ -70,6 +70,7 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
     JMyTextArea taIsvados;
     JMyTextField tfDVSData, tfDVSNr, tfDozim, tfDozimData, tfPatikrNr, tfData;
     JPanel panelButtons;
+    
 
     public Ataskaita_RSC(ConnectionEquipment the_connection, int size) {
         super(the_connection, size);
@@ -278,10 +279,10 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
         date = new Datum();
         pdf_name = FILENAME + date.getDate() + ".pdf";
         WriterProperties wp = new WriterProperties();
-        wp.addXmpMetadata();
-        wp.setPdfVersion(PdfVersion.PDF_2_0);
+//        wp.addXmpMetadata();
+        wp.setPdfVersion(PdfVersion.PDF_1_5);
         try {
-            pdfwriter = new PdfWriter(DIR + pdf_name, wp);
+            pdfwriter = new PdfWriter(DIR + System.getProperty("file.separator") + pdf_name, wp);
             PdfDocument pdfDoc = new PdfDocument(pdfwriter);
             pdfDoc.setDefaultPageSize(PageSize.A4.rotate());
             PdfDocumentInfo info = pdfDoc.getDocumentInfo();
@@ -289,7 +290,7 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
             info.setAuthor("Antanas Kvietkauskas");
             info.setSubject("Radiacinė sauga");
             Document doc = new Document(pdfDoc);
-            set.addFont(FONT);
+            set.addFont(System.getProperty("user.home") + System.getProperty("file.separator") + FONT.replace('/', System.getProperty("file.separator").charAt(0)));
             doc.setFontProvider(new FontProvider(set));
             doc.setProperty(Property.FONT, new String[]{""});
             par = new Paragraph(IMONE);
@@ -343,10 +344,10 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
             par = new Paragraph(ISVADOS).addTabStops().add(TIKRINO);
             doc.add(par);
             doc.close();
-            copy_to = PDF_DIR +  pdf_name;
+            copy_to = System.getProperty("user.home") + System.getProperty("file.separator") + PDF_DIR.replace('/', System.getProperty("file.separator").charAt(0)) +  pdf_name;
             if (JOptionPane.showConfirmDialog(this, pdf_name + " kopijuoti į " + copy_to + " ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 copy_to = JOptionPane.showInputDialog(this, "Failo vardas", copy_to);
-                Files.copy(Paths.get(DIR + pdf_name), Paths.get(copy_to), StandardCopyOption.REPLACE_EXISTING); 
+                Files.copy(Paths.get(DIR + System.getProperty("file.separator") + pdf_name), Paths.get(copy_to), StandardCopyOption.REPLACE_EXISTING); 
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex, "Klaida", JOptionPane.ERROR_MESSAGE);
