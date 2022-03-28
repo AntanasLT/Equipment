@@ -95,16 +95,16 @@ public class Biudzetas extends IDString_n {
 //System.out.println(insert);
                 preparedInsert.setString(1, table.getValueAt(row, 0).toString());
                 preparedInsert.setString(2, table.getValueAt(row, 1).toString());
-                value = Float.parseFloat(table.getValueAt(row, dbCols.length - 2).toString());
+                value = Float.parseFloat(table.getValueAt(row, 14).toString());
                 if (value > 0){
-                    System.out.println();
                     value0 = value / 12;
-                    for (int i = 2; i < dbCols.length - 2; i++) {
+                    for (int i = 2; i <= 14; i++) {
                         preparedInsert.setFloat(i+1, value0);
                     }
-                    preparedInsert.setFloat(dbCols.length - 1, value);
+                    preparedInsert.setFloat(15, value);
+                    
                 } else {
-                    for (int i = 2; i < dbCols.length - 1; i++) {
+                    for (int i = 2; i <= 14; i++) {
                         s = table.getValueAt(row, i).toString();
                         value0 = value != 0 ? value : value0;
                         value = Float.parseFloat(s);
@@ -112,7 +112,8 @@ public class Biudzetas extends IDString_n {
                         preparedInsert.setFloat(i+1, value);
                     }
                 }
-                preparedInsert.setString(dbCols.length, (String) table.getValueAt(row, tblCols.length - 1));
+                preparedInsert.setString(16, (String) table.getValueAt(row, tblCols.length - 2));
+                preparedInsert.setString(17, (String) table.getValueAt(row, tblCols.length - 1));
                 if (preparedInsert.executeUpdate() == 1) {
                     filter();
                 }
@@ -135,12 +136,14 @@ public class Biudzetas extends IDString_n {
 		    preparedUpdate = connection.prepareStatement(update);
 		}
                 preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
-                for (i = 2; i < dbCols.length; i++) {
+                for (i = 2; i <= 14; i++) {
                     s = table.getValueAt(row, i).toString();
                     value = s.isEmpty() ? 0 : Float.parseFloat(s);
                     preparedUpdate.setFloat(i, value);
                 }
-		preparedUpdate.setString(i, (String) table.getValueAt(row, 0));
+                preparedUpdate.setString(15, String.valueOf(table.getValueAt(row, 15)));
+                preparedUpdate.setString(16, String.valueOf(table.getValueAt(row, 16)));
+		preparedUpdate.setString(17, String.valueOf(table.getValueAt(row, 0)));
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter();
 		}

@@ -279,8 +279,8 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
         date = new Datum();
         pdf_name = FILENAME + date.getDate() + ".pdf";
         WriterProperties wp = new WriterProperties();
-//        wp.addXmpMetadata();
-        wp.setPdfVersion(PdfVersion.PDF_1_5);
+        wp.addXmpMetadata();
+        wp.setPdfVersion(PdfVersion.PDF_1_7);
         try {
             pdfwriter = new PdfWriter(DIR + System.getProperty("file.separator") + pdf_name, wp);
             PdfDocument pdfDoc = new PdfDocument(pdfwriter);

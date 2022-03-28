@@ -28,7 +28,7 @@ import javax.swing.JScrollPane;
  */
 public class Saskaitos extends Liftu_darbai {
 
-    private static final String SELECT = "SELECT s.NR, s.Data, s.Ivesta, s.DVSNr, k.Pavadinimas, sut.Pavadinimas, s.BiudKodas, b.Pavadinimas, s.UzsNr, s.UzsData, s.UzsSuma, s.UzsPastabos, s.Suma, s.Prekes, s.Paslaugos, s.IT, s.Pastabos, s.Failas, s.Failas2, s.Failas3, s.Filialas  FROM Saskaitos s INNER JOIN Biudzetas b ON s.BiudKodas = b.Kodas INNER JOIN Sutartys sut ON s.DVSNr = sut.RegNr INNER JOIN Kontrahentai k ON sut.Kontrahentas = k.ID"; // συνολικά 18
+    private static final String SELECT = "SELECT s.NR, s.Data, s.Ivesta, s.DVSNr, k.Pavadinimas, sut.Pavadinimas, s.BiudKodas, b.Pavadinimas, s.UzsNr, s.UzsData, s.UzsSuma, s.UzsPastabos, s.Suma, s.Prekes, s.Paslaugos, s.IT, s.Pastabos, s.Failas, s.Failas2, s.Failas3, s.Filialas  FROM Saskaitos s INNER JOIN Biudzetas b ON s.BiudKodas = b.Kodas INNER JOIN Sutartys sut ON s.DVSNr = sut.RegNr INNER JOIN Kontrahentai k ON sut.Kontrahentas = k.ID "; // συνολικά 18
     private static final String INSERT = "INSERT INTO Saskaitos (NR, Data, Ivesta, DVSNr, BiudKodas, UzsNr, UzsData, UzsSuma, UzsPastabos, Suma, Prekes, Paslaugos, IT, Pastabos, Failas, Failas2, Failas3, Filialas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // συνολικά 15
     private static final String UPDATE = "UPDATE Saskaitos SET Data = ?, Ivesta = ?, DVSNr = ?, BiudKodas = ?, NR = ?, UzsData = ?, UzsSuma = ?, UzsPastabos = ?, Suma = ?, Prekes = ?, Paslaugos = ?, IT = ?, Pastabos = ?, Failas = ?, Failas2 = ?, Failas3 = ?, Filialas = ? WHERE Uzsnr = ?";
     private static final String FOLDER = "Saskaitos";
@@ -571,13 +571,16 @@ public class Saskaitos extends Liftu_darbai {
 // UPDATE Saskaitos SET Data = ?, DVSNr = ?, BiudKodas = ?, UzsNr = ?, UzsData = ?, UzsSuma = ?, UzsPastabos = ?, Suma = ?, Prekes = ?, Paslaugos = ?, IT = ?, Pastabos = ?, Failas = ?, Filialas = ? WHERE NR = ?
     @Override
     protected void update() {
+        String saskData, ivedData;
+        saskData = tfDate.getText().equals("") ? "1111-11-11" : tfDate.getText();
+        ivedData = tfIvesta.getText().equals("") ? "1111-11-11" : tfIvesta.getText();
 	if (table.getSelectedRow() >= 0) {
             try {
                 if (preparedUpdate == null) {
                     preparedUpdate = connection.prepareStatement(UPDATE);
                 }
-            preparedUpdate.setString(2, tfIvesta.getText());
-            preparedUpdate.setString(1, tfDate.getText());
+            preparedUpdate.setString(2, ivedData);
+            preparedUpdate.setString(1, saskData);
             preparedUpdate.setString(3, (String) cbSutNr.getSelectedItem());
             preparedUpdate.setString(4, (String) cbBiuKodai.getSelectedItem());
             preparedUpdate.setString(5, tfNr.getText());
@@ -606,25 +609,32 @@ public class Saskaitos extends Liftu_darbai {
 	}
     }
 
-// INSERT INTO Saskaitos (NR, Data, DVSNr, BiudKodas, UzsNr, UzsData, UzsSuma, UzsPastabos, Suma, Prekes, Paslaugos, IT, Pastabos, Failas, Filialas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) // 15
+// NR, Data, Ivesta, DVSNr, BiudKodas, UzsNr, UzsData, UzsSuma, UzsPastabos, Suma, Prekes, Paslaugos, IT, Pastabos, Failas, Failas2, Failas3, Filialas
     @Override
     protected void insert() {
+        float suma, prekes, pasl;
+        String saskData, ivedData;
+        saskData = tfDate.getText().equals("") ? "1111-11-11" : tfDate.getText();
+        ivedData = tfIvesta.getText().equals("") ? "1111-11-11" : tfIvesta.getText();
+        suma = tfSuma.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfSuma.getText()));
+        prekes = tfPrekes.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfPrekes.getText()));
+        pasl = tfPasl.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfPasl.getText()));
         try {
             if (preparedInsert == null) {
                 preparedInsert = connection.prepareStatement(insert);
             }
             preparedInsert.setString(1, tfNr.getText());
-            preparedInsert.setString(2, tfIvesta.getText());
-            preparedInsert.setString(3, tfDate.getText());
+            preparedInsert.setString(2, saskData);
+            preparedInsert.setString(3, ivedData);
             preparedInsert.setString(4, (String) cbSutNr.getSelectedItem());
             preparedInsert.setString(5, (String) cbBiuKodai.getSelectedItem());
             preparedInsert.setString(6, tfUzsNr.getText());
             preparedInsert.setString(7, tfUzsData.getText());
             preparedInsert.setFloat(8, Float.valueOf(replaceComma(tfUzsSuma.getText())));
             preparedInsert.setString(9, tfUzsPast.getText());
-            preparedInsert.setFloat(10, Float.valueOf(replaceComma(tfSuma.getText())));
-            preparedInsert.setFloat(11, Float.valueOf(replaceComma(tfPrekes.getText())));
-            preparedInsert.setFloat(12, Float.valueOf(replaceComma(tfPasl.getText())));
+            preparedInsert.setFloat(10, suma);
+            preparedInsert.setFloat(11, prekes);
+            preparedInsert.setFloat(12, pasl);
             preparedInsert.setString(13, tfIT.getText());
             preparedInsert.setString(14, taMessage.getText());
             preparedInsert.setString(15, tfFailas.getText());

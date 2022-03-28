@@ -1,3 +1,5 @@
+Επιδιόρθωσα Biudzetas (update, insert), Saskaitos (insert, prepareFilter)
+
 Με το δεξιό πλήκτρο του ποντικιού ανοίξτε το επιλεγμένο αρχείο.
 
 Δημιούργησα την ικανότητα να αφαιρεί  πολλές καταχωρίσεις (ID_auto, IDString_n). Tinklai.java: Απενεργοποίηση επεξεργασείας της στήλης «Pastaba»
