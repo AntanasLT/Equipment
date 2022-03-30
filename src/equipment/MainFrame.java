@@ -38,8 +38,8 @@ public class MainFrame extends JFrame implements ActionListener{
     ID_auto panelKontrahentai;
     ID_noauto panelStates, panelLocations, panelGen_busenos, panelWorktypes, panelJSG_vietos,panelEquipmentTypes, panelTPrusys, panelUsers, panelVeiklos;
     IDString panelPotinkliai;
-    IDString_n panelSystems, panelIntroskopai, panelLiftai, panelRSCdarbai, panelDozimetrija;
-    ID_TextArea panelDarbeliai;
+    IDString_n panelSystems, panelIntroskopai, panelLiftai, panelDozimetrija;
+    ID_TextArea panelDarbeliai, panelDarbeliai_baigtieji, panelRSCdarbai;
     Biudzetas panelBiudzetas;
     Sutartys panelSutartys;
     Saskaitos panelSaskaitos;
@@ -66,7 +66,7 @@ public class MainFrame extends JFrame implements ActionListener{
             mcbLiftai, mcbLiftu_darbai, 
             mcbAdresai, mcbPotinkliai, 
             mcbGenerators, mcbGeneratorStates, mcbIntroscopes, mcbDozimetrija, mcbJSG_vietos, mcbRSCdarbai,
-            mcbIT, mcbVeiklos, mcbDarbeliai, 
+            mcbIT, mcbVeiklos, mcbDarbeliai, mcbDarbeliai_baigtieji, 
             mcbUsers, mcbSystems, mcbWorktypes, mcbEquipmentTypes, mcbStates, mcbLocations,
             mcbBiudzetas, mcbIslaidos, mcbSaskaitos, mcbSutartys, mcbKontrahentai, 
             mcbTP, mcbTPrusys;
@@ -269,6 +269,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	mcbDarbeliai.addActionListener(this);
         mcbDarbeliai.setActionCommand("darbeliai");
         menuPagalbines.add(mcbDarbeliai);        
+        mcbDarbeliai_baigtieji = new JMyCheckBoxMenuItem("Darbeliai baigtieji", fontsize);
+	mcbDarbeliai_baigtieji.addActionListener(this);
+        mcbDarbeliai_baigtieji.setActionCommand("darbeliai_baigtieji");
+        menuPagalbines.add(mcbDarbeliai_baigtieji);        
         menuTabs.add(menuPagalbines);
         
 // _______________ Ataskaitos _______________
@@ -739,7 +743,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;		
 	    case "rsc_darbai":
 		connect_Equipment();
-                panelRSCdarbai = createTab_IDString_n(panelRSCdarbai, mcbRSCdarbai, "RSCdarbai", "RSC", new String[]{"ID", "Data", "Vamzdis", "IntrNr", "DVS", "Pastaba"}, new String[]{"ID", "Data", "Vamzdis", "Introsk. Nr.", "DVS Nr.", "Pastaba"}, new int[]{10, 60, 150, 150, 100, 300}, true);
+                panelRSCdarbai = createTab_IDTextArea(panelRSCdarbai, mcbRSCdarbai, "RSCdarbai", "Introskopų darbai", new String[]{"ID", "Data", "Vamzdis", "IntrNr", "DVS", "Pastaba"}, new String[]{"ID", "Data", "Vamzdis", "Introsk. Nr.", "DVS Nr.", "Pastaba"}, new int[]{10, 60, 150, 150, 100, 300}, true, "Pastaba");
 		break;		
 	    case "dozimetrija":
 		connect_Equipment();
@@ -820,8 +824,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;             
 	    case "darbeliai":
 		connect_Equipment();
-		panelDarbeliai = createTab_IDTextArea(panelDarbeliai, mcbDarbeliai, "Darbeliai", "Darbeliai", new String[]{"ID", "Data", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas");
-		break;		
+		panelDarbeliai = createTab_IDTextArea(panelDarbeliai, mcbDarbeliai, "Darbeliai", "Darbeliai", new String[]{"ID", "Data", "Data_baigta", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Užbaigta", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas");
+		break;	
+	    case "darbeliai_baigtieji":
+		connect_Equipment();
+		panelDarbeliai_baigtieji = createTab_IDTextArea(panelDarbeliai_baigtieji, mcbDarbeliai_baigtieji, "Darbeliai_baigtieji", "Darbeliai baigtieji", new String[]{"ID", "Data", "Data_baigta", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Užbaigta", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas");
+		break;                
+                
 //      TP
             case "tp":
 		connect_Equipment();

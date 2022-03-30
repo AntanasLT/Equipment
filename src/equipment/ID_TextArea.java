@@ -246,6 +246,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
                     if (dbCols[i].equals(taField)) {
                         preparedInsert.setString(i, taText.getText());
                     } else {
+                        
                         preparedInsert.setString(i, String.valueOf(table.getValueAt(row, i)));
                     }
                 }

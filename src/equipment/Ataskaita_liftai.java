@@ -8,12 +8,16 @@ package equipment;
 import datum.Datum;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.PreparedStatement;
@@ -309,6 +313,27 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 	}
     }
 
+    protected void openFile(String folder, String filename) {
+        if (filename != null) {
+            try {
+                if (filename.startsWith("http") || filename.contains("www")) {
+                    Desktop.getDesktop().browse(new URL(filename).toURI());
+                } else {
+                    File file = new File(folder, filename);
+                    if (file.exists()) {
+    //                    if (filename.endsWith("txt")) {
+    //                        Desktop.getDesktop().edit(file);
+    //                    }
+                        Desktop.getDesktop().open(file);
+                    } else {
+                        throw new IOException(filename + ": nėra!");
+                    }
+                }
+            } catch (IOException | URISyntaxException ex) {
+                JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
     
 
     @Override

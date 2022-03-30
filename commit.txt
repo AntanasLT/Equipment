@@ -1,3 +1,5 @@
+Saskaitos: Άλλαξα την κατάταξη των προυπολογισμών κατά όνομα. Πρόσθεσα την επιλογή: να ανοίγω το δημιουργημένο αρχείο η όχi; «Introskopų darbai» άλλαξα απο createTab_IDString_n στο createTab_IDTextArea. Πρόσθεσα μια νέα ταμπέλα «Darbeliai baigtieji» συνδεδεμένα με ταμπέλα «Darbeliai_baigtieji» βάσης δεδομένν.
+
 Επιδιόρθωσα Biudzetas (update, insert), Saskaitos (insert, prepareFilter)
 
 Με το δεξιό πλήκτρο του ποντικιού ανοίξτε το επιλεγμένο αρχείο.

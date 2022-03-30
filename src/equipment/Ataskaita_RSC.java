@@ -277,7 +277,7 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         final FontSet set = new FontSet();
         date = new Datum();
-        pdf_name = FILENAME + date.getDate() + ".pdf";
+        pdf_name = FILENAME + "_" + date.getDate() + ".pdf";
         WriterProperties wp = new WriterProperties();
         wp.addXmpMetadata();
         wp.setPdfVersion(PdfVersion.PDF_1_7);
@@ -349,12 +349,14 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
                 copy_to = JOptionPane.showInputDialog(this, "Failo vardas", copy_to);
                 Files.copy(Paths.get(DIR + System.getProperty("file.separator") + pdf_name), Paths.get(copy_to), StandardCopyOption.REPLACE_EXISTING); 
             }
+            if (JOptionPane.showConfirmDialog(this, "Rodyti?", "Rodymas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                openFile(DIR, System.getProperty("file.separator") + pdf_name);
+            }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex, "Klaida", JOptionPane.ERROR_MESSAGE);
         }
         setCursor(Cursor.getDefaultCursor());
     }
-    
 
     @Override
     public void actionPerformed(ActionEvent ae) {

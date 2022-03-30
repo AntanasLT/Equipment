@@ -337,7 +337,7 @@ public class Saskaitos extends Liftu_darbai {
 
     private void getBiudzetas() {
         try {        
-            biudzetas = connection.getList("Biudzetas", "Kodas", "Pavadinimas", "Kodas");
+            biudzetas = connection.getList("Biudzetas", "Kodas", "Pavadinimas", "Pavadinimas");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
         }       
