@@ -35,7 +35,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
     int[] tblColWidth;
     int i0;
     
-    private static final String FOLDER = "Ivairus";
+//    private static final String FOLDER = "Ivairus";
 
     /**
      *
@@ -48,8 +48,9 @@ public class ID_TextArea extends ID_auto implements MouseListener {
      * @param id_auto_increment
      * @param textArea_field
      * @param texAreaSize
+     * @param docFolder
      */
-    public ID_TextArea (ConnectionEquipment the_connection, int size, String tbl, String[] db_fields, String[] tbl_cols, int[] tbl_col_with, boolean id_auto_increment, String textArea_field, Dimension texAreaSize) {
+    public ID_TextArea (ConnectionEquipment the_connection, int size, String tbl, String[] db_fields, String[] tbl_cols, int[] tbl_col_with, boolean id_auto_increment, String textArea_field, Dimension texAreaSize, String docFolder) {
         super(the_connection, size, tbl);
         dbCols = db_fields;
         tblCols = tbl_cols;
@@ -57,7 +58,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         i0 = id_auto_increment ? 1 : 0;
         taField = textArea_field;
         taSize = texAreaSize;
-        folder = FOLDER;
+        folder = docFolder;
     }
 
     @Override
@@ -124,7 +125,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
     
     @Override
     protected void createPanelButtons() {
-	chSearch = new JMyCheckBox("Paieška:", true, fontsize);
+	chSearch = new JMyCheckBox("Paieška:", false, fontsize);
         pButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 2, 2));
         pButtons.add(chSearch);
         taText = new JMyTextArea(taSize.height, taSize.width, fontsize);
@@ -246,8 +247,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
                     if (dbCols[i].equals(taField)) {
                         preparedInsert.setString(i, taText.getText());
                     } else {
-                        
-                        preparedInsert.setString(i, String.valueOf(table.getValueAt(row, i)));
+                        preparedUpdate.setString(i, get_NULL_tested(table.getValueAt(row, i)));
                     }
                 }
 		if (preparedInsert.executeUpdate() == 1) {
@@ -278,11 +278,12 @@ public class ID_TextArea extends ID_auto implements MouseListener {
                     if (dbCols[i].equals(taField)) {
                         preparedUpdate.setString(i, taText.getText());
                     } else {
-                        preparedUpdate.setString(i, String.valueOf(table.getValueAt(row, i)));
+                        preparedUpdate.setString(i, get_NULL_tested(table.getValueAt(row, i)));
                     }
                 }
                 if (i0 == 0) {
-                    preparedUpdate.setString(i, (String) table.getValueAt(row, 0));                                 } else {
+                    preparedUpdate.setString(i, (String) table.getValueAt(row, 0));                                                 preparedUpdate.setString(i, get_NULL_tested(table.getValueAt(row, i)));
+        } else {
                     preparedUpdate.setInt(i, Integer.parseInt(String.valueOf(table.getValueAt(row, 0))));
                 }
 		if (preparedUpdate.executeUpdate() == 1) {
@@ -322,6 +323,15 @@ public class ID_TextArea extends ID_auto implements MouseListener {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
+    
+    protected String get_NULL_tested(Object obj) {
+        String txt;
+        txt = String.valueOf(obj);
+        if (txt.isEmpty() || obj == null) {
+            txt = null;
+        }
+        return txt;
+    }
 
     @Override
     public void mouseClicked(MouseEvent me) {
@@ -343,7 +353,8 @@ public class ID_TextArea extends ID_auto implements MouseListener {
                     taText.setText("");
                     break;
                 case 3:
-                    openFile(FOLDER, taText.getSelectedText());                   
+//                    System.out.println(folder);
+                    openFile(folder, taText.getSelectedText());                   
                     break;
             }
         }

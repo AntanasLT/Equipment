@@ -579,9 +579,9 @@ public class MainFrame extends JFrame implements ActionListener{
         return tab;
     }
     
-    private ID_TextArea createTab_IDTextArea(ID_TextArea tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment, String taField) {
+    private ID_TextArea createTab_IDTextArea(ID_TextArea tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment, String taField, String docFolder) {
         if (tab == null & menuItem.isSelected()) {
-            tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField, new Dimension(70, 10));
+            tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField, new Dimension(70, 10), docFolder);
             tab.init();
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
@@ -743,7 +743,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;		
 	    case "rsc_darbai":
 		connect_Equipment();
-                panelRSCdarbai = createTab_IDTextArea(panelRSCdarbai, mcbRSCdarbai, "RSCdarbai", "Introskopų darbai", new String[]{"ID", "Data", "Vamzdis", "IntrNr", "DVS", "Pastaba"}, new String[]{"ID", "Data", "Vamzdis", "Introsk. Nr.", "DVS Nr.", "Pastaba"}, new int[]{10, 60, 150, 150, 100, 300}, true, "Pastaba");
+                panelRSCdarbai = createTab_IDTextArea(panelRSCdarbai, mcbRSCdarbai, "RSCdarbai", "Introskopų darbai", new String[]{"ID", "Data", "Vamzdis", "IntrNr", "DVS", "Pastaba"}, new String[]{"ID", "Data", "Vamzdis", "Introsk. Nr.", "DVS Nr.", "Pastaba"}, new int[]{10, 60, 150, 150, 100, 300}, true, "Pastaba", "RSC");
 		break;		
 	    case "dozimetrija":
 		connect_Equipment();
@@ -824,11 +824,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;             
 	    case "darbeliai":
 		connect_Equipment();
-		panelDarbeliai = createTab_IDTextArea(panelDarbeliai, mcbDarbeliai, "Darbeliai", "Darbeliai", new String[]{"ID", "Data", "Data_baigta", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Užbaigta", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas");
+		panelDarbeliai = createTab_IDTextArea(panelDarbeliai, mcbDarbeliai, "Darbeliai", "Darbeliai", new String[]{"ID", "Data", "Data_baigta", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Užbaigta", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas", "Ivairus");
 		break;	
 	    case "darbeliai_baigtieji":
 		connect_Equipment();
-		panelDarbeliai_baigtieji = createTab_IDTextArea(panelDarbeliai_baigtieji, mcbDarbeliai_baigtieji, "Darbeliai_baigtieji", "Darbeliai baigtieji", new String[]{"ID", "Data", "Data_baigta", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Užbaigta", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas");
+		panelDarbeliai_baigtieji = createTab_IDTextArea(panelDarbeliai_baigtieji, mcbDarbeliai_baigtieji, "Darbeliai_baigtieji", "Darbeliai baigtieji", new String[]{"ID", "Data", "Data_baigta", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Užbaigta", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas", "Ivairus");
 		break;                
                 
 //      TP

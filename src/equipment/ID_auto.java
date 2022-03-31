@@ -41,6 +41,17 @@ public class ID_auto extends JPanel implements ActionListener {
 "and open the template in the editor.\n" +
 "-->\n" +
 "<html>\n" +
+"<style>\n" +
+"p {\n" +
+"  text-align: justify;\n" +
+"  font-family: \"Arial\";\n" +
+"}\n" +
+"\n" +
+"table, th, td {\n" +
+"  border-collapse: collapse;\n" +
+"  border: 1px solid; \n" +
+"}\n" +
+"</style>" +
 "    <head>\n" +
 "        <title>Darbeliai</title>\n" +
 "        <meta charset=\"UTF-8\">\n" +

@@ -652,7 +652,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
         if (!((String) cbState.getSelectedItem()).equals("Užregistruota")) {
             s0 = tfIDpr.getText();
             s1 = tfID.getText();
-            s1 = s0.equals("") || s0.equals("0") ? s1 : s0 + " ar " + s1 +"?";
+            s1 = s0.equals("") || s0.equals("0") ? s1 : s0;
             idPr = JOptionPane.showInputDialog(this, "Tęsiamo įrašo nr.", s1);
         }
         if (idPr != null) {

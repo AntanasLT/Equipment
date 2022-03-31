@@ -613,9 +613,6 @@ public class Saskaitos extends Liftu_darbai {
     @Override
     protected void insert() {
         float suma, prekes, pasl;
-        String saskData, ivedData;
-        saskData = tfDate.getText().equals("") ? "1111-11-11" : tfDate.getText();
-        ivedData = tfIvesta.getText().equals("") ? "1111-11-11" : tfIvesta.getText();
         suma = tfSuma.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfSuma.getText()));
         prekes = tfPrekes.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfPrekes.getText()));
         pasl = tfPasl.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfPasl.getText()));
@@ -624,8 +621,8 @@ public class Saskaitos extends Liftu_darbai {
                 preparedInsert = connection.prepareStatement(insert);
             }
             preparedInsert.setString(1, tfNr.getText());
-            preparedInsert.setString(2, saskData);
-            preparedInsert.setString(3, ivedData);
+            preparedInsert.setString(2, get_NULL_tested(tfDate.getText()));
+            preparedInsert.setString(3, get_NULL_tested(tfIvesta.getText()));
             preparedInsert.setString(4, (String) cbSutNr.getSelectedItem());
             preparedInsert.setString(5, (String) cbBiuKodai.getSelectedItem());
             preparedInsert.setString(6, tfUzsNr.getText());
@@ -661,6 +658,15 @@ public class Saskaitos extends Liftu_darbai {
         return kontrahentai[1][n-1];
     }
     
+    protected String get_NULL_tested(Object obj) {
+        String txt;
+        txt = String.valueOf(obj);
+        if (txt.isEmpty() || obj == null) {
+            txt = null;
+        }
+        return txt;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 	String derBefehl;
