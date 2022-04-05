@@ -54,7 +54,7 @@ public class Saskaitos extends Liftu_darbai {
         date = new Datum();
         
         table_columns = new String[]{"Nr.", "Data", "Ivesta", "DVS Nr.", "Kontrahentas", "Sutarties pavadinimas", "Biud. kodas", "Biud. pavadinimas", "Užs. Nr.", "Užs. data", "Užs. suma", "Užs. pastabos", "Sąsk. suma", "Prekės", "Paslaugos", "IT", "Pastabos sąskaitai", "Failas", "Failas", "Failas", "Filialas"};
-        table_column_width = new int[]{4*fontsize, 3*fontsize, 3*fontsize, 3*fontsize, 6*fontsize, 6*fontsize, 4*fontsize, 6*fontsize, 3*fontsize, 3*fontsize, 2*fontsize, 6*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 4*fontsize, 4*fontsize, fontsize, fontsize, fontsize, fontsize};
+        table_column_width = new int[]{4*fontsize, 3*fontsize, 3*fontsize, 3*fontsize, 6*fontsize, 6*fontsize, 4*fontsize, 6*fontsize, 5*fontsize, 3*fontsize, 2*fontsize, 6*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 4*fontsize, 4*fontsize, fontsize, fontsize, fontsize, fontsize};
 	if (connection != null) {
 	    setLayout(new BorderLayout());
             getKontrahentai();
@@ -102,6 +102,7 @@ public class Saskaitos extends Liftu_darbai {
 	gbc.gridx = 1;
         gbc.weightx = 0;
         tfDate = new JMyTextField(6, fontsize);
+        tfDate.addMouseListener(this);
 //        tfDate.setToolTipText("Sąskaitos data");
         pFields.add(tfDate, gbc);
         
@@ -230,6 +231,7 @@ public class Saskaitos extends Liftu_darbai {
         
 	gbc.gridx = 1;
         tfUzsData = new JMyTextField(6, fontsize);
+        tfUzsData.addMouseListener(this);
         pFields.add(tfUzsData, gbc);
 
 	gbc.gridx = 2;
@@ -571,16 +573,13 @@ public class Saskaitos extends Liftu_darbai {
 // UPDATE Saskaitos SET Data = ?, DVSNr = ?, BiudKodas = ?, UzsNr = ?, UzsData = ?, UzsSuma = ?, UzsPastabos = ?, Suma = ?, Prekes = ?, Paslaugos = ?, IT = ?, Pastabos = ?, Failas = ?, Filialas = ? WHERE NR = ?
     @Override
     protected void update() {
-        String saskData, ivedData;
-        saskData = tfDate.getText().equals("") ? "1111-11-11" : tfDate.getText();
-        ivedData = tfIvesta.getText().equals("") ? "1111-11-11" : tfIvesta.getText();
 	if (table.getSelectedRow() >= 0) {
             try {
                 if (preparedUpdate == null) {
                     preparedUpdate = connection.prepareStatement(UPDATE);
                 }
-            preparedUpdate.setString(2, ivedData);
-            preparedUpdate.setString(1, saskData);
+            preparedUpdate.setString(1, get_NULL_tested(tfDate.getText()));
+            preparedUpdate.setString(2, get_NULL_tested(tfIvesta.getText()));
             preparedUpdate.setString(3, (String) cbSutNr.getSelectedItem());
             preparedUpdate.setString(4, (String) cbBiuKodai.getSelectedItem());
             preparedUpdate.setString(5, tfNr.getText());
@@ -725,8 +724,10 @@ public class Saskaitos extends Liftu_darbai {
                 tfFilialas.setText((String) table.getValueAt(row, 20));
             }
 	}
-        if (me.getComponent().equals(tfIvesta) & me.getButton() == 3) {
-            tfIvesta.setText(date.getToday());
+        if ( me.getButton() == 3) {
+            if (me.getComponent().equals(tfIvesta)) tfIvesta.setText(date.getToday());
+            if (me.getComponent().equals(tfDate)) tfDate.setText(date.getToday());
+            if (me.getComponent().equals(tfUzsData)) tfUzsData.setText(date.getToday());
         }
     }
 

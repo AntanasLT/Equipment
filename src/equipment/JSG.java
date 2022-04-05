@@ -363,16 +363,25 @@ public class JSG extends TP {
                 preparedInsert.setInt(8, Integer.valueOf(vietos[0][cbVieta.getSelectedIndex()]));
                 preparedInsert.setString(9, tfYra.getText());
                 preparedInsert.setString(10, taFailai.getText());
-                preparedInsert.setString(11, tfGautas.getText());
-                preparedInsert.setString(12, tfIdetas.getText());
-                preparedInsert.setString(13, tfIsimas.getText());
-                preparedInsert.setString(14, tfSunaikintas.getText());
+                preparedInsert.setString(11, get_NULL_tested(tfGautas.getText()));
+                preparedInsert.setString(12, get_NULL_tested(tfIdetas.getText()));
+                preparedInsert.setString(13, get_NULL_tested(tfIsimas.getText()));
+                preparedInsert.setString(14, get_NULL_tested(tfSunaikintas.getText()));
              if (preparedInsert.executeUpdate() == 1) {
                 filter(select);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    protected String get_NULL_tested(Object obj) {
+        String txt;
+        txt = String.valueOf(obj);
+        if (txt.isEmpty() || obj == null) {
+            txt = null;
+        }
+        return txt;
     }
 
 

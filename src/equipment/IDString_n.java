@@ -134,7 +134,6 @@ public class IDString_n extends ID_auto {
             }
         }
         insert = sb1.toString();
-//        System.out.println(insert);
     }
     
     @Override
@@ -167,7 +166,7 @@ public class IDString_n extends ID_auto {
 		    preparedInsert = connection.prepareStatement(insert);
 		}
                 for (int i = i0; i < tblCols.length; i++) {
-                    preparedInsert.setString(i, String.valueOf(table.getValueAt(row, i)));
+                    preparedInsert.setString(i+1, String.valueOf(table.getValueAt(row, i)));
                 }
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();

@@ -29,31 +29,12 @@ public class About extends JFrame {
     JTextPane tpane;
     Style s, def, regular, italic, bold;
 
-    String[] initString = {"Versija 2.9.3\n", "2022-04-01"};
+    String[] initString = {"Versija 2.9.5\n", "2022-04-04"};
     String[] initStyles = {"caption", "regular"}; //
     
     public About () {
         init();
     }
-    
-//    private void init() {
-//        editorPane = new JEditorPane();
-//        editorPane.setEditable(false);
-//        helpUrl =  About.class.getResource("Aprasymas.html");
-////        System.out.println(helpUrl);
-//        if (helpUrl != null) {
-//            try {
-//                editorPane.setPage(helpUrl);
-//            } catch (IOException e) {
-//                System.out.println("Attempted to read a bad URL: " + helpUrl);
-//            }
-//        }
-//        scrpane = new JScrollPane(editorPane);
-//        add(scrpane);
-////        pack();
-//        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-//        setVisible(true);
-//    }
     
     private void init() {
 	tpane = new JTextPane();

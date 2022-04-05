@@ -236,7 +236,8 @@ public class ID_TextArea extends ID_auto implements MouseListener {
     
     @Override
     protected void insert() {
-	int row;
+	int row, n;
+        n = 1;
 	row = table.getSelectedRow();
 	if (row >= 0) {
 	    try {
@@ -245,10 +246,11 @@ public class ID_TextArea extends ID_auto implements MouseListener {
 		}
                 for (int i = i0; i < tblCols.length; i++) {
                     if (dbCols[i].equals(taField)) {
-                        preparedInsert.setString(i, taText.getText());
+                        preparedInsert.setString(n, taText.getText());
                     } else {
-                        preparedUpdate.setString(i, get_NULL_tested(table.getValueAt(row, i)));
+                        preparedInsert.setString(n, get_NULL_tested(table.getValueAt(row, i)));
                     }
+                    n++;
                 }
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();

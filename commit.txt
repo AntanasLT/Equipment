@@ -1,3 +1,7 @@
+Επιδιόρθωσα ένα ελάττωμα στη μέθοδο insert()
+
+Saskaitos: Χρησιμοποιήθηκα την μέθοδο get_NULL_tested. Σημερινή ημερομηνία στο tfUzsData, tfDate με το δεξιό κλικ του ποντικιού.
+
 Darbai: άλλαξα «void insert()»: ρωταί την ημερομηνία και την ώρα πριν νέα εγγραφή
 
 ID_TextArea: chSearch: checked: false; protected String get_NULL_tested(Object obj). Βελτίοσα το HTML_START, που χρησιμοποιοί για να διμιουργεί «Darbeliai.html»
