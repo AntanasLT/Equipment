@@ -792,15 +792,15 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     
 
     private void delete() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	int r;
+	r = table.getSelectedRow();
+	if (r >= 0) {
 	    try {
 		if (preparedDelete == null) {
 		    preparedDelete = connection.prepareStatement(PREPARE_DELETE);
 		}
 // ID, IT, Nr, Pavadinimas, Sistema
-		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
+		preparedDelete.setInt(1, (int) table.getValueAt(r, 0));
 		if (preparedDelete.execute()) {
 		    filter_all();
 		}

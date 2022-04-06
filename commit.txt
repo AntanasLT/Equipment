@@ -1,3 +1,5 @@
+IT_TextArea: η μέθοδος mouseClicked()
+
 Επιδιόρθωσα ένα ελάττωμα στη μέθοδο insert()
 
 Saskaitos: Χρησιμοποιήθηκα την μέθοδο get_NULL_tested. Σημερινή ημερομηνία στο tfUzsData, tfDate με το δεξιό κλικ του ποντικιού.

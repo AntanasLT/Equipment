@@ -341,12 +341,14 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         if (me.getComponent().equals(table)) {
             col = table.getSelectedColumn();
             row = table.getSelectedRow();
-            if (row >= 0) {
-                taText.setText((String) table.getValueAt(table.getSelectedRow(), tableModel.findColumn(taField)));
+            if (me.getButton() == 1) {
+                taText.setText((String) table.getValueAt(row, col));               
+//                taText.setText((String) table.getValueAt(table.getSelectedRow(), tableModel.findColumn(taField))); 
+            } else {
                 if (me.getButton() == 2 && col == tableModel.findColumn("Data")) {
                     Datum date = new Datum();
                     table.setValueAt(date.getDate(), row, col);
-                }               
+                }        
             }
         }
         if (me.getComponent().equals(taText)) {
