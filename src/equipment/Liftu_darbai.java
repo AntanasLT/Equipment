@@ -30,6 +30,7 @@ public class Liftu_darbai extends TP {
     private static final String PREPARE_INSERT = "INSERT INTO Liftu_darbai (Data, RegNr, Darbas) VALUES (?, ?, ?)";
     private static final String PREPARE_UPDATE = "UPDATE Liftu_darbai SET Data = ?, Darbas = ?, RegNr = ? WHERE ID = ?";
     private static final String SELECT = "SELECT d.ID, d.Data, d.RegNr, l.Vieta, d.Darbas FROM Liftu_darbai d INNER JOIN Liftai l ON d.RegNr = l.RegNr ";
+    private static final String FOLDER = "Liftai";
 
 
     private JCheckBox chElevator;
@@ -130,6 +131,7 @@ public class Liftu_darbai extends TP {
 	taMessage = new JMyTextArea_monospaced(15, 30, fontsize);
 	taMessage.setLineWrap(true);
 	taMessage.setWrapStyleWord(true);
+        taMessage.addMouseListener(this);
 	scrMessage = new JScrollPane(taMessage);
 	pFields.add(scrMessage, gbc);
 
@@ -335,6 +337,9 @@ public class Liftu_darbai extends TP {
 	if (me.getComponent().equals(tfDate) & me.getClickCount() == 2) {
 	    setCurrTime();
 	}
+        if (me.getComponent().equals(taMessage) & me.getButton() == 3) {
+            openFile(FOLDER, taMessage.getSelectedText());
+        }
 	if (me.getComponent().equals(table)) {
             row = table.getSelectedRow();
             if (row >= 0) {

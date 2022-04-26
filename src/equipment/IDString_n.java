@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class IDString_n extends ID_auto {
     
+    private static final String FOLDER = "Ivairus";
+
     String[] dbCols, tblCols;
     int[] tblColWidth;
     int i0;
@@ -39,6 +41,7 @@ public class IDString_n extends ID_auto {
         tblCols = tbl_cols;
         tblColWidth = tbl_col_with;
         i0 = id_auto_increment ? 1 : 0;
+        folder = FOLDER;
     }
 
     @Override
@@ -143,6 +146,7 @@ public class IDString_n extends ID_auto {
         table.setFont(font);
         table.getTableHeader().setFont(font);
 	table.setAutoCreateRowSorter(true);
+        table.addMouseListener(this);
 //	table.getSelectionModel().addListSelectionListener(this);
 	setColumnsWidths();
 	tableModel.setRowCount(1);
@@ -233,6 +237,7 @@ public class IDString_n extends ID_auto {
             JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     
     
 }

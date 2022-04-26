@@ -11,6 +11,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -32,7 +34,7 @@ import javax.swing.table.TableColumn;
  *
  * @author Antanas Kvietkauskas
  */
-public class ID_auto extends JPanel implements ActionListener {
+public class ID_auto extends JPanel implements ActionListener, MouseListener {
     
     private static final String HTML_START = "<!DOCTYPE html>\n" +
 "<!--\n" +
@@ -136,7 +138,7 @@ public class ID_auto extends JPanel implements ActionListener {
     protected void createTable() {
 	tableModel = new DefaultTableModel(new Object[]{id_name, "Pavadinimas"}, 0);
 	table = new JTable(tableModel);
-        
+        table.addMouseListener(this);
         table.setFont(font);
         table.getTableHeader().setFont(font);
 	table.setAutoCreateRowSorter(true);
@@ -404,6 +406,29 @@ public class ID_auto extends JPanel implements ActionListener {
                 create_html();
 		break;	
 	}
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        if (me.getComponent().equals(table) & me.getButton() == 3) {
+            openFile(folder, (String) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
     }
 
     

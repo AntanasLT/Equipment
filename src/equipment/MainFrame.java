@@ -58,7 +58,7 @@ public class MainFrame extends JFrame implements ActionListener{
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
 // –––––––––––––––––––––––   
-    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miDoziMatav, miPlatus, miAtstata, miHelp, miAbout;
+    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miDoziMatav, miCloseAll, miPlatus, miAtstata, miHelp, miAbout;
 // –––––––––––––––––––––––
     public JMyMenu menuTabs, menuRSC, menuAtaskRSC, menuPagalbines, menuDatabase, menuIT, menuBuhalterija, menuIreginiai, menuAtaskaitos, menuLiftai, menuTinklai, menuVaizdas, menuHelp;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
@@ -274,6 +274,11 @@ public class MainFrame extends JFrame implements ActionListener{
         mcbDarbeliai_baigtieji.setActionCommand("darbeliai_baigtieji");
         menuPagalbines.add(mcbDarbeliai_baigtieji);        
         menuTabs.add(menuPagalbines);
+        menuTabs.addSeparator();
+        miCloseAll = new JMyMenuItem("Uždaryti visas", fontsize);
+        miCloseAll.addActionListener(this);
+        miCloseAll.setActionCommand("closeAll");
+        menuTabs.add(miCloseAll);
         
 // _______________ Ataskaitos _______________
 	menuAtaskaitos = new JMyMenu("Ataskaitos", fontsize);
@@ -696,6 +701,12 @@ public class MainFrame extends JFrame implements ActionListener{
         }
     }
     
+    private void closeAll() {
+        tabbedpane.removeAll();
+//        for (Component c : getComponents()) {
+//        }
+    }
+    
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -830,6 +841,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		connect_Equipment();
 		panelDarbeliai_baigtieji = createTab_IDTextArea(panelDarbeliai_baigtieji, mcbDarbeliai_baigtieji, "Darbeliai_baigtieji", "Darbeliai baigtieji", new String[]{"ID", "Data", "Data_baigta", "Darbas", "Baigtas"}, new String[]{"ID", "Data", "Užbaigta", "Darbas", "Baigtas"}, new int[]{fontsize, 2*fontsize, 2*fontsize, 70*fontsize, fontsize}, true, "Darbas", "Ivairus");
 		break;                
+	    case "closeAll":
+		closeAll();
+		break;
                 
 //      TP
             case "tp":
