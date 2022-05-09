@@ -642,30 +642,33 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     private void insert() {
 	int id, state, idpr;
 	boolean clossed;
-        String idPr, s0, s1, t;
+        String idTasa, iD, time, state_name;
         id = get_userid_by_name(connection.get_username());
-        idPr = tfIDpr.getText();
+        idTasa = tfIDpr.getText();
 //        row = table.getSelectedRow();
         if (id < 0) {
             JOptionPane.showMessageDialog(this, "Tokio vartotojo nėra.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
-        if (!((String) cbState.getSelectedItem()).equals("Užregistruota")) {
-            s0 = tfIDpr.getText();
-            s1 = tfID.getText();
-            s1 = s0.equals("") || s0.equals("0") ? s1 : s0;
-            idPr = JOptionPane.showInputDialog(this, "Tęsiamo įrašo nr. ", s1);
-        } 
-        t = JOptionPane.showInputDialog(this, "Laikas. ", tfDate.getText());
+        idTasa = tfIDpr.getText();
+        iD = tfID.getText();
+        state_name = (String) cbState.getSelectedItem();
+        if (!state_name.equals("Užregistruota")) {
+//            iD = idTasa.equals("") || idTasa.equals("0") ? iD : idTasa;
+            idTasa = JOptionPane.showInputDialog(this, "Tęsiamo įrašo nr. ", idTasa);
+        } else {
+            idTasa = "0";
+        }
+        time = JOptionPane.showInputDialog(this, "Laikas. ", tfDate.getText());
         try {
-            idpr = get_int(tfIDpr.getText());
+            idpr = get_int(idTasa);
             state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
             if (preparedInsert == null) {
                 preparedInsert = connection.prepareStatement(PREPARE_INSERT);
             }
 //    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigtas)
-            preparedInsert.setInt(1, get_int(idPr));
+            preparedInsert.setInt(1, idpr);
             preparedInsert.setInt(2, id);
-            preparedInsert.setString(3, t);
+            preparedInsert.setString(3, time);
             preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
             preparedInsert.setString(5, fName.getText());
             preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
