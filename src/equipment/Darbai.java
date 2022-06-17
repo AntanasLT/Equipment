@@ -644,8 +644,6 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	boolean clossed;
         String idTasa, iD, time, state_name;
         id = get_userid_by_name(connection.get_username());
-        idTasa = tfIDpr.getText();
-//        row = table.getSelectedRow();
         if (id < 0) {
             JOptionPane.showMessageDialog(this, "Tokio vartotojo nėra.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
@@ -653,38 +651,41 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
         iD = tfID.getText();
         state_name = (String) cbState.getSelectedItem();
         if (!state_name.equals("Užregistruota")) {
-//            iD = idTasa.equals("") || idTasa.equals("0") ? iD : idTasa;
             idTasa = JOptionPane.showInputDialog(this, "Tęsiamo įrašo nr. ", idTasa);
         } else {
             idTasa = "0";
         }
-        time = JOptionPane.showInputDialog(this, "Laikas. ", tfDate.getText());
-        try {
-            idpr = get_int(idTasa);
-            state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
-            if (preparedInsert == null) {
-                preparedInsert = connection.prepareStatement(PREPARE_INSERT);
+        if (idTasa != null) {           
+            time = JOptionPane.showInputDialog(this, "Laikas. ", tfDate.getText());
+            if (time != null) {
+                try {
+                    idpr = get_int(idTasa);
+                    state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
+                    if (preparedInsert == null) {
+                        preparedInsert = connection.prepareStatement(PREPARE_INSERT);
+                    }
+        //    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigtas)
+                    preparedInsert.setInt(1, idpr);
+                    preparedInsert.setInt(2, id);
+                    preparedInsert.setString(3, time);
+                    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+                    preparedInsert.setString(5, fName.getText());
+                    preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
+                    preparedInsert.setInt(7, Integer.valueOf(states[0][cbState.getSelectedIndex()]));
+                    clossed = state == BAIGTA;
+                    preparedInsert.setString(8, taMessage.getText());
+                    preparedInsert.setBoolean(9, clossed);
+                    if (preparedInsert.executeUpdate() == 1) {
+                        filter_all();
+                    }
+                    if (clossed) {
+                        update_finish(idpr);
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida (insert)!", JOptionPane.ERROR_MESSAGE);
+                }            
             }
-//    (IDPr, Vartotojas, Data, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigtas)
-            preparedInsert.setInt(1, idpr);
-            preparedInsert.setInt(2, id);
-            preparedInsert.setString(3, time);
-            preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
-            preparedInsert.setString(5, fName.getText());
-            preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
-            preparedInsert.setInt(7, Integer.valueOf(states[0][cbState.getSelectedIndex()]));
-            clossed = state == BAIGTA;
-            preparedInsert.setString(8, taMessage.getText());
-            preparedInsert.setBoolean(9, clossed);
-            if (preparedInsert.executeUpdate() == 1) {
-                filter_all();
-            }
-            if (clossed) {
-                update_finish(idpr);
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida (insert)!", JOptionPane.ERROR_MESSAGE);
-        }            
+        }
     }
 
     private void update_acknowledge() {
@@ -722,10 +723,10 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     
 //    (Data, IDpr, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta, ID)
     protected void update() {
-	int row, state, idpr;
+	int the_row, state, idpr;
 	boolean clossed;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	the_row = table.getSelectedRow();
+	if (the_row >= 0) {
 	    try {
 		idpr = get_int(tfIDpr.getText());
 		state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
@@ -742,7 +743,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
                 preparedUpdate.setInt(6, state);
                 preparedUpdate.setString(7, taMessage.getText());
                 preparedUpdate.setBoolean(8, clossed);
-                preparedUpdate.setInt(9, (int) table.getValueAt(row, 0));
+                preparedUpdate.setInt(9, (int) table.getValueAt(the_row, 0));
                 preparedUpdate.executeUpdate();    
 		if (clossed) {
 		    update_finish(idpr);

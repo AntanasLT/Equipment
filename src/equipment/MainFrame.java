@@ -7,6 +7,7 @@
 package equipment;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -116,17 +117,21 @@ public class MainFrame extends JFrame implements ActionListener{
 	miConnect.setActionCommand("connect");
 	miDisconnect = new JMyMenuItem("Atsijungti", fontsize);
 	miDisconnect.setActionCommand("disconnect");
+        miDisconnect.setName("disconnect");
 	miDisconnect.addActionListener(this);
 	menuDatabase.add(miConnect);
 	menuDatabase.add(miDisconnect);
+        menuDatabase.setName("Duombazė");
 	menu_bar.add(menuDatabase);
 //	menuData.addSeparator();
 
 //  _______________Kortelės_______________
 	menuTabs = new JMyMenu("Kortelės", fontsize);
         mcbWorks = new JMyCheckBoxMenuItem("Darbai", fontsize);
+        mcbWorks.setName("Darbai");
 	mcbWorks.addActionListener(this);
 	mcbWorks.setActionCommand("works");
+        menuTabs.setName("Kortelės");
 	menuTabs.add(mcbWorks);
 	
 // _______________Liftai_______________
@@ -233,7 +238,6 @@ public class MainFrame extends JFrame implements ActionListener{
         mcbTP.addActionListener(this);
         mcbTP.setActionCommand("tp");
         menuTabs.add(mcbTP);
-	menu_bar.add(menuTabs);
 
 // ______________Pagalbinės________________
 	menuTabs.addSeparator();
@@ -279,6 +283,7 @@ public class MainFrame extends JFrame implements ActionListener{
         miCloseAll.addActionListener(this);
         miCloseAll.setActionCommand("closeAll");
         menuTabs.add(miCloseAll);
+	menu_bar.add(menuTabs);
         
 // _______________ Ataskaitos _______________
 	menuAtaskaitos = new JMyMenu("Ataskaitos", fontsize);
@@ -294,6 +299,7 @@ public class MainFrame extends JFrame implements ActionListener{
         menuAtaskRSC = new JMyMenu("RSC", fontsize);
         menuAtaskRSC.add(miDoziMatav);
 	menuAtaskaitos.add(menuAtaskRSC);
+        menuAtaskaitos.setName("Ataskaitos");
 	menu_bar.add(menuAtaskaitos);
 
 // _______________ Langas _______________
@@ -306,6 +312,7 @@ public class MainFrame extends JFrame implements ActionListener{
         miAtstata.addActionListener(this);
         miAtstata.setActionCommand("atstata");
         menuVaizdas.add(miAtstata);
+        menuVaizdas.setName("Vaizdas");
 	menu_bar.add(menuVaizdas);
    
 // __________Pagalba___________________
@@ -318,6 +325,7 @@ public class MainFrame extends JFrame implements ActionListener{
         miAbout.addActionListener(this);
         miAbout.setActionCommand("about");
         menuHelp.add(miAbout);
+        menuHelp.setName("Pagalba");
         menu_bar.add(menuHelp);
 
 	return menu_bar;
@@ -353,48 +361,50 @@ public class MainFrame extends JFrame implements ActionListener{
 	if (connection != null) {
 	    labelMessage.setText(connection.disconnect());
 	    connection = null;
-	} else {
+	}
 	    labelMessage.setText("Nuo duomenų bazės atsijungta");
-	}
-	if (panelWorks != null) {
-	    panelWorks.disconnect();
-	    mcbWorks.setSelected(false);
-	    tabbedpane.remove(panelWorks);
-	    showWorks();
-	}
-	if (panelIT != null) {
-	    panelIT.disconnect();
-	    mcbIT.setSelected(false);
-	    tabbedpane.remove(panelIT);
-	    showIT();
-	}
-	if (panelEquipmentTypes != null) {
-	    panelEquipmentTypes.disconnect();
-	    mcbEquipmentTypes.setSelected(false);
-	    tabbedpane.remove(panelEquipmentTypes);
-	}
-	if (panelSystems != null) {
-	    panelSystems.disconnect();
-	    mcbSystems.setSelected(false);
-	    tabbedpane.remove(panelSystems);
-	}
-	if (panelUsers != null) {
-	    panelUsers.disconnect();
-	    mcbUsers.setSelected(false);
-	    tabbedpane.remove(panelUsers);
-	}
-	if (panelStates != null) {
-	    panelStates.disconnect();
-	    mcbStates.setSelected(false);
-	    tabbedpane.remove(panelStates);
-	}
-	if (panelWorktypes != null) {
-	    panelWorktypes.disconnect();
-	    mcbWorktypes.setSelected(false);
-	    tabbedpane.remove(panelWorktypes);
-	}
-	menuTabs.setVisible(false);
+//        else {
+//	}
+//	if (panelWorks != null) {
+//	    panelWorks.disconnect();
+//	    mcbWorks.setSelected(false);
+//	    tabbedpane.remove(panelWorks);
+//	    showWorks();
+//	}
+//	if (panelIT != null) {
+//	    panelIT.disconnect();
+//	    mcbIT.setSelected(false);
+//	    tabbedpane.remove(panelIT);
+//	    showIT();
+//	}
+//	if (panelEquipmentTypes != null) {
+//	    panelEquipmentTypes.disconnect();
+//	    mcbEquipmentTypes.setSelected(false);
+//	    tabbedpane.remove(panelEquipmentTypes);
+//	}
+//	if (panelSystems != null) {
+//	    panelSystems.disconnect();
+//	    mcbSystems.setSelected(false);
+//	    tabbedpane.remove(panelSystems);
+//	}
+//	if (panelUsers != null) {
+//	    panelUsers.disconnect();
+//	    mcbUsers.setSelected(false);
+//	    tabbedpane.remove(panelUsers);
+//	}
+//	if (panelStates != null) {
+//	    panelStates.disconnect();
+//	    mcbStates.setSelected(false);
+//	    tabbedpane.remove(panelStates);
+//	}
+//	if (panelWorktypes != null) {
+//	    panelWorktypes.disconnect();
+//	    mcbWorktypes.setSelected(false);
+//	    tabbedpane.remove(panelWorktypes);
+//	}
+//	menuTabs.setVisible(false);
 	password = "";
+        closeAll();
     }
 
     public void setzt_dieMeldung(String dieMeldung) {
@@ -703,8 +713,22 @@ public class MainFrame extends JFrame implements ActionListener{
     
     private void closeAll() {
         tabbedpane.removeAll();
-//        for (Component c : getComponents()) {
-//        }
+        for (int i = 0; i < menuTabs.getMenuComponentCount(); i++) {
+            Component comp = menuTabs.getMenuComponent(i);      
+            if (comp instanceof JMyCheckBoxMenuItem) {
+                ((JMyCheckBoxMenuItem) comp).setSelected(false);
+            } else {
+                if (comp instanceof JMyMenu) {
+                    for (int j = 0; j < ((JMyMenu) comp).getMenuComponentCount(); j++) {
+                        Component comp1 = ((JMyMenu) comp).getMenuComponent(j);
+                        if (comp1 instanceof JMyCheckBoxMenuItem) {
+                            ((JMyCheckBoxMenuItem) comp1).setSelected(false);
+                        } 
+                    }
+                    
+                }
+            }
+        }
     }
     
     
@@ -789,18 +813,23 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;		
 //      Buhalterija
             case "biudzetas":
+                setWindow(true);
                 panelBiudzetas = createTabBiudzetas(panelBiudzetas, mcbBiudzetas, "Biudzetas", "Biudžetas", new String[]{"Kodas", "Pavadinimas", "Sau", "Vas", "Kov", "Bal", "Geg", "Bir", "Lie", "Rgp", "Rgs", "Spa", "Lap", "Gru", "M", "Skyrius", "Metai"}, new String[]{"Kodas", "Pavadinimas", "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužė", "Birželis", "Liepa", "Rugpjūtis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis", "Metams", "Skyrius", "Metai"}, new int[]{2*fontsize, 15*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, fontsize, fontsize} );
 		break;
             case "islaidos":
+                setWindow(true);
                 JOptionPane.showMessageDialog(this, "Bus apibendrinanti lentelė iš sąskaitų lentelės užklausos");
 		break;
             case "saskaitos":
+                setWindow(true);
                 showSaskaitos();
 		break;
             case "sutartys":
+                setWindow(true);
                 showSutartys();
 		break;
             case "kontrahentai":
+                setWindow(true);
 		connect_Equipment();
 		panelKontrahentai = createTab_ID_auto(panelKontrahentai, mcbKontrahentai, "Kontrahentai", "Kontrahentai");
 		break;                
