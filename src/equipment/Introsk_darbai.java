@@ -32,16 +32,16 @@ public class Introsk_darbai extends Darbai {
     private static final String INSERT = "INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?";
     private static final String SELECT0 = "SELECT d.ID, d.Data, d.Nr, i.Pavadinimas, i.IT, v.Pavadinimas, d.Pastaba FROM Introsk_darbai d LEFT JOIN Introskopai i ON d.Nr = i.Nr LEFT JOIN Introsk_vietos v ON d.Vieta = v.ID";
-    private static final String SELECT1 = " WHERE d.Nr  LIKE ?";
-    private static final String SELECT2 = " GROUP BY d.Nr";
+//    private static final String SELECT1 = " WHERE d.Nr  LIKE ?";
+//    private static final String SELECT2 = " GROUP BY d.Nr";
     
-    private static final String ID = "ID";
+//    private static final String ID = "ID";
     private static final String DATA = "Data";
     private static final String NR = "Introsk. Nr.";
     private static final String PAVAD = "Introsk. pavad.";
     private static final String IT = "IT";
-    private static final String VIETA = "Vieta";
-    private static final String PASTABA = "Pastaba";
+//    private static final String VIETA = "Vieta";
+//    private static final String PASTABA = "Pastaba";
 
     private DefaultTableModel tableModelTP;
     private PreparedStatement preparedUpdateTP, preparedInsertTP;
@@ -282,29 +282,29 @@ public class Introsk_darbai extends Darbai {
     }
 
     
-    private int getTPID(String tp) {
-	int i, n, id;
-	boolean found;
-	i = 0;
-	id = -1;
-	found = false;
-	n = tptypes.length;
-	while (i <= n & !found) {
-	    if (tptypes[1][i].equals(tp)) {
-		found = true;
-		id = Integer.valueOf(tptypes[0][i]);
-	    } 
-	    else {
-		i++;
-	    }
-	}
-	return id;
-	
-    }
-    
+//    private int getTPID(String tp) {
+//	int i, n, id;
+//	boolean found;
+//	i = 0;
+//	id = -1;
+//	found = false;
+//	n = tptypes.length;
+//	while (i <= n & !found) {
+//	    if (tptypes[1][i].equals(tp)) {
+//		found = true;
+//		id = Integer.valueOf(tptypes[0][i]);
+//	    } 
+//	    else {
+//		i++;
+//	    }
+//	}
+//	return id;
+//	
+//    }
+//    
     @Override
     protected void filter() {
-	Object[] row;
+	Object[] the_row;
 	int i, colcount;
 	tableModelTP.setRowCount(0);
 	StringBuilder sb;
@@ -315,12 +315,12 @@ public class Introsk_darbai extends Darbai {
 	    preparedFilter_setPrepared(sb);
 	    resultset = preparedFilterTP.executeQuery();
 	    colcount = tableModelTP.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModelTP.addRow(row);
+		tableModelTP.addRow(the_row);
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
@@ -358,7 +358,7 @@ public class Introsk_darbai extends Darbai {
     
     @Override
     protected void preparedFilter_setPrepared(StringBuilder sb) throws SQLException {
-	int i, n, idpr, id;
+	int i, n;
 	n = 0;
 	i = sb.indexOf(" tp.Data LIKE ?");
 	if (i >= 0) {
@@ -385,19 +385,19 @@ public class Introsk_darbai extends Darbai {
 
      
     protected void filter_all() {
-        Object[] row;
+        Object[] the_row;
 	int i, colcount;
 	tableModelTP.setRowCount(0);
 	ResultSet resultset;
 	try {
 	    resultset = connection.executeQuery(SELECT_ALL);
 	    colcount = tableModelTP.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModelTP.addRow(row);
+		tableModelTP.addRow(the_row);
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
@@ -409,9 +409,9 @@ public class Introsk_darbai extends Darbai {
 //UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?
     @Override
     protected void update() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	int the_row;
+	the_row = table.getSelectedRow();
+	if (the_row >= 0) {
             try {
                 if (preparedUpdateTP == null) {
                     preparedUpdateTP = connection.prepareStatement(UPDATE);
@@ -420,7 +420,7 @@ public class Introsk_darbai extends Darbai {
                 preparedUpdateTP.setInt(2, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
                 preparedUpdateTP.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
                 preparedUpdateTP.setString(4, taMessage.getText());
-                preparedUpdateTP.setInt(5, (int) table.getValueAt(row, 0));
+                preparedUpdateTP.setInt(5, (int) table.getValueAt(the_row, 0));
                 if (preparedUpdateTP.executeUpdate() == 1) {
                     filter();
                 }

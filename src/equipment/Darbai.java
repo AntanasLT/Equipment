@@ -424,7 +424,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     }
 
     private void filter_all() {
-        Object[] row;
+        Object[] the_row;
 	int i, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
@@ -434,12 +434,12 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	    }
 	    resultset = preparedSelectAll.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
@@ -448,7 +448,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     }
     
     private void filter_unfinished() {
-        Object[] row;
+        Object[] the_row;
 	int i, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
@@ -456,12 +456,12 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 		preparedFilter = connection.prepareStatement(PREPARE_UNFINISHED);
 		resultset = preparedFilter.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
 	    preparedFilter.close();
@@ -471,7 +471,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     }
     
     private void filter_info() {
-        Object[] row;
+        Object[] the_row;
 	int i, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
@@ -479,12 +479,12 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 		preparedFilter = connection.prepareStatement(PREPARE_INFO);
 		resultset = preparedFilter.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
 //	    preparedFilter.close();
@@ -496,7 +496,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 
     protected void filter() {
 	int i, colcount;
-        Object[] row;
+        Object[] the_row;
 	StringBuilder sb;
 	tableModel.setRowCount(0);
         ResultSet resultset;
@@ -506,12 +506,12 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
             preparedFilter_setPrepared(sb);
             resultset = preparedFilter.executeQuery();
             colcount = tableModel.getColumnCount();
-            row = new Object[colcount];
+            the_row = new Object[colcount];
             while (resultset.next() ){
                 for (i = 0; i <= colcount - 1; i++) {
-                    row[i] = resultset.getObject(i + 1);
+                    the_row[i] = resultset.getObject(i + 1);
                 }
-                tableModel.addRow(row);
+                tableModel.addRow(the_row);
             }
             resultset.close();
 //            if (sb != null) {
@@ -642,13 +642,13 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     private void insert() {
 	int id, state, idpr;
 	boolean clossed;
-        String idTasa, iD, time, state_name;
+        String idTasa, time, state_name;
         id = get_userid_by_name(connection.get_username());
         if (id < 0) {
             JOptionPane.showMessageDialog(this, "Tokio vartotojo nėra.", "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
         idTasa = tfIDpr.getText();
-        iD = tfID.getText();
+//        iD = tfID.getText();
         state_name = (String) cbState.getSelectedItem();
         if (!state_name.equals("Užregistruota")) {
             idTasa = JOptionPane.showInputDialog(this, "Tęsiamo įrašo nr. ", idTasa);
@@ -733,8 +733,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 		clossed = state == BAIGTA;
                 if (preparedUpdate == null) {
                     preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
-                };
-                
+                }
                 preparedUpdate.setString(1, tfDate.getText());
                 preparedUpdate.setInt(2, idpr);
                 preparedUpdate.setInt(3, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));

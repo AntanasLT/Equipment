@@ -35,6 +35,7 @@ public class TP extends Darbai {
     static final String SYSTEM = "Sistema";
     static final String TP = "Rūšis";
     static final String NOTE = "Pastaba";
+    static final String FOLDER = "Ivairus";
     
 
 //    private DefaultTableModel tableModelTP;
@@ -381,7 +382,12 @@ public class TP extends Darbai {
                 taMessage.setText((String) table.getValueAt(row, 4));
                 tfDate.setToolTipText(date.getWeekday(tfDate.getText())); //tfDate.repaint();
             }
-	}
+	} else {
+            if (me.getComponent().equals(taMessage) & me.getButton() == 3) {
+                openFile(FOLDER, taMessage.getSelectedText());
+            }
+        }
+        
     }
 
 
