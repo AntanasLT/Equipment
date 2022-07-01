@@ -443,9 +443,13 @@ public class MainFrame extends JFrame implements ActionListener{
 
    
     public void showWorks() {
-	if (panelWorks == null & mcbWorks.isSelected()) {
-	    panelWorks = new Darbai(connection, fontsize);
-            panelWorks.init();
+	if (mcbWorks.isSelected()) {
+            if (panelWorks == null) {
+                panelWorks = new Darbai(connection, fontsize);
+                panelWorks.init();                
+            } else {
+                panelWorks.setVisible(true);
+            }
 	    tabbedpane.addTab("Darbai", panelWorks);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
@@ -456,22 +460,30 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     private void showIT() {
-	if (panelIT != null & !mcbIT.isSelected()) {
-	    tabbedpane.remove(panelIT);
-	    panelIT = null;
-	}
-	if (panelIT == null & mcbIT.isSelected()) {
-	    panelIT = new Turtas(connection, fontsize);
-            panelIT.init();
+	if (mcbIT.isSelected()) {
+            if (panelIT == null) {
+                panelIT = new Turtas(connection, fontsize);
+                panelIT.init();
+            } else {
+                panelIT.setVisible(true);
+            }
 	    tabbedpane.addTab("IT", panelIT);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
+	if (panelIT != null & !mcbIT.isSelected()) {
+	    tabbedpane.remove(panelIT);
+	    panelIT = null;
+	}        
     }
     
     private void showTP() {
-	if (panelTP == null & mcbTP.isSelected()) {
-	    panelTP = new TP(connection, fontsize);
-            panelTP.init();
+	if (mcbTP.isSelected()) {
+            if (panelTP == null) {
+                panelTP = new TP(connection, fontsize);
+                panelTP.init();               
+            } else {
+                panelTP.setVisible(true);
+            }
 	    tabbedpane.addTab("TP", panelTP);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
@@ -482,9 +494,13 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     private void showSaskaitos() {
-	if (panelSaskaitos == null & mcbSaskaitos.isSelected()) {
-	    panelSaskaitos = new Saskaitos(connection, fontsize);
-            panelSaskaitos.init();
+	if (mcbSaskaitos.isSelected()) {
+            if (panelSaskaitos == null) {
+                panelSaskaitos = new Saskaitos(connection, fontsize);
+                panelSaskaitos.init();                
+            } else {
+                panelSaskaitos.setVisible(true);
+            }
 	    tabbedpane.addTab("Saskaitos", panelSaskaitos);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
@@ -495,9 +511,13 @@ public class MainFrame extends JFrame implements ActionListener{
     }
         
     private void showSutartys() {
-	if (panelSutartys == null & mcbSutartys.isSelected()) {
-	    panelSutartys = new Sutartys(connection, fontsize);
-            panelSutartys.init();
+	if (mcbSutartys.isSelected()) {
+            if (panelSutartys == null) {
+                panelSutartys = new Sutartys(connection, fontsize);
+                panelSutartys.init();              
+            } else {
+                panelSutartys.setVisible(true);
+            }
 	    tabbedpane.addTab("Sutartys", panelSutartys);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
@@ -517,9 +537,13 @@ public class MainFrame extends JFrame implements ActionListener{
      * @param tabName name of created tab
      */
     private ID_auto createTab_ID_auto(ID_auto tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName) {
-        if (tab == null & menuItem.isSelected()) {
-            tab = new ID_auto(connection, fontsize, dbTable);
-            tab.init();
+        if (menuItem.isSelected()) {
+            if (tab == null) {
+                tab = new ID_auto(connection, fontsize, dbTable);
+                tab.init();               
+            } else {
+                tab.setVisible(true);
+            }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
         }
@@ -538,9 +562,13 @@ public class MainFrame extends JFrame implements ActionListener{
      * @param tabName name of created tab
      */
     private ID_noauto createTab_ID_noauto(ID_noauto tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName) {
-        if (tab == null & menuItem.isSelected()) {
-            tab = new ID_noauto(connection, fontsize, dbTable);
-            tab.init();
+        if (menuItem.isSelected()) {
+            if (tab == null) {
+                tab = new ID_noauto(connection, fontsize, dbTable);
+                tab.init();               
+            } else {
+                tab.setVisible(true);
+            }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
         }
@@ -552,9 +580,13 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     private Biudzetas createTabBiudzetas(Biudzetas tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with) {
-        if (tab == null & menuItem.isSelected()) {
-            tab = new Biudzetas(connection, fontsize, dbTable, dbFields, tbl_cols, col_with);
-            tab.init();
+        if (menuItem.isSelected()) {
+            if (tab == null) {
+                tab = new Biudzetas(connection, fontsize, dbTable, dbFields, tbl_cols, col_with);
+                tab.init();               
+            } else {
+                tab.setVisible(true);
+            }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
         }
@@ -567,9 +599,13 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     private IDString createTab_IDString(IDString tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String dbField1, String dbField2, String col1, String col2) {
-        if (tab == null & menuItem.isSelected()) {
-            tab = new IDString(connection, fontsize, dbTable, dbField1, dbField2, col1, col2);
-            tab.init();
+        if (menuItem.isSelected()) {
+            if (tab == null) {
+                tab = new IDString(connection, fontsize, dbTable, dbField1, dbField2, col1, col2);
+                tab.init();               
+            } else {
+                tab.setVisible(true);
+            }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
         }
@@ -581,9 +617,13 @@ public class MainFrame extends JFrame implements ActionListener{
     }
 
     private IDString_n createTab_IDString_n(IDString_n tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment) {
-        if (tab == null & menuItem.isSelected()) {
-            tab = new IDString_n(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment);
-            tab.init();
+        if (menuItem.isSelected()) {
+            if (tab == null) {
+                tab = new IDString_n(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment);
+                tab.init();               
+            } else {
+                tab.setVisible(true);
+            }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
         }
@@ -595,9 +635,13 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     private ID_TextArea createTab_IDTextArea(ID_TextArea tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment, String taField, String docFolder) {
-        if (tab == null & menuItem.isSelected()) {
-            tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField, new Dimension(70, 10), docFolder);
-            tab.init();
+        if (menuItem.isSelected()) {
+            if (tab == null) {
+                tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField, new Dimension(70, 10), docFolder);
+                tab.init();                
+            } else {
+                tab.setVisible(true);               
+            }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
         }
