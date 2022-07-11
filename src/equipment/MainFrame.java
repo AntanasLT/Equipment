@@ -77,7 +77,7 @@ public class MainFrame extends JFrame implements ActionListener{
     protected JLabelLeft labelMessage;
 // –––––––––––––––––––––––
     public int fontsize;
-    private int window_width, window_heigth;
+    private int window_width0, window_heigth0;
 // –––––––––––––––––––––––
 
     protected MainFrame(String host, int size) {
@@ -745,13 +745,16 @@ public class MainFrame extends JFrame implements ActionListener{
         panelIT.exportIT();
     }
     
-    private void setWindow(boolean wide) {
-        if (wide) {
-            window_width = getWidth();
-            window_heigth = getHeight();
-            setSize((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), window_heigth);
-        } else {
-            setSize(window_width, window_heigth);
+    private void setWindow(boolean set_wide) {
+        int w;
+        w = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        if (set_wide & window_width0 < w) {
+            window_width0 = getWidth();
+            window_heigth0 = getHeight();
+            setSize(w, getHeight());
+        } 
+        if (!set_wide) {
+            setSize(window_width0, window_heigth0);
         }
     }
     
@@ -857,23 +860,23 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;		
 //      Buhalterija
             case "biudzetas":
-                setWindow(true);
+//                setWindow(true);
                 panelBiudzetas = createTabBiudzetas(panelBiudzetas, mcbBiudzetas, "Biudzetas", "Biudžetas", new String[]{"Kodas", "Pavadinimas", "Sau", "Vas", "Kov", "Bal", "Geg", "Bir", "Lie", "Rgp", "Rgs", "Spa", "Lap", "Gru", "M", "Skyrius", "Metai"}, new String[]{"Kodas", "Pavadinimas", "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužė", "Birželis", "Liepa", "Rugpjūtis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis", "Metams", "Skyrius", "Metai"}, new int[]{2*fontsize, 15*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, fontsize, fontsize} );
 		break;
             case "islaidos":
-                setWindow(true);
+//                setWindow(true);
                 JOptionPane.showMessageDialog(this, "Bus apibendrinanti lentelė iš sąskaitų lentelės užklausos");
 		break;
             case "saskaitos":
-                setWindow(true);
+//                setWindow(true);
                 showSaskaitos();
 		break;
             case "sutartys":
-                setWindow(true);
+//                setWindow(true);
                 showSutartys();
 		break;
             case "kontrahentai":
-                setWindow(true);
+//                setWindow(true);
 		connect_Equipment();
 		panelKontrahentai = createTab_ID_auto(panelKontrahentai, mcbKontrahentai, "Kontrahentai", "Kontrahentai");
 		break;                

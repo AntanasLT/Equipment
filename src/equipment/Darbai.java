@@ -651,7 +651,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 //        iD = tfID.getText();
         state_name = (String) cbState.getSelectedItem();
         if (!state_name.equals("Užregistruota")) {
-            idTasa = JOptionPane.showInputDialog(this, "Tęsiamo įrašo nr. ", idTasa);
+            idTasa = JOptionPane.showInputDialog(this, "Tęsiamo (pradinio) įrašo nr. ", idTasa);
         } else {
             idTasa = "0";
         }
