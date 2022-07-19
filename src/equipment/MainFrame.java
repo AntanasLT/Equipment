@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import zurnalasP.Help;
 
@@ -412,33 +413,33 @@ public class MainFrame extends JFrame implements ActionListener{
     }
 
     protected void connect_Equipment() {
-	if (menuTabs != null) {
-	    menuTabs.setVisible(true);
-	}
+//	if (menuTabs != null) {
+//	    menuTabs.setVisible(true);
+//	}
 	if (connection == null) {
 	    connection = connect("Equipment");
 	}
-	if (panelIT != null) {
-	    panelIT.setConnection(connection);
-	}
-	if (panelEquipmentTypes != null) {
-	    panelEquipmentTypes.setConnection(connection);
-	}
-	if (panelSystems != null) {
-	    panelSystems.setConnection(connection);
-	}
-	if (panelUsers != null) {
-	    panelUsers.setConnection(connection);
-	}
-	if (panelWorktypes != null) {
-	    panelWorktypes.setConnection(connection);
-	}
-	if (panelWorks != null) {
-	    panelWorks.setConnection(connection);
-	}
-	if (panelLocations != null) {
-	    panelLocations.setConnection(connection);
-	}
+//	if (panelIT != null) {
+//	    panelIT.setConnection(connection);
+//	}
+//	if (panelEquipmentTypes != null) {
+//	    panelEquipmentTypes.setConnection(connection);
+//	}
+//	if (panelSystems != null) {
+//	    panelSystems.setConnection(connection);
+//	}
+//	if (panelUsers != null) {
+//	    panelUsers.setConnection(connection);
+//	}
+//	if (panelWorktypes != null) {
+//	    panelWorktypes.setConnection(connection);
+//	}
+//	if (panelWorks != null) {
+//	    panelWorks.setConnection(connection);
+//	}
+//	if (panelLocations != null) {
+//	    panelLocations.setConnection(connection);
+//	}
     }
 
    
@@ -452,6 +453,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
 	    tabbedpane.addTab("Darbai", panelWorks);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            panelWorks.setConnection(connection);
 	}
 	if (panelWorks != null & !mcbWorks.isSelected()) {
 	    tabbedpane.remove(panelWorks);
@@ -469,6 +471,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
 	    tabbedpane.addTab("IT", panelIT);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            panelIT.setConnection(connection);
 	}
 	if (panelIT != null & !mcbIT.isSelected()) {
 	    tabbedpane.remove(panelIT);
@@ -486,6 +489,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
 	    tabbedpane.addTab("TP", panelTP);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            panelTP.setConnection(connection);
 	}
 	if (panelTP != null & !mcbTP.isSelected()) {
 	    tabbedpane.remove(panelTP);
@@ -503,6 +507,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
 	    tabbedpane.addTab("Saskaitos", panelSaskaitos);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            panelSaskaitos.setConnection(connection);
 	}
 	if (panelSaskaitos != null & !mcbSaskaitos.isSelected()) {
 	    tabbedpane.remove(panelSaskaitos);
@@ -520,6 +525,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
 	    tabbedpane.addTab("Sutartys", panelSutartys);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            panelSutartys.setConnection(connection);
 	}
 	if (panelSutartys != null & !mcbSutartys.isSelected()) {
 	    tabbedpane.remove(panelSutartys);
@@ -546,6 +552,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            tab.setConnection(connection);
         }
         if (!menuItem.isSelected()) {
             tabbedpane.remove(tab);
@@ -571,6 +578,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            tab.setConnection(connection);
         }
         if (!menuItem.isSelected()) {
             tabbedpane.remove(tab);
@@ -589,6 +597,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            tab.setConnection(connection);
         }
         if (!menuItem.isSelected()) {
             tabbedpane.remove(tab);
@@ -608,6 +617,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            tab.setConnection(connection);
         }
         if (!menuItem.isSelected()) {
             tabbedpane.remove(tab);
@@ -626,6 +636,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            tab.setConnection(connection);
         }
         if (!menuItem.isSelected()) {
             tabbedpane.remove(tab);
@@ -644,6 +655,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }
             tabbedpane.addTab(tabName, tab);
             tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            tab.setConnection(connection);
         }
         if (!menuItem.isSelected()) {
             tabbedpane.remove(tab);
@@ -695,6 +707,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	    tabbedpane.addTab("Liftų darbai", panelLiftu_darbai);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
+        panelLiftu_darbai.setConnection(connection);
 	if (panelLiftu_darbai != null & !mcbLiftu_darbai.isSelected()) {
 	    tabbedpane.remove(panelLiftu_darbai);
 	    panelLiftu_darbai = null;
@@ -708,6 +721,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	    tabbedpane.addTab("Adresai", panelAdresai);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
+        panelAdresai.setConnection(connection);
 	if (panelAdresai != null & !mcbAdresai.isSelected()) {
 	    tabbedpane.remove(panelAdresai);
 	    panelAdresai = null;
@@ -721,6 +735,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	    tabbedpane.addTab("JSG", panelJSG);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
 	}
+        panelJSG.setConnection(connection);
 	if (panelJSG != null & !mcbGenerators.isSelected()) {
 	    tabbedpane.remove(panelJSG);
 	    panelJSG = null;
@@ -759,7 +774,8 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     private void closeAll() {
-        tabbedpane.removeAll();
+        int compCount;
+        Component component;
         for (int i = 0; i < menuTabs.getMenuComponentCount(); i++) {
             Component comp = menuTabs.getMenuComponent(i);      
             if (comp instanceof JMyCheckBoxMenuItem) {
@@ -776,6 +792,17 @@ public class MainFrame extends JFrame implements ActionListener{
                 }
             }
         }
+        compCount = tabbedpane.getComponentCount();
+        for (int i = 0; i < compCount; i++) {
+            component = tabbedpane.getComponent(0);
+//        System.out.println(tabbedpane.getComponentCount());
+            if (component instanceof JPanel) {
+//                System.out.println(i);
+                tabbedpane.remove(component);
+//                component = null;
+            }
+        }
+//        tabbedpane.removeAll();
     }
     
     

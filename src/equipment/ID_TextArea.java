@@ -33,7 +33,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
     String[] dbCols, tblCols;
     Dimension taSize;
     int[] tblColWidth;
-    int i0;
+    int auto_incr;
     
 //    private static final String FOLDER = "Ivairus";
 
@@ -55,7 +55,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         dbCols = db_fields;
         tblCols = tbl_cols;
         tblColWidth = tbl_col_with;
-        i0 = id_auto_increment ? 1 : 0;
+        auto_incr = id_auto_increment ? 1 : 0;
         taField = textArea_field;
         taSize = texAreaSize;
         folder = docFolder;
@@ -197,7 +197,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         l = dbCols.length;
         sb1 = new StringBuilder("INSERT INTO " + table_name + " (");
         sb2 = new StringBuilder(" VALUES (");
-        for (int i = i0; i < l; i++) {
+        for (int i = auto_incr; i < l; i++) {
             sb1.append(dbCols[i]);
             sb2.append("?");
             if (i < l-1) {
@@ -244,7 +244,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(insert);
 		}
-                for (int i = i0; i < tblCols.length; i++) {
+                for (int i = auto_incr; i < tblCols.length; i++) {
                     if (dbCols[i].equals(taField)) {
                         preparedInsert.setString(n, taText.getText());
                     } else {
@@ -277,17 +277,13 @@ public class ID_TextArea extends ID_auto implements MouseListener {
 		    preparedUpdate = connection.prepareStatement(update);
 		}
                 for (i = 1; i < dbCols.length; i++) {
-                    if (dbCols[i].equals(taField)) {
+                    if (dbCols[i].equals(taField) & tableModel.getColumnName(table.getSelectedColumn()).equals(taField)) {
                         preparedUpdate.setString(i, taText.getText());
                     } else {
                         preparedUpdate.setString(i, get_NULL_tested(table.getValueAt(row, i)));
                     }
                 }
-                if (i0 == 0) {
-                    preparedUpdate.setString(i, (String) table.getValueAt(row, 0));                                                 preparedUpdate.setString(i, get_NULL_tested(table.getValueAt(row, i)));
-        } else {
                     preparedUpdate.setInt(i, Integer.parseInt(String.valueOf(table.getValueAt(row, 0))));
-                }
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter();
 		}
@@ -309,7 +305,7 @@ public class ID_TextArea extends ID_auto implements MouseListener {
 		    preparedDelete = connection.prepareStatement(delete);
 		}
 // ID, Pavadinimas
-                if (i0 == 0) {
+                if (auto_incr == 0) {
                     preparedDelete.setString(1, (String) table.getValueAt(row, 0));
                 } else {
                     preparedDelete.setInt(1, Integer.parseInt(String.valueOf(table.getValueAt(row, 0))));
@@ -341,11 +337,10 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         if (me.getComponent().equals(table)) {
             col = table.getSelectedColumn();
             row = table.getSelectedRow();
-            if (me.getButton() == 1) {
+            if (me.getButton() == 1 & tableModel.getColumnName(col).equals(taField)) {
                 taText.setText((String) table.getValueAt(row, col));               
-//                taText.setText((String) table.getValueAt(table.getSelectedRow(), tableModel.findColumn(taField))); 
             } else {
-                if (me.getButton() == 2 && col == tableModel.findColumn("Data")) {
+                if (me.getButton() == 2) {
                     Datum date = new Datum();
                     table.setValueAt(date.getDate(), row, col);
                 }        
@@ -353,11 +348,19 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         }
         if (me.getComponent().equals(taText)) {
             switch (me.getButton()) {
+                case 1:
+                    if (me.getClickCount() == 2) {
+                        taText.setText("");
+                    }
+                    break;
                 case 2:
-                    taText.setText("");
+                    Datum date = new Datum();
+                    switch (me.getClickCount()) {
+                        case 1: taText.insert(date.getDate(), taText.getCaretPosition()); break;
+                        case 2: taText.insert(date.getTime(), taText.getCaretPosition()); break;
+                    }
                     break;
                 case 3:
-//                    System.out.println(folder);
                     openFile(folder, taText.getSelectedText());                   
                     break;
             }
