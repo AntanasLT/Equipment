@@ -360,10 +360,10 @@ public class ID_TextArea extends ID_auto implements MouseListener {
                     Datum date = new Datum();
                     StringSelection sel = new StringSelection("");
                     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(sel, sel);
                     switch (me.getClickCount()) {
-                        case 1: taText.insert(date.getDate() + " ", taText.getCaretPosition()); break;
-                        case 2: taText.insert(date.getTime() + " ", taText.getCaretPosition()); break;
+                        case 1: clipboard.setContents(sel, null); break;
+                        case 2: taText.insert(date.getDate() + " ", taText.getCaretPosition()); break;
+                        case 3: taText.insert(date.getTime(), taText.getCaretPosition()); break;
                     }
                     break;
                 case 3:

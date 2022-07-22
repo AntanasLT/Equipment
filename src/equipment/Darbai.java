@@ -1034,9 +1034,9 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
         if (me.getComponent().equals(tfID)) {
           tfIDpr.setText(tfID.getText());
         }
-	if (me.getComponent().equals(tfIDpr)) {
-          tfIDpr.setText("");
-        }
+//	if (me.getComponent().equals(tfIDpr)) {
+//          tfIDpr.setText("");
+//        }
 	if (me.getComponent().equals(table) & me.getClickCount() == 2) {
 	    filter();
         }
