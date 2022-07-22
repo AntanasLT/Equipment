@@ -10,6 +10,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
@@ -355,9 +358,12 @@ public class ID_TextArea extends ID_auto implements MouseListener {
                     break;
                 case 2:
                     Datum date = new Datum();
+                    StringSelection sel = new StringSelection("");
+                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(sel, sel);
                     switch (me.getClickCount()) {
-                        case 1: taText.insert(date.getDate(), taText.getCaretPosition()); break;
-                        case 2: taText.insert(date.getTime(), taText.getCaretPosition()); break;
+                        case 1: taText.insert(date.getDate() + " ", taText.getCaretPosition()); break;
+                        case 2: taText.insert(date.getTime() + " ", taText.getCaretPosition()); break;
                     }
                     break;
                 case 3:

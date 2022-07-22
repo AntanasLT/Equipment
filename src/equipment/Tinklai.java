@@ -137,7 +137,7 @@ public class Tinklai extends Turtas {
         pSearch1.add(pButtons);
         pSearch = new JPanel(new BorderLayout());
         pSearch.add(pSearch1, BorderLayout.NORTH);
-        taMessage = new JMyTextArea_monospaced(2, 50, fontsize);
+        taMessage = new JMyTextArea_monospaced(6, 50, fontsize);
         taMessage.addMouseListener(this);
         taMessage.setLineWrap(true);
         taMessage.setWrapStyleWord(true);

@@ -795,14 +795,10 @@ public class MainFrame extends JFrame implements ActionListener{
         compCount = tabbedpane.getComponentCount();
         for (int i = 0; i < compCount; i++) {
             component = tabbedpane.getComponent(0);
-//        System.out.println(tabbedpane.getComponentCount());
             if (component instanceof JPanel) {
-//                System.out.println(i);
                 tabbedpane.remove(component);
-//                component = null;
             }
         }
-//        tabbedpane.removeAll();
     }
     
     
