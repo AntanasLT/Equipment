@@ -9,6 +9,7 @@ package equipment;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.plaf.FontUIResource;
 import zurnalasP.Help;
 
 /**
@@ -107,6 +109,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	    }
 	});
 	connect_Equipment();
+        javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.PLAIN, fontsize)));        
     }
 	
     protected JMenuBar menuBar() {

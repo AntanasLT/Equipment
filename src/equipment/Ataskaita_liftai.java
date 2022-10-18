@@ -40,7 +40,7 @@ import javax.swing.table.TableColumn;
 public class Ataskaita_liftai extends JFrame implements ActionListener {
 
 
-    static final String SELECT_ARGIA = "SELECT pr.ID, pr.Irenginys, pr.Laikas, pab.Laikas, TIMESTAMPDIFF(MINUTE, pr.Laikas, pab.Laikas) FROM Darbai pr INNER JOIN Darbai pab WHERE pr.Laikas LIKE ? AND pr.Sistema = 7 AND (pr.IDpr != 0 AND pr.IDpr = pab.IDpr OR pr.IDpr = 0 AND pr.ID = pab.IDpr) AND pr.Busena = 6 AND pab.Busena = 3";
+    static final String SELECT_ARGIA = "SELECT pr.ID, pr.Irenginys, pr.Laikas, pab.Laikas, TIMESTAMPDIFF(MINUTE, pr.Laikas, pab.Laikas) FROM Darbai pr INNER JOIN Darbai pab WHERE pr.Laikas LIKE ? AND pr.Sistema = 7 AND (pr.IDpr != 0 AND pr.IDpr = pab.IDpr OR pr.IDpr = 0 AND pr.ID = pab.IDpr) AND pr.Busena = 6 AND pab.Busena = 3 ORDER BY pr.Irenginys, pr.Laikas";
     static final String SELECT_AFIKSI = "SELECT pr.ID, pr.Irenginys, pr.Laikas, pab.Laikas, TIMESTAMPDIFF(MINUTE, pr.Laikas, pab.Laikas) FROM Darbai pr INNER JOIN Darbai pab WHERE pr.Laikas LIKE ? AND pr.Sistema = 7 AND pr.ID = pab.IDpr AND pr.Busena = 6 AND pab.Busena = 2";    
     static final String ID = "ID";
     static final String IRENGINYS = "Irenginys";
@@ -199,11 +199,12 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
     
     protected void fillTable(ResultSet rs, String caption) throws SQLException {
 	int i, colcount;
-        float sum;
+        String month;
+        float sum_LF, sum_ES;
         DecimalFormat df;
 	Object[] row;
         df = new DecimalFormat("0.0");
-	sum = 0;
+	sum_LF = 0; sum_ES = sum_LF;
 	colcount = tableModel.getColumnCount();
 	row = new Object[colcount];
 	row[0] = "";
@@ -216,18 +217,25 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 		for (i = 0; i <= colcount - 1; i++) {
 		    row[i] = rs.getObject(i + 1);
                     if (i == colcount - 1) {
-                        sum = sum + Float.parseFloat(String.valueOf(row[i]))/60;
+                        if (String.valueOf(row[1]).contains("ES")) {
+                            sum_ES = sum_ES + Float.parseFloat(String.valueOf(row[i]))/60;
+                        } else {
+                            sum_LF = sum_LF + Float.parseFloat(String.valueOf(row[i]))/60;
+                        }
                         row[i] = df.format(Float.parseFloat(String.valueOf(row[i]))/60);
                      }
 		}
 		tableModel.addRow(row);
-		
 	    }
 	    for (i = 0; i <= colcount - 3; i++) {
 		row[i] = "";
 	    }
-	    row[i] = "Suma (" + tfMonth.getText().substring(0, 7) + " (val.))";
-	    row[i + 1] = df.format(sum);
+            month = tfMonth.getText().substring(0, 7) + " mėn.)";
+	    row[i] = "Eskalatoriai (val.): " + month;
+	    row[i + 1] = df.format(sum_ES);
+	    tableModel.addRow(row);            
+	    row[i] = "Liftai (val.): " + month;
+	    row[i + 1] = df.format(sum_LF);
 	    tableModel.addRow(row);
     }
     
