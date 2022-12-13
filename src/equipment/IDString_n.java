@@ -162,15 +162,18 @@ public class IDString_n extends ID_auto {
     
     @Override
     protected void insert() {
-	int row;
+	int row, i;
 	row = table.getSelectedRow();
 	if (row >= 0) {
 	    try {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(insert);
 		}
-                for (int i = i0; i < tblCols.length; i++) {
-                    preparedInsert.setString(i+1, String.valueOf(table.getValueAt(row, i)));
+                for (i = i0; i < tblCols.length; i++) {
+                    preparedInsert.setString(i, String.valueOf(table.getValueAt(row, i)));
+                }
+                if (i0 == 0) {
+                    preparedInsert.setString(i, (String) table.getValueAt(row, 0));
                 }
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();

@@ -42,9 +42,10 @@ public class MainFrame extends JFrame implements ActionListener{
     ID_auto panelKontrahentai;
     ID_noauto panelStates, panelLocations, panelGen_busenos, panelWorktypes, panelJSG_vietos,panelEquipmentTypes, panelTPrusys, panelUsers, panelVeiklos;
     IDString panelPotinkliai;
-    IDString_n panelSystems, panelIntroskopai, panelLiftai, panelDozimetrija;
+    IDString_n panelSystems, panelIntroskopai, panelLiftai;
     ID_TextArea panelDarbeliai, panelDarbeliai_baigtieji, panelRSCdarbai;
     Biudzetas panelBiudzetas;
+    Dozimetrija panelDozimetrija;
     Sutartys panelSutartys;
     Saskaitos panelSaskaitos;
 
@@ -648,6 +649,26 @@ public class MainFrame extends JFrame implements ActionListener{
         return tab;
     }
     
+    private Dozimetrija createDozimetrija(Dozimetrija tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment) {
+        if (menuItem.isSelected()) {
+            if (tab == null) {
+                tab = new Dozimetrija(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment);
+                tab.init();               
+            } else {
+                tab.setVisible(true);
+            }
+            tabbedpane.addTab(tabName, tab);
+            tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
+            tab.setConnection(connection);
+        }
+        if (!menuItem.isSelected()) {
+            tabbedpane.remove(tab);
+            tab = null;
+        }
+        return tab;
+    }
+    
+    
     private ID_TextArea createTab_IDTextArea(ID_TextArea tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment, String taField, String docFolder) {
         if (menuItem.isSelected()) {
             if (tab == null) {
@@ -855,7 +876,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		break;		
 	    case "dozimetrija":
 		connect_Equipment();
-                panelDozimetrija = createTab_IDString_n(panelDozimetrija, mcbDozimetrija, "Dozimetrija", "Dozimetrija", new String[]{"ID", "Data", "Introskopas", "Operat", "Pries", "Uz", "Virsuj", "Generat", "metras"}, new String[]{"ID", "Data", "Introskopas", "Prie operat.", "Prieš tun.", "Už tun.", "Viršuj", "Prie generat.", "Už metro"}, new int[]{1*fontsize, 1*fontsize, 3*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize}, true);
+                panelDozimetrija = createDozimetrija(panelDozimetrija, mcbDozimetrija, "Dozimetrija", "Dozimetrija", new String[]{"ID", "Data", "Introskopas", "Operat", "Pries", "Uz", "Virsuj", "Generat", "metras"}, new String[]{"ID", "Data", "Nr.", "Prie operat.", "Prieš tun.", "Už tun.", "Viršuj", "Prie generat.", "Už metro"}, new int[]{1*fontsize, 1*fontsize, 3*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize, 1*fontsize}, true);
 		break;		
 	    case "generatorStates":
 		connect_Equipment();

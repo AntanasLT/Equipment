@@ -63,7 +63,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
     private static final String TEX_END = "\n\\end{supertabular}\n"
 	    + "\\end{document}\n";
     private static final String PDF_FILE = "Prastovos";
-    private static final String PDF_DIR = "/home/a/dasDokument/dasSchreiben/dieAusschreibung/meine/dieFahrstuhle/2021/Ivairus/";
+    private static final String PDF_DIR = "/home/a/dasDokument/Zurnalas/Prastovos/";
     
 
     PreparedStatement preparedSelect;
@@ -284,7 +284,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 	    if (JOptionPane.showConfirmDialog(this, pdf_name + " rezultatas: " + String.valueOf(res) + ". Kopijuoti į " + PDF_DIR + " ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 try {
                     pdf_pathname = JOptionPane.showInputDialog(this, "Failo vardas", pdf_pathname);
-                    Files.copy(Paths.get(pdf_name + ".pdf"), Paths.get(pdf_pathname));
+                    Files.move(Paths.get(pdf_name + ".pdf"), Paths.get(pdf_pathname));
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Klaida", JOptionPane.ERROR_MESSAGE);
                 }
