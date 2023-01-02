@@ -97,7 +97,7 @@ public class Introsk_darbai extends Darbai {
     @Override
     protected void setColumnsWidths() {
 	TableColumn column;
-	column = null;
+//	column = null;
 	for (int i = 0; i < table.getColumnCount(); i++) {
 	    column = table.getColumnModel().getColumn(i);
 	    if (tableModelTP.getColumnName(i).equals(ID)) {
@@ -368,12 +368,12 @@ public class Introsk_darbai extends Darbai {
 	i = sb.indexOf(" tp.Sistema = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilterTP.setInt(n, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));	    
+	    preparedFilterTP.setInt(n, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));	    
 	}
 	i = sb.indexOf(" tp.TP = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilterTP.setInt(n, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+	    preparedFilterTP.setInt(n, Integer.parseInt(tptypes[0][cbTPtype.getSelectedIndex()]));
 	}
 	i = sb.indexOf(" tp.Pastaba LIKE ?");
 	if (i >= 0) {
@@ -417,8 +417,8 @@ public class Introsk_darbai extends Darbai {
                     preparedUpdateTP = connection.prepareStatement(UPDATE);
                 }
                 preparedUpdateTP.setString(1, tfDate.getText());
-                preparedUpdateTP.setInt(2, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
-                preparedUpdateTP.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+                preparedUpdateTP.setInt(2, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
+                preparedUpdateTP.setInt(3, Integer.parseInt(tptypes[0][cbTPtype.getSelectedIndex()]));
                 preparedUpdateTP.setString(4, taMessage.getText());
                 preparedUpdateTP.setInt(5, (int) table.getValueAt(the_row, 0));
                 if (preparedUpdateTP.executeUpdate() == 1) {
@@ -441,8 +441,8 @@ public class Introsk_darbai extends Darbai {
             preparedInsertTP.setString(1, tfDate.getText());
 //             System.out.println(systems[0][1]);
 //           System.out.println(cbIrenginys.getSelectedIndex());
-            preparedInsertTP.setInt(2, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
-            preparedInsertTP.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+            preparedInsertTP.setInt(2, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
+            preparedInsertTP.setInt(3, Integer.parseInt(tptypes[0][cbTPtype.getSelectedIndex()]));
             preparedInsertTP.setString(4, taMessage.getText());
              if (preparedInsertTP.executeUpdate() == 1) {
                 filter();

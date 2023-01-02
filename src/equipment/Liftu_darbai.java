@@ -341,11 +341,11 @@ public class Liftu_darbai extends TP {
             openFile(FOLDER, taMessage.getSelectedText());
         }
 	if (me.getComponent().equals(table)) {
-            row = table.getSelectedRow();
-            if (row >= 0) {
-                tfDate.setText(table.getValueAt(row, 1).toString());
-                taMessage.setText((String) table.getValueAt(row, 4));
-                setComboBoxItem(cbIrenginys, elev_nr, (String) (table.getValueAt(row, 2)));
+            the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                tfDate.setText(table.getValueAt(the_row, 1).toString());
+                taMessage.setText((String) table.getValueAt(the_row, 4));
+                setComboBoxItem(cbIrenginys, elev_nr, (String) (table.getValueAt(the_row, 2)));
             }
 	}
     }

@@ -53,7 +53,8 @@ public class MainFrame extends JFrame implements ActionListener{
     Turtas panelIT;
     TP panelTP;
     Ataskaita_liftai fr_ataskaitos_liftai;
-    Ataskaita_RSC fr_matavimu_protokolas;
+    Ataskaita_RSC_matavimai fr_matavimu_protokolas;
+    Ataskaita_RSC_sarasas fr_RSC_sarasas;
     Liftu_darbai panelLiftu_darbai;
     Tinklai panelAdresai;
     JSG panelJSG;
@@ -63,7 +64,7 @@ public class MainFrame extends JFrame implements ActionListener{
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
 // –––––––––––––––––––––––   
-    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miDoziMatav, miCloseAll, miPlatus, miAtstata, miHelp, miAbout;
+    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miDoziMatav, miInventorizacija, miCloseAll, miPlatus, miAtstata, miHelp, miAbout;
 // –––––––––––––––––––––––
     public JMyMenu menuTabs, menuRSC, menuAtaskRSC, menuPagalbines, menuDatabase, menuIT, menuBuhalterija, menuIreginiai, menuAtaskaitos, menuLiftai, menuTinklai, menuVaizdas, menuHelp;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
@@ -301,8 +302,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	miDoziMatav = new JMyMenuItem("Dozimetriniai matavimai", fontsize);
 	miDoziMatav.addActionListener(this);
 	miDoziMatav.setActionCommand("dozes");
+	miInventorizacija = new JMyMenuItem("Inventorizacija", fontsize);
+	miInventorizacija.addActionListener(this);
+	miInventorizacija.setActionCommand("inventorizacija");
         menuAtaskRSC = new JMyMenu("RSC", fontsize);
         menuAtaskRSC.add(miDoziMatav);
+        menuAtaskRSC.add(miInventorizacija);
 	menuAtaskaitos.add(menuAtaskRSC);
         menuAtaskaitos.setName("Ataskaitos");
 	menu_bar.add(menuAtaskaitos);
@@ -768,7 +773,7 @@ public class MainFrame extends JFrame implements ActionListener{
     
     private void showMatavimuProtokolas() {
 	if (fr_matavimu_protokolas == null) {
-	    fr_matavimu_protokolas = new Ataskaita_RSC(connection, fontsize);
+	    fr_matavimu_protokolas = new Ataskaita_RSC_matavimai(connection, fontsize);
             fr_matavimu_protokolas.init();
 	    fr_matavimu_protokolas.setSize(1000, 800);
 	    fr_matavimu_protokolas.setTitle("Dozimetrinių matavimų protokolas");
@@ -776,6 +781,18 @@ public class MainFrame extends JFrame implements ActionListener{
 	    fr_matavimu_protokolas.setVisible(true);
 	}
         fr_matavimu_protokolas.tfData.requestFocusInWindow();
+    }
+
+    private void showRSCInventorizacija() {
+	if (fr_RSC_sarasas == null) {
+	    fr_RSC_sarasas = new Ataskaita_RSC_sarasas(connection, fontsize);
+            fr_RSC_sarasas.init();
+	    fr_RSC_sarasas.setSize(1000, 800);
+	    fr_RSC_sarasas.setTitle("Inventorizacijos protokolas");
+	} else {
+	    fr_RSC_sarasas.setVisible(true);
+	}
+        fr_RSC_sarasas.tfData.requestFocusInWindow();
     }
 
     private void exportIT() {
@@ -821,6 +838,7 @@ public class MainFrame extends JFrame implements ActionListener{
             component = tabbedpane.getComponent(0);
             if (component instanceof JPanel) {
                 tabbedpane.remove(component);
+                panelWorks = null;
             }
         }
     }
@@ -981,6 +999,10 @@ public class MainFrame extends JFrame implements ActionListener{
             case "dozes":
 		connect_Equipment();
 		showMatavimuProtokolas();
+		break;
+            case "inventorizacija":
+		connect_Equipment();
+		showRSCInventorizacija();
 		break;
 //  Vaizdas
             case "platus":

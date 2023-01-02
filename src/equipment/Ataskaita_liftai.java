@@ -227,6 +227,7 @@ public class Ataskaita_liftai extends JFrame implements ActionListener {
 		}
 		tableModel.addRow(row);
 	    }
+            rs.close();
 	    for (i = 0; i <= colcount - 3; i++) {
 		row[i] = "";
 	    }

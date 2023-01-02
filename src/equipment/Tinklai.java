@@ -10,7 +10,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.Box;
@@ -50,16 +49,13 @@ public class Tinklai extends Turtas {
     private static final String PORT = "Portas";
     private static final String PASTABA = "Pastaba";
 
-    JPanel pSearch1, pSearch, pSearch2;
+    JPanel pSearch1, pSearch;
     JMyTextField fSearch, fFree;
-    JMyButton btSearch;
     JMyComboBox cbSubnets;
     JMyCheckBox chSearch, chNetworks, chFree;
     
-    PreparedStatement preparedSelect;
 
     String[] networks;
-    int fields_count;
 
     public Tinklai(ConnectionEquipment connection, int size) {
 	super(connection, size);
@@ -70,7 +66,6 @@ public class Tinklai extends Turtas {
 //	select = PREPARE_SELECT;
         insert = PREPARE_INSERT;
         delete = "DELETE FROM " + TABLE + " WHERE IP = ?";
-        fields_count = FIELDS_COUNT;
    }
 
     @Override
@@ -151,11 +146,12 @@ public class Tinklai extends Turtas {
     
     @Override
     protected void filter() {
-	int i, colcount;
-        Object[] row;
+	int i, n, colcount;
+        Object[] the_row;
 	StringBuilder sb;
 	tableModel.setRowCount(0);
         ResultSet resultset;
+        n = 0;
 	try {
 	    sb = prepareFilter();
             if (sb != null) {
@@ -163,14 +159,21 @@ public class Tinklai extends Turtas {
                 preparedFilter_setPrepared(sb);
                 resultset = preparedFilter.executeQuery();
                 colcount = tableModel.getColumnCount();
-                row = new Object[colcount];
+                the_row = new Object[colcount];
                 while (resultset.next() ){
                     for (i = 0; i <= colcount - 1; i++) {
-                        row[i] = resultset.getObject(i + 1);
+                        the_row[i] = resultset.getObject(i + 1);
                     }
-                    tableModel.addRow(row);
+                    tableModel.addRow(the_row);
+                    n++;
                 }
-                resultset.close();
+            for (i = 1; i <= colcount - 1; i++) {
+                the_row[i] = "";
+            }
+            the_row[0] = "Iš viso:";
+            the_row[1] = n;
+            tableModel.addRow(the_row);
+            resultset.close();
             }
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
@@ -356,9 +359,9 @@ public class Tinklai extends Turtas {
    @Override
     public void mouseClicked(MouseEvent me) {
 	if (me.getComponent().equals(table)){
-            row = table.getSelectedRow();
-            if (row >= 0) {
-                taMessage.setText(String.valueOf(table.getValueAt(row, tableModel.findColumn(PASTABA))));
+            the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                taMessage.setText(String.valueOf(table.getValueAt(the_row, tableModel.findColumn(PASTABA))));
             }
         }
 	if (me.getComponent().equals(taMessage) & me.getButton() == 3){

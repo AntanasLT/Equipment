@@ -44,39 +44,45 @@ import javax.swing.table.TableColumn;
  *
  * @author a
  */
-public class Ataskaita_RSC extends Ataskaita_liftai {
+public class Ataskaita_RSC_matavimai extends Ataskaita_liftai {
 
     private static final String SELECT = "SELECT i.Pavadinimas, i.Nr, i.Rezimas, v.Pavadinimas, d.Operat, d.Pries, d.Uz, d.Virsuj, d.Generat, d.metras FROM Introskopai i LEFT JOIN JSGvietos v ON i.Vieta = v.Pavadinimas LEFT JOIN Dozimetrija d ON i.Nr = d.Introskopas WHERE d.Data LIKE ?";
     private static final String[] PDF_TABLE_HEADER = new String[] {"Eil. Nr.", "Pavadinimas", "Gamyklinis numeris", "Darbo režimas", "Vieta", "Operat. darbo vieta", "Prieš tunelį", "Už tunelio", "Įrenginio viršuje", "Prie generatoriaus", "1 m atstumu nuo įrenginio"};
     private static final String DIR = "RSC";
     private static final String FILENAME = "Matavimai";
-    private static final String PDF_DIR = "dasDokument/dasSchreiben/derStrahlenschutz/dieAngaben/2022/";
+    private static final String PDF_DIR = "dasDokument/dasSchreiben/derStrahlenschutz/dieAngaben/";
     private static final String PRIEDAS = "Radiologinių incidentų ir avarijų prevencijos ir padarinių likvidavimo tvarkos \n 2 Priedas";
-    private static final String IMONE = "\n \n \n \n VALSTYBĖS ĮMONĖS LIETUVOS ORO UOSTŲ VILNIAUS FILIALAS \n Įmonės kodas 303316259, Rodūnios kelias 10A, Vilnius, tel. 8 5 273 9326, faks. 8 5 232 9122, e-paštas: info@vno.lt \n \n DOZIMETRINIŲ MATAVIMŲ PROTOKOLAS \n \n";
+    private static final String IMONE = "\n \n \n \n VALSTYBĖS ĮMONĖS LIETUVOS ORO UOSTŲ VILNIAUS FILIALAS \n Įmonės kodas 303316259, Rodūnios kelias 10A, Vilnius, tel. 8 5 273 9326, faks. 8 5 232 9122, e-paštas: info@vno.lt \n \n ";
+    private static final String ANTRASTE = "DOZIMETRINIŲ MATAVIMŲ PROTOKOLAS \n \n";
     private static final String ADRESAS = "Įrenginio buvimo adresas: keleivių terminalas (Rodūnios kelias 2, Vilnius) \n";
     private static final String DOZIM_PAVAD = "Matavimai atlikti prietaisu (tipas, gamykl. Nr.): ";
     private static final String DOZIM_PATIKROS_DATA = ", patikra atlikta ";
     private static final String DOZIM_PATIKROS_NR = ", patikros liudijimo Nr. ";
     private static final String MATAVIMU_DATA = "Matavimų data: ";
-    private static final String FONT = ".fonts/Palem-nm.ttf";
+    protected static final String FONT = ".fonts/Palem-nm.ttf";
 //    private static final String FONT = "/home/a/.fonts/PFHandbookProRegular.ttf";
     private static final String ISVADOS = "Išvada: įrenginys tinka naudojimui, darbuotojų ir gyventojų radiacinė sauga užtikrinama.\n";
     private static final String TIKRINO = "Tikrino: Inžinerijos ir eksploatacijos skyriaus inžinierius-automatikas \t \t Antanas Kvietkauskas";
+    private static final String[] TABLE_HEADER = new String[] {"Eil. Nr.","Pavadinimas", "Nr.", "Režimas", "Vieta", "Operat.", "Prieš tun.", "Už tun.", "Viršuje", "Prie generat.", "1 m"};
     
     GridBagConstraints gbc;
     
     JMyButton btPrint;
+//    JScrollPane scrTa;
     JMyTextArea taIsvados;
     JMyTextField tfDVSData, tfDVSNr, tfDozim, tfDozimData, tfPatikrNr, tfData;
     JPanel panelButtons;
+    String select, dir, filename, pdf_dir, priedas, antraste, isvados, tikrino, imone;
+    String[] pdf_table_header, table_header;
     
 
-    public Ataskaita_RSC(ConnectionEquipment the_connection, int size) {
+    public Ataskaita_RSC_matavimai(ConnectionEquipment the_connection, int size) {
         super(the_connection, size);
     }
 
     @Override
     protected void init_components() {
+        set_constants();
 	setLayout(new BorderLayout());
 	createTopPanel();
 	add(panelTop, BorderLayout.NORTH);
@@ -88,6 +94,20 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
 	setVisible(true);
 //	tfMonth.requestFocus();
 //	tfMonth.setCaretPosition(5);
+    }
+    
+    protected void set_constants() {
+        select = SELECT;
+        pdf_table_header = PDF_TABLE_HEADER;
+        dir = DIR;
+        filename = FILENAME;
+        pdf_dir = PDF_DIR;
+        priedas = PRIEDAS;
+        imone = IMONE;
+        antraste = ANTRASTE;
+        isvados = ISVADOS;
+        tikrino = TIKRINO;
+        table_header = TABLE_HEADER;
     }
 
     @Override
@@ -160,6 +180,10 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
         panelTop.add(new JScrollPane(taIsvados), gbc);
 
 // Η τρύτη σειρά
+        create_Buttons();
+    }
+    
+    protected void create_Buttons() {
         panelButtons = new JPanel();
         btSelect = new JMyButton("Rodyti", fontsize);
 	btSelect.setActionCommand("select");
@@ -176,13 +200,12 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
 	gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 12;
-        panelTop.add(panelButtons, gbc);
-        
+        panelTop.add(panelButtons, gbc);        
     }
 
     @Override
     protected void createTable() {
-	tableModel = new DefaultTableModel(new Object[]{"Eil. Nr.","Pavadinimas", "Nr.", "Režimas", "Vieta", "Operat.", "Prieš tun.", "Už tun.", "Viršuje", "Prie generat.", "1 m"}, 0);
+	tableModel = new DefaultTableModel(table_header, 0);
 	table = new JTable(tableModel);
 	table.setFont(font);
 	table.getTableHeader().setFont(font);
@@ -223,7 +246,7 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
 	ResultSet resultset;
 	resultset = null;
         try {
-            preparedSelect = connection.prepareStatement(SELECT);
+            preparedSelect = connection.prepareStatement(select);
             preparedSelect.setString(1, "%" + tfData.getText() + "%");
             resultset = preparedSelect.executeQuery();
             fillTable(resultset, "Dozimetrinių matavimų protokolas");
@@ -248,19 +271,26 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
     @Override
     protected void fillTable(ResultSet rs, String caption) throws SQLException {
 	int i, n, colcount;
-	Object[] row;
+	Object[] the_row;
         tableModel.setRowCount(0);
 	colcount = tableModel.getColumnCount();
-	row = new Object[colcount];
+	the_row = new Object[colcount];
         n = 1;
 	while (rs.next()) {
             for (i = 1; i < colcount; i++) {
-                row[i] = rs.getObject(i);
+                the_row[i] = rs.getObject(i);
             }
-            row[0] = n;
+            the_row[0] = n;
             n++;
-            tableModel.addRow(row);
+            tableModel.addRow(the_row);
 	}
+        for (i = 1; i <= colcount - 1; i++) {
+            the_row[i] = "";
+        }
+        the_row[0] = "Iš viso:";
+        the_row[1] = n;
+        tableModel.addRow(the_row);        
+        rs.close();
     }
 
     @Override
@@ -276,30 +306,31 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         final FontSet set = new FontSet();
         date = new Datum();
-        pdf_name = FILENAME + "_" + date.getDate() + ".pdf";
+        pdf_name = filename + "_" + date.getDate() + ".pdf";
         WriterProperties wp = new WriterProperties();
         wp.addXmpMetadata();
         wp.setPdfVersion(PdfVersion.PDF_1_7);
         try {
-            pdfwriter = new PdfWriter(DIR + System.getProperty("file.separator") + pdf_name, wp);
+            pdfwriter = new PdfWriter(dir + System.getProperty("file.separator") + pdf_name, wp);
             PdfDocument pdfDoc = new PdfDocument(pdfwriter);
             pdfDoc.setDefaultPageSize(PageSize.A4.rotate());
             PdfDocumentInfo info = pdfDoc.getDocumentInfo();
             info.setTitle("Dozimetrinių matavimų protokolas");
             info.setAuthor("Antanas Kvietkauskas");
-            info.setSubject("Radiacinė sauga");
+            info.setSubject("Radiacinė sauga (DVS 7.35)");
             Document doc = new Document(pdfDoc);
             set.addFont(System.getProperty("user.home") + System.getProperty("file.separator") + FONT.replace('/', System.getProperty("file.separator").charAt(0)));
             doc.setFontProvider(new FontProvider(set));
             doc.setProperty(Property.FONT, new String[]{""});
-            par = new Paragraph(IMONE);
+            par = new Paragraph(imone);
             par.setTextAlignment(TextAlignment.CENTER);//.setSpacingRatio(2F);
             par.setCharacterSpacing(1F);
+            par.add(antraste);
 //            par.setFixedPosition(20, 500, 800);
             par.add(tfDVSData.getText()).add("\t").add("Nr. ").add(tfDVSNr.getText()).add("\n Vilnius \n");
             par.setMultipliedLeading(0.9F);
             doc.add(par);
-            par = new Paragraph(PRIEDAS).setMultipliedLeading(0.9F);
+            par = new Paragraph(priedas).setMultipliedLeading(0.9F);
 //            par.setMultipliedLeading(5);
             par.setSpacingRatio(1F).setFontSize(10);
             par.setFixedPosition(600, 520, 220);
@@ -316,23 +347,23 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
             pdftable.setFixedLayout();
             pdftable.setTextAlignment(TextAlignment.CENTER);
             for (int i = 0; i < 5; i++) {
-                cell = new Cell(2, 1).add(new Paragraph(PDF_TABLE_HEADER[i]));
+                cell = new Cell(2, 1).add(new Paragraph(pdf_table_header[i]));
                 cell.setTextAlignment(TextAlignment.CENTER);
                 pdftable.addCell(cell);
             } 
-                cell = new Cell(1, 6).add(new Paragraph("Matavimų rezultatai µSv/h"));
+                cell = new Cell(1, 6).add(new Paragraph("Matavimų rezultatai nSv/h"));
                 cell.setTextAlignment(TextAlignment.CENTER);
                 pdftable.addCell(cell);
-            for (int i = 5; i < PDF_TABLE_HEADER.length; i++) {
-                cell = new Cell(1, 1).add(new Paragraph(PDF_TABLE_HEADER[i]));
+            for (int i = 5; i < pdf_table_header.length; i++) {
+                cell = new Cell(1, 1).add(new Paragraph(pdf_table_header[i]));
                 cell.setTextAlignment(TextAlignment.CENTER);
                 pdftable.addCell(cell);
             } 
-            for (col = 1; col <= colcount; col++) {
-                cell = new Cell(1, 1).add(new Paragraph(String.valueOf(col)));
-                cell.setTextAlignment(TextAlignment.CENTER).setFontSize(10);
-                pdftable.addCell(cell);
-            }
+//            for (col = 1; col <= colcount; col++) {
+//                cell = new Cell(1, 1).add(new Paragraph(String.valueOf(col)));
+//                cell.setTextAlignment(TextAlignment.CENTER).setFontSize(10);
+//                pdftable.addCell(cell);
+//            }
             for (row = 0; row < rowcount; row++) {
                 pdftable.addCell(String.valueOf(row + 1));
                 for (col = 1; col < colcount; col++) {
@@ -340,16 +371,16 @@ public class Ataskaita_RSC extends Ataskaita_liftai {
                 }
             }
             doc.add(pdftable);
-            par = new Paragraph(ISVADOS).addTabStops().add(TIKRINO);
+            par = new Paragraph(isvados).addTabStops().add(tikrino);
             doc.add(par);
             doc.close();
-            copy_to = System.getProperty("user.home") + System.getProperty("file.separator") + PDF_DIR.replace('/', System.getProperty("file.separator").charAt(0)) +  pdf_name;
+            copy_to = System.getProperty("user.home") + System.getProperty("file.separator") + pdf_dir.concat(tfData.getText().substring(0, 4).concat("/")).replace('/', System.getProperty("file.separator").charAt(0)) +  pdf_name;
             if (JOptionPane.showConfirmDialog(this, pdf_name + " kopijuoti į " + copy_to + " ?", "Failas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 copy_to = JOptionPane.showInputDialog(this, "Failo vardas", copy_to);
-                Files.copy(Paths.get(DIR + System.getProperty("file.separator") + pdf_name), Paths.get(copy_to), StandardCopyOption.REPLACE_EXISTING); 
+                Files.copy(Paths.get(dir + System.getProperty("file.separator") + pdf_name), Paths.get(copy_to), StandardCopyOption.REPLACE_EXISTING); 
             }
             if (JOptionPane.showConfirmDialog(this, "Rodyti?", "Rodymas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                openFile(DIR, System.getProperty("file.separator") + pdf_name);
+                openFile(dir, System.getProperty("file.separator") + pdf_name);
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex, "Klaida", JOptionPane.ERROR_MESSAGE);

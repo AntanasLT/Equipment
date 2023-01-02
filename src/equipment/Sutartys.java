@@ -36,7 +36,7 @@ public class Sutartys extends TP {
     JMyCheckBox chPavad, chAprasymas;
     JMyComboBox cbKontrah;
     JMyTextArea taPavad;
-    JMyTextField tfVIPIS, tfDVS, tfDataIki, tfKontrah, tfVerte, tfPrekem, tfPaslaugom, tfRenge;
+    JMyTextField tfVIPIS, tfDVS, tfDataIki, tfVerte, tfPrekem, tfPaslaugom, tfRenge;
     JScrollPane scrPavad;
     
     
@@ -316,7 +316,7 @@ public class Sutartys extends TP {
         }
         if (chKontrah.isSelected()) {
             n++;
-            preparedFilter.setInt(n, Integer.valueOf(kontrahentai[0][cbKontrah.getSelectedIndex()]));
+            preparedFilter.setInt(n, Integer.parseInt(kontrahentai[0][cbKontrah.getSelectedIndex()]));
         }
         if (chRenge.isSelected()) {
             n++;
@@ -330,19 +330,19 @@ public class Sutartys extends TP {
     
     @Override
     protected void filter(String query) {
-        Object[] row;
+        Object[] the_row;
 	int i, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
 	try {
 	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
@@ -354,9 +354,9 @@ public class Sutartys extends TP {
 // UPDATE Sutartys SET RegNr = ?, RegData = ?, Iki = ?, Pavadinimas = ?, Kontrahentas = ?, Verte = ?, Prekes = ?, Paslaugos = ?, Pastabos = ?, Renge = ? WHERE VIPISNR = ?
     @Override
     protected void update() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	int the_row;
+	the_row = table.getSelectedRow();
+	if (the_row >= 0) {
             try {
                 if (preparedUpdate == null) {
                     preparedUpdate = connection.prepareStatement(UPDATE);
@@ -440,19 +440,19 @@ public class Sutartys extends TP {
 	    setCurrTime();
 	}
 	if (me.getComponent().equals(table)) {
-            row = table.getSelectedRow();
-            if (row >= 0) {
-                tfVIPIS.setText((String) table.getValueAt(row, 0));
-                tfDVS.setText((String) table.getValueAt(row, 1));
-                tfDate.setText(table.getValueAt(row, 2).toString());
-                tfDataIki.setText(table.getValueAt(row, 3).toString());
-                taPavad.setText((String) table.getValueAt(row, 4));
-                setComboBoxItem(cbKontrah, kontrahentai[1], (String) (table.getValueAt(row, 5)));
-                tfVerte.setText(table.getValueAt(row, 6).toString());
-                tfPrekem.setText(table.getValueAt(row, 7).toString());
-                tfPaslaugom.setText(table.getValueAt(row, 8).toString());
-                taMessage.setText(table.getValueAt(row, 9).toString());
-                tfRenge.setText((String) table.getValueAt(row, 10));
+            the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                tfVIPIS.setText((String) table.getValueAt(the_row, 0));
+                tfDVS.setText((String) table.getValueAt(the_row, 1));
+                tfDate.setText(table.getValueAt(the_row, 2).toString());
+                tfDataIki.setText(table.getValueAt(the_row, 3).toString());
+                taPavad.setText((String) table.getValueAt(the_row, 4));
+                setComboBoxItem(cbKontrah, kontrahentai[1], (String) (table.getValueAt(the_row, 5)));
+                tfVerte.setText(table.getValueAt(the_row, 6).toString());
+                tfPrekem.setText(table.getValueAt(the_row, 7).toString());
+                tfPaslaugom.setText(table.getValueAt(the_row, 8).toString());
+                taMessage.setText(table.getValueAt(the_row, 9).toString());
+                tfRenge.setText((String) table.getValueAt(the_row, 10));
             }
 	}
 	if (me.getComponent().equals(taMessage) & me.getButton() == 3){

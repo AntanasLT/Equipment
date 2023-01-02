@@ -40,7 +40,7 @@ public class Equipment {
 //			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 //			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 //		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {		}
-        size = Integer.valueOf(args[1]);
+        size = Integer.parseInt(args[1]);
         MainFrame mainFrame = new MainFrame(args[0], size);
         mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
 //	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();

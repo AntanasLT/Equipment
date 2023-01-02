@@ -19,7 +19,7 @@ public class Equipment_test {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int h, h1, l, size;
+        int h1, l, size;
 
 //		try {
 //			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
@@ -40,7 +40,7 @@ public class Equipment_test {
 //			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 //			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 //		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {		}
-        size = Integer.valueOf(args[1]);
+        size = Integer.parseInt(args[1]);
 	MainFrame mainFrame = new MainFrame_test(args[0], size);
         mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
 //	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();

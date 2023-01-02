@@ -51,9 +51,7 @@ public class Dozimetrija extends IDString_n {
         int n;
         n = tblCols.length;
         cols = new String[n + 2];
-        for (int i = 0; i < n; i++) {
-            cols[i] = tblCols[i];
-        }
+        System.arraycopy(tblCols, 0, cols, 0, n); // Αντιγραφή tblCols στο cols
         cols[n] = "Pavadinimas";
         cols[n+1] = "Vieta";
 	tableModel = new DefaultTableModel(cols, 0);

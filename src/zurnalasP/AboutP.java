@@ -5,8 +5,6 @@
  */
 package zurnalasP;
 
-import java.net.URL;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -24,12 +22,10 @@ import javax.swing.text.StyledDocument;
 public class AboutP extends JFrame {
        
     JScrollPane scrpane;
-    JEditorPane editorPane;
-    URL helpUrl;
     JTextPane tpane;
-    Style s, def, regular, italic, bold;
+    Style s, def, regular, bold;
 
-    String[] initString = {"Versija 1.6.5\n", "2022-07-11"};
+    String[] initString = {"Versija 1.6.6\n", "2022-12-30"};
     String[] initStyles = {"caption", "regular"}; //
     
     public AboutP() {

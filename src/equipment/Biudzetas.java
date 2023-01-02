@@ -56,7 +56,6 @@ public class Biudzetas extends IDString_n {
     protected void filter() {
 	int i, colcount;
         Object[] row;
-        Object value;
 	tableModel.setRowCount(0);
         ResultSet resultset;
 	try {
@@ -86,7 +85,8 @@ public class Biudzetas extends IDString_n {
         int row;
         String s;
 	row = table.getSelectedRow();
-        value0 = 0; value = value0;
+        value0 = 0; 
+        value = value0;
 	if (row >= 0) {
 	    try {
 		if (preparedInsert == null) {

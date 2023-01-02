@@ -5,8 +5,6 @@
  */
 package equipment;
 
-import java.net.URL;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -24,12 +22,10 @@ import javax.swing.text.StyledDocument;
 public class About extends JFrame {
        
     JScrollPane scrpane;
-    JEditorPane editorPane;
-    URL helpUrl;
     JTextPane tpane;
-    Style s, def, regular, italic, bold;
+    Style s, def, regular;
 
-    String[] initString = {"Versija 2.9.14\n", "2022-07-22"};
+    String[] initString = {"Versija 2.10.1\n", "2022-12-30"};
     String[] initStyles = {"caption", "regular"}; //
     
     public About () {

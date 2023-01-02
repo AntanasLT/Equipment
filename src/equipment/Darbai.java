@@ -31,7 +31,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
@@ -45,7 +44,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 
     private static final String PREPARE_SELECT_ALL = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ORDER BY d.ID DESC LIMIT 50";
     private static final String PREPARE_SELECT = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID ";
-    private static final String PREPARE_INFO = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE dt.ID = 6 ORDER BY d.ID DESC";
+    private static final String PREPARE_INFO = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE dt.ID = 6 ORDER BY d.ID DESC LIMIT 50";
     private static final String PREPARE_UNFINISHED = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE ORDER BY d.ID DESC";
 //    private static final String PREPARE_UNFINISHED_ID = "SELECT d.ID, d.IDpr, v.Pavadinimas, d.Laikas, sist.Pavadinimas, d.Irenginys, dt.Pavadinimas, b.Pavadinimas, d.Pastabos FROM Darbai d LEFT join Sistemos sist ON d.Sistema = sist.ID LEFT join Irenginiai i ON d.Irenginys = i.Pavadinimas LEFT join Darbotipis dt ON d.Darbas = dt.ID LEFT JOIN Vartotojai v ON  d.Vartotojas = v.ID LEFT JOIN Busenos b ON d.Busena = b.ID WHERE d.Baigta = FALSE AND (d.ID = ? OR d.IDpr = ?) ORDER BY d.ID DESC";
     private static final String PREPARE_UPDATE = "UPDATE Darbai SET Laikas = ?, IDPr = ?,  Sistema = ?, Irenginys = ?, Darbas = ?, Busena = ?, Pastabos = ?, Baigta = ? WHERE ID = ?";
@@ -83,7 +82,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     protected JPanel pInput, pnFIlterButtons, pFields;
     JPanel pEditButtons, pMessage;
     protected PreparedStatement preparedUpdate, preparedInsert, preparedSelectAll, preparedDelete, preparedFilter, preparedUpdateFinish;
-    JRadioButton radioButton1;
+//    JRadioButton radioButton1;
     JScrollPane scrTable, scrMessage;
     JTable table, tableElevators;
     JMyTextField tfDate, fName, tfIDpr, tfID;
@@ -92,7 +91,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     JMyPopupMenu popupLiftai;
     JOptionPane elevatorSelectionPane;
 
-    int row, fontsize;
+    int the_row, fontsize;
     int[] table_column_width;
     String user, message;
     String[][] systems, users;
@@ -422,25 +421,43 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
             table.getColumnModel().getColumn(i).setPreferredWidth(table_column_width[i]);
             }
     }
+    
+    protected Object summary_row(int n, int colcount, boolean limit) {
+        Object[] therow;
+        therow = new Object[colcount];
+        for (int i = 1; i <= colcount - 1; i++) {
+            therow[i] = "";
+        }
+        therow[0] = "Iš viso:";
+        therow[1] = n;
+        if (n >= 50 & limit) {
+            therow[3] = "(rib. 50)";
+        }
+        return therow;
+    }
+    
 
     private void filter_all() {
-        Object[] the_row;
-	int i, colcount;
+        Object[] therow;
+	int i, n, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
+        n = 0;
 	try {
 	    if (preparedSelectAll == null) {
 		preparedSelectAll = connection.prepareStatement(select);
 	    }
 	    resultset = preparedSelectAll.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    the_row = new Object[colcount];
+	    therow = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-		    the_row[i] = resultset.getObject(i + 1);
+		    therow[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(the_row);
+		tableModel.addRow(therow);
+                n++;
 	    }
+            tableModel.addRow((Object[]) summary_row(n, colcount, true));
 	    resultset.close();
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
@@ -448,22 +465,25 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     }
     
     private void filter_unfinished() {
-        Object[] the_row;
-	int i, colcount;
+        Object[] row;
+	int i, n, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
+        n = 0;
 	try {
 		preparedFilter = connection.prepareStatement(PREPARE_UNFINISHED);
 		resultset = preparedFilter.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    the_row = new Object[colcount];
+	    row = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-		    the_row[i] = resultset.getObject(i + 1);
+		    row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(the_row);
+		tableModel.addRow(row);
+                n++;
 	    }
 	    resultset.close();
+            tableModel.addRow((Object[]) summary_row(n, colcount, true));
 	    preparedFilter.close();
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
@@ -471,23 +491,25 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     }
     
     private void filter_info() {
-        Object[] the_row;
-	int i, colcount;
+        Object[] row;
+	int i, n, colcount;
 	tableModel.setRowCount(0);
         ResultSet resultset;
+        n = 0;
 	try {
 		preparedFilter = connection.prepareStatement(PREPARE_INFO);
 		resultset = preparedFilter.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    the_row = new Object[colcount];
+	    row = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-		    the_row[i] = resultset.getObject(i + 1);
+		    row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(the_row);
+		tableModel.addRow(row);
+                n++;
 	    }
 	    resultset.close();
-//	    preparedFilter.close();
+            tableModel.addRow((Object[]) summary_row(n, colcount, true));
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -495,27 +517,28 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     
 
     protected void filter() {
-	int i, colcount;
-        Object[] the_row;
+	int i, n, colcount;
+        Object[] row;
 	StringBuilder sb;
 	tableModel.setRowCount(0);
         ResultSet resultset;
+        n = 0;
 	try {
 	    sb = prepareFilter();
             preparedFilter = connection.prepareStatement(sb.toString());
             preparedFilter_setPrepared(sb);
             resultset = preparedFilter.executeQuery();
             colcount = tableModel.getColumnCount();
-            the_row = new Object[colcount];
+            row = new Object[colcount];
             while (resultset.next() ){
                 for (i = 0; i <= colcount - 1; i++) {
-                    the_row[i] = resultset.getObject(i + 1);
+                    row[i] = resultset.getObject(i + 1);
                 }
-                tableModel.addRow(the_row);
+                tableModel.addRow(row);
+                n++;
             }
             resultset.close();
-//            if (sb != null) {
-//            }
+            tableModel.addRow((Object[]) summary_row(n, colcount, false));
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -568,12 +591,12 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	int i, n, idpr, id;
 	n = 0;
         if (!tfIDpr.getText().isEmpty()) {
-            idpr = Integer.valueOf(tfIDpr.getText()); 
+            idpr = Integer.parseInt(tfIDpr.getText()); 
         } else {
             idpr = 0;
         }
         if (!tfID.getText().isEmpty()) {
-            id = Integer.valueOf(tfID.getText()); 
+            id = Integer.parseInt(tfID.getText()); 
         } else {
             id = 0;
         }
@@ -585,7 +608,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	i = sb.indexOf(" d.Sistema = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));	    
+	    preparedFilter.setInt(n, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));	    
 	}
 	i = sb.indexOf(" d.Irenginys LIKE ?");
 	if (i >= 0) {
@@ -595,12 +618,12 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	i = sb.indexOf(" d.Darbas = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
+	    preparedFilter.setInt(n, Integer.parseInt(worktypes[0][cbWorktype.getSelectedIndex()]));
 	}
 	i = sb.indexOf(" d.Busena = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(states[0][cbState.getSelectedIndex()]));
+	    preparedFilter.setInt(n, Integer.parseInt(states[0][cbState.getSelectedIndex()]));
 	}
 	i = sb.indexOf(" d.ID = ?");
 	if (i >= 0) {
@@ -660,7 +683,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
             if (time != null) {
                 try {
                     idpr = get_int(idTasa);
-                    state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
+                    state = Integer.parseInt(states[0][cbState.getSelectedIndex()]);
                     if (preparedInsert == null) {
                         preparedInsert = connection.prepareStatement(PREPARE_INSERT);
                     }
@@ -668,10 +691,10 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
                     preparedInsert.setInt(1, idpr);
                     preparedInsert.setInt(2, id);
                     preparedInsert.setString(3, time);
-                    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+                    preparedInsert.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
                     preparedInsert.setString(5, fName.getText());
-                    preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
-                    preparedInsert.setInt(7, Integer.valueOf(states[0][cbState.getSelectedIndex()]));
+                    preparedInsert.setInt(6, Integer.parseInt(worktypes[0][cbWorktype.getSelectedIndex()]));
+                    preparedInsert.setInt(7, Integer.parseInt(states[0][cbState.getSelectedIndex()]));
                     clossed = state == BAIGTA;
                     preparedInsert.setString(8, taMessage.getText());
                     preparedInsert.setBoolean(9, clossed);
@@ -705,9 +728,9 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	    preparedInsert.setInt(1, get_int(tfID.getText()));
 	    preparedInsert.setInt(2, id);
 	    preparedInsert.setString(3, date.getToday() + " " + date.getTime());
-	    preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+	    preparedInsert.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
 	    preparedInsert.setString(5, fName.getText());
-	    preparedInsert.setInt(6, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
+	    preparedInsert.setInt(6, Integer.parseInt(worktypes[0][cbWorktype.getSelectedIndex()]));
 	    preparedInsert.setInt(7, SUSIPAZINAU);
 	    preparedInsert.setString(8, message);
 	    preparedInsert.setBoolean(9, true);
@@ -723,26 +746,26 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     
 //    (Data, IDpr, Sistema, Irenginys, Darbas, Pavadinimas, Pastabos, Baigta, ID)
     protected void update() {
-	int the_row, state, idpr;
+	int row, state, idpr;
 	boolean clossed;
-	the_row = table.getSelectedRow();
-	if (the_row >= 0) {
+	row = table.getSelectedRow();
+	if (row >= 0) {
 	    try {
 		idpr = get_int(tfIDpr.getText());
-		state = Integer.valueOf(states[0][cbState.getSelectedIndex()]);
+		state = Integer.parseInt(states[0][cbState.getSelectedIndex()]);
 		clossed = state == BAIGTA;
                 if (preparedUpdate == null) {
                     preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
                 }
                 preparedUpdate.setString(1, tfDate.getText());
                 preparedUpdate.setInt(2, idpr);
-                preparedUpdate.setInt(3, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+                preparedUpdate.setInt(3, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
                 preparedUpdate.setString(4, fName.getText());
-                preparedUpdate.setInt(5, Integer.valueOf(worktypes[0][cbWorktype.getSelectedIndex()]));
+                preparedUpdate.setInt(5, Integer.parseInt(worktypes[0][cbWorktype.getSelectedIndex()]));
                 preparedUpdate.setInt(6, state);
                 preparedUpdate.setString(7, taMessage.getText());
                 preparedUpdate.setBoolean(8, clossed);
-                preparedUpdate.setInt(9, (int) table.getValueAt(the_row, 0));
+                preparedUpdate.setInt(9, (int) table.getValueAt(row, 0));
                 preparedUpdate.executeUpdate();    
 		if (clossed) {
 		    update_finish(idpr);
@@ -777,7 +800,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	if (str.isEmpty()) {
 	    return 0;
 	} else {
-	    return Integer.valueOf(str);
+	    return Integer.parseInt(str);
 	}
     }
     
@@ -786,9 +809,9 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	if (idtasastr.isEmpty()) {
 	    idtasa = 0;
 	} else {
-	    idtasa = Integer.valueOf(idtasastr);
+	    idtasa = Integer.parseInt(idtasastr);
 	}
-	id = Integer.valueOf(idstr);
+	id = Integer.parseInt(idstr);
 	id = idtasa > 0 ? idtasa : id;
 	return id;
     }
@@ -855,7 +878,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	    }
 	}
         if (found) {
-            id = Integer.valueOf(users[0][i]);
+            id = Integer.parseInt(users[0][i]);
         }
         else {
             id = -1;
@@ -948,7 +971,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 		    row_data[i] = rs.getObject(i + 1);
 		}
 		tableModelElevators.addRow(row_data);
-	    }
+        }
     }
 
     private void setSystem() {
@@ -1041,21 +1064,21 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	    filter();
         }
 	if (me.getComponent().equals(table)) {
-	row = table.getSelectedRow();
-            if (row >= 0) {
-                if (!user.equals(table.getValueAt(row, 2))) {
+	the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                if (!user.equals(table.getValueAt(the_row, 2))) {
                     enableChangeButton(false);
                 } else {
                     enableChangeButton(true);
                 }
-                message = getTableCellString(row, 8);
-                tfID.setText(getTableCellString(row, 0));
-                tfIDpr.setText(getTableCellString(row, 1));
-                tfDate.setText(getTableCellString(row, 3));
-                setComboBoxItem(cbIrenginys, systems[1], getTableCellString(row, 4));
-                fName.setText(getTableCellString(row, 5));
-                setComboBoxItem(cbWorktype, worktypes[1], getTableCellString(row, 6));
-                setComboBoxItem(cbState, states[1], getTableCellString(row, 7));
+                message = getTableCellString(the_row, 8);
+                tfID.setText(getTableCellString(the_row, 0));
+                tfIDpr.setText(getTableCellString(the_row, 1));
+                tfDate.setText(getTableCellString(the_row, 3));
+                setComboBoxItem(cbIrenginys, systems[1], getTableCellString(the_row, 4));
+                fName.setText(getTableCellString(the_row, 5));
+                setComboBoxItem(cbWorktype, worktypes[1], getTableCellString(the_row, 6));
+                setComboBoxItem(cbState, states[1], getTableCellString(the_row, 7));
                 taMessage.setText(message);
             }
         }

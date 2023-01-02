@@ -385,7 +385,7 @@ public class Turtas extends Darbai {
 
     protected void filter_by() {
 	int i, colcount;
-        Object[] row;
+        Object[] the_row;
 	StringBuilder sb;
 	tableModel.setRowCount(0);
         ResultSet resultset;
@@ -395,12 +395,12 @@ public class Turtas extends Darbai {
 	    preparedFilter_setPrepared(sb);
 	    resultset = preparedFilter.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while( resultset.next() ){
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
 	    preparedFilter.close();
@@ -463,7 +463,7 @@ public class Turtas extends Darbai {
 	i = sb.indexOf(" i.Sistema = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));	    
+	    preparedFilter.setInt(n, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));	    
 	}
 	i = sb.indexOf(" i.Pavadinimas LIKE ?");
 	if (i >= 0) {
@@ -473,7 +473,7 @@ public class Turtas extends Darbai {
 	i = sb.indexOf(" i.Vieta = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
+	    preparedFilter.setInt(n, Integer.parseInt(locations[0][cbLocations.getSelectedIndex()]));
 	}
 	i = sb.indexOf(" i.Pozymis LIKE");
 	if (i >= 0) {
@@ -501,9 +501,9 @@ public class Turtas extends Darbai {
 //    
     @Override
     protected void update() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	int the_row;
+	the_row = table.getSelectedRow();
+	if (the_row >= 0) {
 	    try {
 		if (preparedUpdate == null) {
 		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
@@ -511,13 +511,13 @@ public class Turtas extends Darbai {
 		preparedUpdate.setString(1, fIT.getText());
 		preparedUpdate.setString(2, fNr.getText());
 		preparedUpdate.setString(3, fName.getText());
-		preparedUpdate.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+		preparedUpdate.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
                 preparedUpdate.setString(5, tfDate.getText());
-		preparedUpdate.setInt(6, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
+		preparedUpdate.setInt(6, Integer.parseInt(locations[0][cbLocations.getSelectedIndex()]));
 		preparedUpdate.setString(7, fMark.getText());
 		preparedUpdate.setString(8, ta_Message.getText());
-		preparedUpdate.setInt(9, Integer.valueOf(codes[0][cbCode.getSelectedIndex()]));
-		preparedUpdate.setInt(10, (Integer) table.getValueAt(row, tableModel.findColumn(ID)));
+		preparedUpdate.setInt(9, Integer.parseInt(codes[0][cbCode.getSelectedIndex()]));
+		preparedUpdate.setInt(10, (Integer) table.getValueAt(the_row, tableModel.findColumn(ID)));
 		
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter();
@@ -532,9 +532,9 @@ public class Turtas extends Darbai {
 
 // INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema, Data, Vieta, Pozymis, Pastaba, Veikla) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     protected void insert() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	int the_row;
+	the_row = table.getSelectedRow();
+	if (the_row >= 0) {
 	    try {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
@@ -542,12 +542,12 @@ public class Turtas extends Darbai {
 		preparedInsert.setString(1, fIT.getText());
 		preparedInsert.setString(2, fNr.getText());
 		preparedInsert.setString(3, fName.getText());
-		preparedInsert.setInt(4, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
+		preparedInsert.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
                 preparedInsert.setString(5, tfDate.getText());
-		preparedInsert.setInt(6, Integer.valueOf(locations[0][cbLocations.getSelectedIndex()]));
+		preparedInsert.setInt(6, Integer.parseInt(locations[0][cbLocations.getSelectedIndex()]));
 		preparedInsert.setString(7, fMark.getText());
 		preparedInsert.setString(8, ta_Message.getText());
-		preparedInsert.setInt(9, Integer.valueOf(codes[0][cbCode.getSelectedIndex()]));
+		preparedInsert.setInt(9, Integer.parseInt(codes[0][cbCode.getSelectedIndex()]));
                 if (preparedInsert.executeUpdate() == 1) {
 		    filter();
 		}
@@ -652,15 +652,14 @@ public class Turtas extends Darbai {
      
     public void exportIT() {
         String filename, s;
-        StringBuilder sb, sb_tmp;
+        StringBuilder sb;
         filename = JOptionPane.showInputDialog(this, "CSV failo vardas", IT_CSV);
-        sb_tmp = new StringBuilder();
         sb = new StringBuilder("ID\tIT\tNr\tPavadinimas\tSistema\tVieta\tŽyma\tPastaba\tData\tVeikla\n");
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
                 s = String.valueOf(table.getValueAt(i, j));
                 s = s.replaceAll("\n", "");
-                sb.append(s + "\t");
+                sb.append(s).append("\t");
             }
             sb.append("\n");
         }
@@ -670,15 +669,15 @@ public class Turtas extends Darbai {
    
     
     protected void delete() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	int the_row;
+	the_row = table.getSelectedRow();
+	if (the_row >= 0) {
 	    try {
 		if (preparedDelete == null) {
 		    preparedDelete = connection.prepareStatement(delete);
 		}
 // ID, Pavadinimas
-		preparedDelete.setInt(1, (int) table.getValueAt(row, 0));
+		preparedDelete.setInt(1, (int) table.getValueAt(the_row, 0));
 		if (preparedDelete.execute()) {
 		    filter(select);
 		}
@@ -691,19 +690,19 @@ public class Turtas extends Darbai {
     }
     
     protected void filter(String query) {
-	Object[] row;
+	Object[] the_row;
 	int i, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
 	try {
 	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
 	} catch (SQLException ex) {
@@ -740,17 +739,17 @@ public class Turtas extends Darbai {
     @Override
     public void mouseClicked(MouseEvent me) {
 	if (me.getComponent().equals(table)){
-            row = table.getSelectedRow();
-            if (row >= 0) {
-                tfDate.setText(table.getValueAt(row, tableModel.findColumn(DATA)).toString());
-                setComboBoxItem(cbIrenginys, systems[1], (String) table.getValueAt(row, tableModel.findColumn(SISTEMA)));
-                fName.setText(table.getValueAt(row, tableModel.findColumn(PAVADINIMAS)).toString());
-                setComboBoxItem(cbLocations, locations[1], (String) table.getValueAt(row, tableModel.findColumn(VIETA)));
-                fMark.setText(table.getValueAt(row, tableModel.findColumn(POZYMIS)).toString());
-                fIT.setText(table.getValueAt(row, tableModel.findColumn(IT)).toString());
-                fNr.setText(table.getValueAt(row, tableModel.findColumn(NR)).toString());
-                setComboBoxItem(cbCode, codes[1], (String) table.getValueAt(row, tableModel.findColumn(VEIKLA)));
-                ta_Message.setText(table.getValueAt(row, tableModel.findColumn(PASTABA)).toString());
+            the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                tfDate.setText(table.getValueAt(the_row, tableModel.findColumn(DATA)).toString());
+                setComboBoxItem(cbIrenginys, systems[1], (String) table.getValueAt(the_row, tableModel.findColumn(SISTEMA)));
+                fName.setText(table.getValueAt(the_row, tableModel.findColumn(PAVADINIMAS)).toString());
+                setComboBoxItem(cbLocations, locations[1], (String) table.getValueAt(the_row, tableModel.findColumn(VIETA)));
+                fMark.setText(table.getValueAt(the_row, tableModel.findColumn(POZYMIS)).toString());
+                fIT.setText(table.getValueAt(the_row, tableModel.findColumn(IT)).toString());
+                fNr.setText(table.getValueAt(the_row, tableModel.findColumn(NR)).toString());
+                setComboBoxItem(cbCode, codes[1], (String) table.getValueAt(the_row, tableModel.findColumn(VEIKLA)));
+                ta_Message.setText(table.getValueAt(the_row, tableModel.findColumn(PASTABA)).toString());
             }
         }
     }

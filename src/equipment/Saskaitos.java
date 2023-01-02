@@ -16,8 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,18 +29,18 @@ public class Saskaitos extends Liftu_darbai {
     private static final String SELECT = "SELECT s.NR, s.Data, s.Ivesta, s.DVSNr, k.Pavadinimas, sut.Pavadinimas, s.BiudKodas, b.Pavadinimas, s.UzsNr, s.UzsData, s.UzsSuma, s.UzsPastabos, s.Suma, s.Prekes, s.Paslaugos, s.IT, s.Pastabos, s.Failas, s.Failas2, s.Failas3, s.Filialas  FROM Saskaitos s INNER JOIN Biudzetas b ON s.BiudKodas = b.Kodas INNER JOIN Sutartys sut ON s.DVSNr = sut.RegNr INNER JOIN Kontrahentai k ON sut.Kontrahentas = k.ID "; // συνολικά 18
     private static final String INSERT = "INSERT INTO Saskaitos (NR, Data, Ivesta, DVSNr, BiudKodas, UzsNr, UzsData, UzsSuma, UzsPastabos, Suma, Prekes, Paslaugos, IT, Pastabos, Failas, Failas2, Failas3, Filialas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // συνολικά 15
     private static final String UPDATE = "UPDATE Saskaitos SET Data = ?, Ivesta = ?, DVSNr = ?, BiudKodas = ?, NR = ?, UzsData = ?, UzsSuma = ?, UzsPastabos = ?, Suma = ?, Prekes = ?, Paslaugos = ?, IT = ?, Pastabos = ?, Failas = ?, Failas2 = ?, Failas3 = ?, Filialas = ? WHERE Uzsnr = ?";
-    private static final String FOLDER = "Saskaitos";
+    private static final String FOLDER1 = "Saskaitos";
 
 //"Nr.", "Data", "DVS Nr.", "Kontrahentas", "Sutarties pavadinimas", "Biud. kodas", "Biud. pavadinimas", "Užs. Nr.", "Užs. data", "Užs. suma", "Užs. pastabos", "Sąsk. suma", "Prekės", "Paslaugos", "IT", "Pastabos sąskaitai", "Failas", "Filialas"
 
-    JMyCheckBox chNr, chIvesta, chBiuKodas, chBiuPavad, chKontrahentas, chSutNr, chSutPavad, chUzsNr, chUzsData, chIT, chPastabos, chUzsPast, chFilialas;
+    JMyCheckBox chNr, chIvesta, chBiuKodas, chBiuPavad, chKontrahentas, chSutNr, chSutPavad, chUzsNr, chUzsData, chIT, chUzsPast, chFilialas;
     JMyComboBox cbBiuKodai, cbBiuPavad, cbSutNr, cbSutPavad;
     JMyTextField tfNr, tfIvesta, tfKontrah, tfUzsNr, tfUzsData, tfUzsSuma,tfSuma, tfPrekes, tfPasl, tfIT, tfFailas, tfFailas2, tfFailas3, tfFilialas, tfUzsPast;
     
     String[][] biudzetas, kontrahentai; //[Kodas][Pavadinimas], 
     String [][] sutartys; //[{DVSNr}{Pavadinimas}{Kontrahentas (Kontrahentai.Pavadinimas)}][VIPISNR]
     
-    NumberFormat numberFormat = NumberFormat.getInstance(Locale.GERMAN);
+//    NumberFormat numberFormat = NumberFormat.getInstance(Locale.GERMAN);
 
     protected Saskaitos(ConnectionEquipment connection, int size) {
 	super(connection, size);
@@ -499,7 +497,7 @@ public class Saskaitos extends Liftu_darbai {
     
     @Override
     protected void filter() {
-	Object[] row;
+	Object[] the_row;
 	int i, colcount;
         float saskSuma;
 	tableModel.setRowCount(0);
@@ -512,24 +510,24 @@ public class Saskaitos extends Liftu_darbai {
 	    preparedFilter_setPrepared(sb);
 	    resultset = preparedFilter.executeQuery();
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
                     if (i == 12) {
-                        saskSuma = saskSuma + Float.parseFloat(String.valueOf(row[i]));
+                        saskSuma = saskSuma + Float.parseFloat(String.valueOf(the_row[i]));
                     }
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
             for (i = 0; i <= colcount - 1; i++) {
-                row[i] = "";
+                the_row[i] = "";
                 if (i == 12) {
-                    row[i] = saskSuma;
+                    the_row[i] = saskSuma;
                 }
             }
-            tableModel.addRow(row);
+            tableModel.addRow(the_row);
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -537,7 +535,7 @@ public class Saskaitos extends Liftu_darbai {
 
     @Override
     protected void filter(String query) {
-        Object[] row;
+        Object[] the_row;
 	int i, colcount;
         float saskSuma;
 	tableModel.setRowCount(0);
@@ -546,24 +544,24 @@ public class Saskaitos extends Liftu_darbai {
 	try {
 	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
-	    row = new Object[colcount];
+	    the_row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-		    row[i] = resultset.getObject(i + 1);
+		    the_row[i] = resultset.getObject(i + 1);
                     if (i == 12) {
-                        saskSuma = saskSuma + Float.parseFloat(String.valueOf(row[i]));
+                        saskSuma = saskSuma + Float.parseFloat(String.valueOf(the_row[i]));
                     }
 		}
-		tableModel.addRow(row);
+		tableModel.addRow(the_row);
 	    }
 	    resultset.close();
             for (i = 0; i <= colcount - 1; i++) {
-                row[i] = "";
+                the_row[i] = "";
                 if (i == 12) {
-                    row[i] = saskSuma;
+                    the_row[i] = saskSuma;
                 }
             }
-            tableModel.addRow(row);
+            tableModel.addRow(the_row);
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -584,12 +582,12 @@ public class Saskaitos extends Liftu_darbai {
             preparedUpdate.setString(4, (String) cbBiuKodai.getSelectedItem());
             preparedUpdate.setString(5, tfNr.getText());
             preparedUpdate.setString(6, tfUzsData.getText());
-            preparedUpdate.setFloat(7, Float.valueOf(replaceComma(tfUzsSuma.getText())));
+            preparedUpdate.setFloat(7, Float.parseFloat(replaceComma(tfUzsSuma.getText())));
 //            preparedUpdate.setFloat(6, Float.valueOf(tfUzsSuma.getText()));
             preparedUpdate.setString(8, tfUzsPast.getText());
-            preparedUpdate.setFloat(9, Float.valueOf(replaceComma(tfSuma.getText())));
-            preparedUpdate.setFloat(10, Float.valueOf(replaceComma(tfPrekes.getText())));
-            preparedUpdate.setFloat(11, Float.valueOf(replaceComma(tfPasl.getText())));
+            preparedUpdate.setFloat(9, Float.parseFloat(replaceComma(tfSuma.getText())));
+            preparedUpdate.setFloat(10, Float.parseFloat(replaceComma(tfPrekes.getText())));
+            preparedUpdate.setFloat(11, Float.parseFloat(replaceComma(tfPasl.getText())));
             preparedUpdate.setString(12, tfIT.getText());
             preparedUpdate.setString(13, taMessage.getText());
             preparedUpdate.setString(14, tfFailas.getText());
@@ -612,9 +610,9 @@ public class Saskaitos extends Liftu_darbai {
     @Override
     protected void insert() {
         float suma, prekes, pasl;
-        suma = tfSuma.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfSuma.getText()));
-        prekes = tfPrekes.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfPrekes.getText()));
-        pasl = tfPasl.getText().equals("") ? 0 : Float.valueOf(replaceComma(tfPasl.getText()));
+        suma = tfSuma.getText().equals("") ? 0 : Float.parseFloat(replaceComma(tfSuma.getText()));
+        prekes = tfPrekes.getText().equals("") ? 0 : Float.parseFloat(replaceComma(tfPrekes.getText()));
+        pasl = tfPasl.getText().equals("") ? 0 : Float.parseFloat(replaceComma(tfPasl.getText()));
         try {
             if (preparedInsert == null) {
                 preparedInsert = connection.prepareStatement(insert);
@@ -626,7 +624,7 @@ public class Saskaitos extends Liftu_darbai {
             preparedInsert.setString(5, (String) cbBiuKodai.getSelectedItem());
             preparedInsert.setString(6, tfUzsNr.getText());
             preparedInsert.setString(7, tfUzsData.getText());
-            preparedInsert.setFloat(8, Float.valueOf(replaceComma(tfUzsSuma.getText())));
+            preparedInsert.setFloat(8, Float.parseFloat(replaceComma(tfUzsSuma.getText())));
             preparedInsert.setString(9, tfUzsPast.getText());
             preparedInsert.setFloat(10, suma);
             preparedInsert.setFloat(11, prekes);
@@ -690,38 +688,38 @@ public class Saskaitos extends Liftu_darbai {
     @Override
     public void mouseClicked(MouseEvent me) {
         if ((me.getComponent().equals(tfFailas)) & me.getButton() == 3) {
-            openFile(FOLDER, tfFailas.getSelectedText());
+            openFile(FOLDER1, tfFailas.getSelectedText());
         }
         if ((me.getComponent().equals(tfFailas2)) & me.getButton() == 3) {
-            openFile(FOLDER, tfFailas2.getText());
+            openFile(FOLDER1, tfFailas2.getText());
         }
         if ((me.getComponent().equals(tfFailas3)) & me.getButton() == 3) {
-            openFile(FOLDER, tfFailas3.getText());
+            openFile(FOLDER1, tfFailas3.getText());
         }
 	if (me.getComponent().equals(table)) {
-            row = table.getSelectedRow();
-            if (row >= 0) {
-                tfNr.setText((String) table.getValueAt(row, 0));
-                tfDate.setText(String.valueOf(table.getValueAt(row, 1)));
-                tfIvesta.setText(String.valueOf(table.getValueAt(row, 2)));
-                tfKontrah.setText((String) (table.getValueAt(row, 4)));
-                setComboBoxItem(cbSutNr, sutartys[0], (String) (table.getValueAt(row, 3)));
+            the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                tfNr.setText((String) table.getValueAt(the_row, 0));
+                tfDate.setText(String.valueOf(table.getValueAt(the_row, 1)));
+                tfIvesta.setText(String.valueOf(table.getValueAt(the_row, 2)));
+                tfKontrah.setText((String) (table.getValueAt(the_row, 4)));
+                setComboBoxItem(cbSutNr, sutartys[0], (String) (table.getValueAt(the_row, 3)));
 //                cbSutPavad.setSelectedIndex(cbSutNr.getSelectedIndex());
-                setComboBoxItem(cbBiuKodai, biudzetas[0], (String) (table.getValueAt(row, 6)));
+                setComboBoxItem(cbBiuKodai, biudzetas[0], (String) (table.getValueAt(the_row, 6)));
 //                cbBiuPavad.setSelectedIndex(cbBiuKodai.getSelectedIndex());
-                tfUzsNr.setText((String) table.getValueAt(row, 8));
-                tfUzsData.setText(String.valueOf(table.getValueAt(row, 9)));
-                tfUzsSuma.setText(String.valueOf(table.getValueAt(row, 10)));
-                tfUzsPast.setText((String) table.getValueAt(row, 11));
-                tfSuma.setText(String.valueOf(table.getValueAt(row, 12)));
-                tfPrekes.setText(String.valueOf(table.getValueAt(row, 13)));
-                tfPasl.setText(String.valueOf(table.getValueAt(row, 14)));
-                tfIT.setText((String) table.getValueAt(row, 15));
-                taMessage.setText((String) table.getValueAt(row, 16));
-                tfFailas.setText((String) table.getValueAt(row, 17));
-                tfFailas2.setText((String) table.getValueAt(row, 18));
-                tfFailas3.setText((String) table.getValueAt(row, 19));
-                tfFilialas.setText((String) table.getValueAt(row, 20));
+                tfUzsNr.setText((String) table.getValueAt(the_row, 8));
+                tfUzsData.setText(String.valueOf(table.getValueAt(the_row, 9)));
+                tfUzsSuma.setText(String.valueOf(table.getValueAt(the_row, 10)));
+                tfUzsPast.setText((String) table.getValueAt(the_row, 11));
+                tfSuma.setText(String.valueOf(table.getValueAt(the_row, 12)));
+                tfPrekes.setText(String.valueOf(table.getValueAt(the_row, 13)));
+                tfPasl.setText(String.valueOf(table.getValueAt(the_row, 14)));
+                tfIT.setText((String) table.getValueAt(the_row, 15));
+                taMessage.setText((String) table.getValueAt(the_row, 16));
+                tfFailas.setText((String) table.getValueAt(the_row, 17));
+                tfFailas2.setText((String) table.getValueAt(the_row, 18));
+                tfFailas3.setText((String) table.getValueAt(the_row, 19));
+                tfFilialas.setText((String) table.getValueAt(the_row, 20));
             }
 	}
         if ( me.getButton() == 3) {

@@ -181,7 +181,7 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
     
     protected void setColumnsWidths() {
 	TableColumn dieSpalte;
-	dieSpalte = null;
+//	dieSpalte = null;
 	    for (int i = 0; i < table.getColumnCount(); i++) {
 		dieSpalte = table.getColumnModel().getColumn(i);
 		switch (i) {
@@ -196,10 +196,11 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
     }
 	
     protected void filter() {
-	int i, colcount;
-        Object[] row;
+	int i, n, colcount;
+        Object[] the_row;
 	tableModel.setRowCount(0);
         ResultSet resultset;
+        n = 0;
 	try {
             if (chSearch.isSelected()) {
                 setSelect_filter();
@@ -211,13 +212,20 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
                 resultset = connection.executeQuery(select);
             }
             colcount = tableModel.getColumnCount();
-            row = new Object[colcount];
+            the_row = new Object[colcount];
             while (resultset.next() ){
                 for (i = 0; i <= colcount - 1; i++) {
-                    row[i] = resultset.getObject(i + 1);
+                    the_row[i] = resultset.getObject(i + 1);
                 }
-                tableModel.addRow(row);
+                tableModel.addRow(the_row);
+                n++;
             }
+            for (i = 1; i <= colcount - 1; i++) {
+                the_row[i] = "";
+            }
+            the_row[0] = "Iš viso:";
+            the_row[1] = n;
+            tableModel.addRow(the_row);
             resultset.close();
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
@@ -262,7 +270,7 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
 		    preparedUpdate = connection.prepareStatement(update);
 		}
 		preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
-		preparedUpdate.setInt(2, Integer.valueOf(String.valueOf(table.getValueAt(row, 0))));
+		preparedUpdate.setInt(2, Integer.parseInt(String.valueOf(table.getValueAt(row, 0))));
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter();
 		}

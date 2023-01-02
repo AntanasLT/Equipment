@@ -46,7 +46,7 @@ public class ID_noauto extends ID_auto {
 		    preparedInsert = connection.prepareStatement(insert);
 		}
 		// ID, Pavadinimas
-		preparedInsert.setInt(1, Integer.valueOf((String) table.getValueAt(row, 0)));
+		preparedInsert.setInt(1, Integer.parseInt((String) table.getValueAt(row, 0)));
 		preparedInsert.setString(2, (String) table.getValueAt(row, 1));
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();

@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
  */
 public class TP extends Darbai {
 
-    private static final String PREPARE_SELECT_ALL = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID ORDER BY tp.Data DESC LIMIT 100";
+    private static final String PREPARE_SELECT_ALL = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID ORDER BY tp.Data DESC LIMIT 50";
     private static final String PREPARE_INSERT = "INSERT INTO TP (Data, Sistema, TP, Pastaba) VALUES (?, ?, ?, ?)";
     private static final String PREPARE_UPDATE = "UPDATE TP SET Data = ?, Sistema = ?, TP = ?, Pastaba = ? WHERE ID = ?";
     private static final String SELECT = "SELECT tp.ID, tp.Data, s.Pavadinimas, tpr.Pavadinimas, tp.Pastaba FROM TP tp LEFT JOIN Sistemos s ON tp.Sistema = s.ID LEFT JOIN TPrusys tpr ON tp.TP = tpr.ID";
@@ -262,12 +262,12 @@ public class TP extends Darbai {
 	i = sb.indexOf(" tp.Sistema = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));	    
+	    preparedFilter.setInt(n, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));	    
 	}
 	i = sb.indexOf(" tp.TP = ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setInt(n, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+	    preparedFilter.setInt(n, Integer.parseInt(tptypes[0][cbTPtype.getSelectedIndex()]));
 	}
 	i = sb.indexOf(" tp.Pastaba LIKE ?");
 	if (i >= 0) {
@@ -280,9 +280,10 @@ public class TP extends Darbai {
      
     protected void filter(String query) {
         Object[] row;
-	int i, colcount;
+	int i, n, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
+        n = 0;
 	try {
 	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
@@ -292,8 +293,10 @@ public class TP extends Darbai {
 		    row[i] = resultset.getObject(i + 1);
 		}
 		tableModel.addRow(row);
+                n++;
 	    }
 	    resultset.close();
+            tableModel.addRow((Object[]) summary_row(n, colcount, true));
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -311,8 +314,8 @@ public class TP extends Darbai {
                     preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
                 }
                 preparedUpdate.setString(1, tfDate.getText());
-                preparedUpdate.setInt(2, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
-                preparedUpdate.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+                preparedUpdate.setInt(2, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
+                preparedUpdate.setInt(3, Integer.parseInt(tptypes[0][cbTPtype.getSelectedIndex()]));
                 preparedUpdate.setString(4, taMessage.getText());
                 preparedUpdate.setInt(5, (int) table.getValueAt(row, 0));
                 if (preparedUpdate.executeUpdate() == 1) {
@@ -335,8 +338,8 @@ public class TP extends Darbai {
             preparedInsert.setString(1, tfDate.getText());
 //             System.out.println(systems[0][1]);
 //           System.out.println(cbIrenginys.getSelectedIndex());
-            preparedInsert.setInt(2, Integer.valueOf(systems[0][cbIrenginys.getSelectedIndex()]));
-            preparedInsert.setInt(3, Integer.valueOf(tptypes[0][cbTPtype.getSelectedIndex()]));
+            preparedInsert.setInt(2, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
+            preparedInsert.setInt(3, Integer.parseInt(tptypes[0][cbTPtype.getSelectedIndex()]));
             preparedInsert.setString(4, taMessage.getText());
              if (preparedInsert.executeUpdate() == 1) {
                 filter();
@@ -374,12 +377,12 @@ public class TP extends Darbai {
 	    setCurrTime();
 	}
 	if (me.getComponent().equals(table)) {
-            row = table.getSelectedRow();
-            if (row >= 0) {
-                tfDate.setText(table.getValueAt(row, 1).toString());
-                setComboBoxItem(cbIrenginys, systems[1], (String) table.getValueAt(row, 2));
-                setComboBoxItem(cbTPtype, tptypes[1], (String) table.getValueAt(row, 3));
-                taMessage.setText((String) table.getValueAt(row, 4));
+            the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                tfDate.setText(table.getValueAt(the_row, 1).toString());
+                setComboBoxItem(cbIrenginys, systems[1], (String) table.getValueAt(the_row, 2));
+                setComboBoxItem(cbTPtype, tptypes[1], (String) table.getValueAt(the_row, 3));
+                taMessage.setText((String) table.getValueAt(the_row, 4));
                 tfDate.setToolTipText(date.getWeekday(tfDate.getText())); //tfDate.repaint();
             }
 	} else {

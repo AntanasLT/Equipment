@@ -29,7 +29,7 @@ public class JSG extends TP {
     private static final String SELECT = "SELECT g.Nr, g.Pavadinimas, g.Data, g.Vamzdzio_pavad, g.Vamzdzio_nr, b.Pavadinimas, g.Introskopas, i.Pavadinimas, v.Pavadinimas, g.Yra, g.Failai, g.Gautas, g.Idetas, g.Isimtas, g.Sunaikintas FROM JSG g LEFT JOIN Gen_busenos b ON g.Busena = b.ID LEFT JOIN Introskopai i ON g.Introskopas = i.Nr LEFT JOIN JSGvietos v ON g.Vieta = v.ID";
     private static final String INSERT = "INSERT INTO JSG (Nr, Pavadinimas, Data, Vamzdzio_pavad, Vamzdzio_nr, Busena, Introskopas, Vieta, Yra, Failai, Gautas, Idetas, Isimtas, Sunaikintas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE JSG SET Pavadinimas = ?, Data = ?, Vamzdzio_pavad = ?, Vamzdzio_nr = ?, Busena = ?, Introskopas = ?, Vieta = ?, Yra = ?, Failai = ?, Gautas = ?, Idetas = ?, Isimtas = ?, Sunaikintas = ? WHERE Nr = ?";
-    private static final String FOLDER = "RSC";
+    private static final String FOLDER_RSC = "RSC";
 //    private static final String INSERT_INTO_RSCDARBAI = "INSERT INTO RSCdarbai (Data, Vamzdis, IntrNr, DVS, Pastaba) VALUES (?, ?, ?, ?, ?)";
 
     protected JMyComboBox cbVieta, cbBusena, cbInroskNr;
@@ -50,10 +50,10 @@ public class JSG extends TP {
 
     @Override
     protected void setConstants(){
-	select = SELECT + " ORDER BY LENGTH(g.Vamzdzio_nr), g.Vamzdzio_nr";
+	select = SELECT + " ORDER BY g.Introskopas";//LENGTH(g.Vamzdzio_nr), g.Vamzdzio_nr";
         insert = INSERT;
         tableTooltip = "";
-        search = SELECT + " WHERE g.Nr LIKE ? OR g.Pavadinimas LIKE ? OR g.Data LIKE ? OR g.Vamzdzio_pavad LIKE ? OR g.Vamzdzio_nr LIKE ? OR g.Introskopas LIKE ?";
+        search = SELECT + " WHERE g.Nr LIKE ? OR g.Pavadinimas LIKE ? OR g.Data LIKE ? OR g.Vamzdzio_pavad LIKE ? OR g.Vamzdzio_nr LIKE ? OR g.Introskopas LIKE ? ORDER BY g.Introskopas";
     }
 
 
@@ -280,10 +280,10 @@ public class JSG extends TP {
         ret = new StringBuilder(SELECT);
         switch (filtras) {
             case "Y":
-                ret = new StringBuilder(SELECT).append(" WHERE g.Yra = ? ORDER BY LENGTH(g.Vamzdzio_nr), g.Vamzdzio_nr");
+                ret = new StringBuilder(SELECT).append(" WHERE g.Yra = ? ORDER BY g.Introskopas");//LENGTH(g.Vamzdzio_nr), g.Vamzdzio_nr");
                 break;
             case "F":
-                ret =  new StringBuilder(SELECT).append(" WHERE g.Nr = ? ORDER BY LENGTH(g.Vamzdzio_nr), g.Vamzdzio_nr");
+                ret =  new StringBuilder(SELECT).append(" WHERE g.Nr = ? ORDER BY g.Introskopas");//LENGTH(g.Vamzdzio_nr), g.Vamzdzio_nr");
                 break;
             case "P":
                 ret = new StringBuilder(search);
@@ -326,9 +326,9 @@ public class JSG extends TP {
                 preparedUpdate.setString(2, tfDate.getText());
                 preparedUpdate.setString(3, tfVamzdzio_pavad.getText());
                 preparedUpdate.setString(4, tfVamzdzioNr.getText());
-                preparedUpdate.setInt(5, Integer.valueOf(busenos[0][cbBusena.getSelectedIndex()]));
+                preparedUpdate.setInt(5, Integer.parseInt(busenos[0][cbBusena.getSelectedIndex()]));
                 preparedUpdate.setString(6, introskopai[0][cbInroskNr.getSelectedIndex()]);
-                preparedUpdate.setInt(7, Integer.valueOf(vietos[0][cbVieta.getSelectedIndex()]));
+                preparedUpdate.setInt(7, Integer.parseInt(vietos[0][cbVieta.getSelectedIndex()]));
                 preparedUpdate.setString(8, tfYra.getText());
                 preparedUpdate.setString(9, taFailai.getText());
                 preparedUpdate.setString(10, tfGautas.getText());
@@ -358,9 +358,9 @@ public class JSG extends TP {
                 preparedInsert.setString(3, tfDate.getText());
                 preparedInsert.setString(4, tfVamzdzio_pavad.getText());
                 preparedInsert.setString(5, tfVamzdzioNr.getText());
-                preparedInsert.setInt(6, Integer.valueOf(busenos[0][cbBusena.getSelectedIndex()]));
+                preparedInsert.setInt(6, Integer.parseInt(busenos[0][cbBusena.getSelectedIndex()]));
                 preparedInsert.setString(7, introskopai[0][cbInroskNr.getSelectedIndex()]);
-                preparedInsert.setInt(8, Integer.valueOf(vietos[0][cbVieta.getSelectedIndex()]));
+                preparedInsert.setInt(8, Integer.parseInt(vietos[0][cbVieta.getSelectedIndex()]));
                 preparedInsert.setString(9, tfYra.getText());
                 preparedInsert.setString(10, taFailai.getText());
                 preparedInsert.setString(11, get_NULL_tested(tfGautas.getText()));
@@ -418,27 +418,27 @@ public class JSG extends TP {
         component = me.getComponent();
         if (me.getButton() == 3) {            
             if (component.equals(taFailai)) {
-                openFile(FOLDER, taFailai.getSelectedText());
+                openFile(FOLDER_RSC, taFailai.getSelectedText());
             }
         }
 	if (component.equals(table)) {
-            row = table.getSelectedRow();
-            if (row >= 0) {
-                tfJSGNr.setText((String) table.getValueAt(row, 0));
-                tfPavad.setText((String) table.getValueAt(row, 1));
-                tfDate.setText(String.valueOf(table.getValueAt(row, 2)));
-                tfVamzdzio_pavad.setText((String) table.getValueAt(row, 3));
-                tfVamzdzioNr.setText((String) table.getValueAt(row, 4));
-                setComboBoxItem(cbBusena, busenos[1], (String) table.getValueAt(row, 5));
-                setComboBoxItem(cbInroskNr, introskopai[0], (String) table.getValueAt(row, 6));
-                tfIntroskPavad.setText((String) table.getValueAt(row, 7));
-                setComboBoxItem(cbVieta, vietos[1], (String) table.getValueAt(row, 8));
-                tfYra.setText((String) table.getValueAt(row, 9));
-                taFailai.setText((String) table.getValueAt(row, 10));
-                tfGautas.setText(String.valueOf(table.getValueAt(row, 11)));
-                tfIdetas.setText(String.valueOf(table.getValueAt(row, 12)));
-                tfIsimas.setText(String.valueOf(table.getValueAt(row, 13)));
-                tfSunaikintas.setText(String.valueOf(table.getValueAt(row, 14)));
+            the_row = table.getSelectedRow();
+            if (the_row >= 0) {
+                tfJSGNr.setText((String) table.getValueAt(the_row, 0));
+                tfPavad.setText((String) table.getValueAt(the_row, 1));
+                tfDate.setText(String.valueOf(table.getValueAt(the_row, 2)));
+                tfVamzdzio_pavad.setText((String) table.getValueAt(the_row, 3));
+                tfVamzdzioNr.setText((String) table.getValueAt(the_row, 4));
+                setComboBoxItem(cbBusena, busenos[1], (String) table.getValueAt(the_row, 5));
+                setComboBoxItem(cbInroskNr, introskopai[0], (String) table.getValueAt(the_row, 6));
+                tfIntroskPavad.setText((String) table.getValueAt(the_row, 7));
+                setComboBoxItem(cbVieta, vietos[1], (String) table.getValueAt(the_row, 8));
+                tfYra.setText((String) table.getValueAt(the_row, 9));
+                taFailai.setText((String) table.getValueAt(the_row, 10));
+                tfGautas.setText(String.valueOf(table.getValueAt(the_row, 11)));
+                tfIdetas.setText(String.valueOf(table.getValueAt(the_row, 12)));
+                tfIsimas.setText(String.valueOf(table.getValueAt(the_row, 13)));
+                tfSunaikintas.setText(String.valueOf(table.getValueAt(the_row, 14)));
             }
 	}
     }
