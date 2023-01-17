@@ -52,7 +52,7 @@ public class Saskaitos extends Liftu_darbai {
         date = new Datum();
         
         table_columns = new String[]{"Nr.", "Data", "Ivesta", "DVS Nr.", "Kontrahentas", "Sutarties pavadinimas", "Biud. kodas", "Biud. pavadinimas", "Užs. Nr.", "Užs. data", "Užs. suma", "Užs. pastabos", "Sąsk. suma", "Prekės", "Paslaugos", "IT", "Pastabos sąskaitai", "Failas", "Failas", "Failas", "Filialas"};
-        table_column_width = new int[]{4*fontsize, 3*fontsize, 3*fontsize, 3*fontsize, 6*fontsize, 6*fontsize, 4*fontsize, 6*fontsize, 5*fontsize, 3*fontsize, 2*fontsize, 6*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 4*fontsize, 4*fontsize, fontsize, fontsize, fontsize, fontsize};
+        table_column_width = new int[]{4*fontsize, 3*fontsize, 3*fontsize, 3*fontsize, 6*fontsize, 25*fontsize, 3*fontsize, 12*fontsize, 10*fontsize, 3*fontsize, 2*fontsize, 6*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 4*fontsize, 4*fontsize, fontsize, fontsize, fontsize, fontsize};
 	if (connection != null) {
 	    setLayout(new BorderLayout());
             getKontrahentai();

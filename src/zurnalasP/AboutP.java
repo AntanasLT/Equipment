@@ -23,9 +23,9 @@ public class AboutP extends JFrame {
        
     JScrollPane scrpane;
     JTextPane tpane;
-    Style s, def, regular, bold;
+    Style s, def, regular;
 
-    String[] initString = {"Versija 1.6.6\n", "2022-12-30"};
+    String[] initString = {"Versija 1.6.7\n", "2023-01-16"};
     String[] initStyles = {"caption", "regular"}; //
     
     public AboutP() {

@@ -110,7 +110,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     protected void init() {
         font = new Font("Arial", Font.PLAIN, fontsize);
         table_columns = new String[]{ID, ID_PR, USER, DATA, SISTEMA, IRENGINYS, DARBAS, BUSENA, APRASYMAS};
-        table_column_width = new int[]{4*fontsize, 4*fontsize, 8*fontsize, 12*fontsize, 7*fontsize, 16*fontsize, 16*fontsize, 16*fontsize, 41*fontsize};
+        table_column_width = new int[]{4*fontsize, 4*fontsize, 8*fontsize, 12*fontsize, 7*fontsize, 16*fontsize, 8*fontsize, 8*fontsize, 41*fontsize};
 	if (connection != null) {
 	    try {
 		users = connection.get_users();

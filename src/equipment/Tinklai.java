@@ -272,7 +272,7 @@ public class Tinklai extends Turtas {
                 for (i = 1; i < FIELDS_COUNT; i++) {
                     preparedInsert.setString(i, (String) table.getValueAt(row_selected, i-1));
                 }
-                pastaba = taMessage.hasFocus() ? taMessage.getText() : (String) table.getValueAt(row_selected, 11);
+                pastaba = !taMessage.getText().isEmpty() ? taMessage.getText() : (String) table.getValueAt(row_selected, 11);
                 preparedInsert.setString(12, pastaba);
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();

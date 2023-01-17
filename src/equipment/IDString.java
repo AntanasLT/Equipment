@@ -79,13 +79,13 @@ public class IDString extends ID_auto {
     
     @Override
     protected void setInsert() {
-        insert = "INSERT INTO " + table_name + " (" + dbField1 + dbField2 + ") VALUES (?, ?)";
+        insert = "INSERT INTO " + table_name + " VALUES (?, ?)";
     }
     
     @Override
     protected void setUpdateDelete(){
         update = "UPDATE " + table_name + " SET " + dbField2 + " = ? WHERE " + dbField1 + " = ?";
-        delete = "DELETE FROM " + table_name + "WHERE " + dbField1 + " = ?";
+        delete = "DELETE FROM " + table_name + " WHERE " + dbField1 + " = ?";
     }
 
     @Override
@@ -149,15 +149,15 @@ public class IDString extends ID_auto {
     
     @Override
     protected void delete() {
-	int row;
-	row = table.getSelectedRow();
-	if (row >= 0) {
+	int row_selected;
+	row_selected = table.getSelectedRow();
+	if (row_selected >= 0) {
 	    try {
 		if (preparedDelete == null) {
 		    preparedDelete = connection.prepareStatement(delete);
 		}
 // ID, Pavadinimas
-		preparedDelete.setString(1, (String) table.getValueAt(row, 0));
+		preparedDelete.setString(1, String.valueOf(table.getValueAt(row_selected, 0)));
 		if (preparedDelete.execute()) {
 		    filter();
 		}
