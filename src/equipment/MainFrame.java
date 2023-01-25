@@ -926,7 +926,7 @@ public class MainFrame extends JFrame implements ActionListener{
 //      Buhalterija
             case "biudzetas":
 //                setWindow(true);
-                panelBiudzetas = createTabBiudzetas(panelBiudzetas, mcbBiudzetas, "Biudzetas", "Biudžetas", new String[]{"Kodas", "Pavadinimas", "Sau", "Vas", "Kov", "Bal", "Geg", "Bir", "Lie", "Rgp", "Rgs", "Spa", "Lap", "Gru", "M", "Skyrius", "Metai"}, new String[]{"Kodas", "Pavadinimas", "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužė", "Birželis", "Liepa", "Rugpjūtis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis", "Metams", "Skyrius", "Metai"}, new int[]{2*fontsize, 15*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, fontsize, fontsize} );
+                panelBiudzetas = createTabBiudzetas(panelBiudzetas, mcbBiudzetas, "Biudzetas", "Biudžetas", new String[]{"Kodas", "Pavadinimas", "Sau", "Vas", "Kov", "Bal", "Geg", "Bir", "Lie", "Rgp", "Rgs", "Spa", "Lap", "Gru", "M", "Skyrius", "Metai"}, new String[]{"Kodas", "Pavadinimas", "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužė", "Birželis", "Liepa", "Rugpjūtis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis", "Metams", "Skyrius", "Metai", "Faktas €", "Faktas %"}, new int[]{2*fontsize, 15*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, 2*fontsize, fontsize, fontsize, fontsize, fontsize} );
 		break;
             case "islaidos":
 //                setWindow(true);

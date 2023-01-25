@@ -40,6 +40,31 @@ public class Biudzetas extends IDString_n {
     }
 
     @Override
+    protected void setSelect_filter() {
+        StringBuilder sb1;
+        int l;
+        l = dbCols.length;
+        sb1 = new StringBuilder("SELECT ");
+        for (int i = 0; i < l; i++) {
+            sb1.append(dbCols[i]);
+            if (i < l-1) {
+                sb1.append(", ");
+            }
+        }
+//         SELECT Kodas, Pavadinimas, Sau, ROUND(SUM(Suma), 2) FROM Biudzetas, Saskaitos WHERE Data LIKE '2022%' AND Metai = SUBSTR(Data, 1, 4) AND BiudKodas = Kodas;
+        sb1.append(", ROUND(SUM(Suma)), ROUND(SUM(Suma/M*100)) FROM Biudzetas, Saskaitos WHERE Data LIKE '2022%' AND Metai = SUBSTR(Data, 1, 4) AND BiudKodas = Kodas AND (");
+        for (int i = 0; i < l; i++) {
+            sb1.append(dbCols[i]).append(" LIKE ? ");
+            if (i < l-1) {
+                sb1.append("OR ");
+            }
+        }
+        sb1.append(") GROUP BY Kodas");
+        select = sb1.toString();
+    }
+
+    
+    @Override
     protected void setPrepared() {
         String txt;
         txt = "%" + tfSearch.getText() + "%";
@@ -54,24 +79,37 @@ public class Biudzetas extends IDString_n {
     
     @Override
     protected void filter() {
-	int i, colcount;
+	int i, db_colcount, tbl_colcount;
+        Float[] sum;
         Object[] row;
-	tableModel.setRowCount(0);
         ResultSet resultset;
+	tableModel.setRowCount(0);
 	try {
             if (chSearch.isSelected()) {
                 preparedSelect = connection.prepareStatement(select);
                 setPrepared();
                 resultset = preparedSelect.executeQuery();
-                colcount = dbCols.length;
-                row = new Object[tableModel.getColumnCount()];
+                db_colcount = dbCols.length;
+                tbl_colcount = tableModel.getColumnCount();
+                sum = new Float[tbl_colcount];
+                for (i = 0; i < db_colcount; i++) {
+                    sum[i] = 0F;
+                }
+                row = new Object[tbl_colcount];
                 while (resultset.next() ){
-                    for (i = 0; i < colcount; i++) {
+                    for (i = 0; i < db_colcount+2; i++) {       // 2 στήλες ακόμα για ROUND(SUM(Suma)), ROUND(SUM(Suma/M*100))
                         row[i] = resultset.getObject(i + 1);
+                        sum[i] = (i>1) & (i<16) & row[i] instanceof Float ? sum[i] + Float.valueOf(String.valueOf(row[i])) : 0F;
                     }
                     tableModel.addRow(row);
                 }
                 resultset.close();
+                for (i = 0; i < db_colcount; i++) {
+                    row[i] = sum[i];
+                }
+                row[0] = ""; row[15] = ""; row[16] = "";
+                row[1] = "Sumos: "; 
+                tableModel.addRow(row);
             }
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
@@ -138,7 +176,7 @@ public class Biudzetas extends IDString_n {
                 preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
                 for (i = 2; i <= 14; i++) {
                     s = table.getValueAt(row, i).toString();
-                    value = s.isEmpty() ? 0 : Float.parseFloat(s);
+                    value = s.isEmpty() ? 0 : Float.valueOf(s);
                     preparedUpdate.setFloat(i, value);
                 }
                 preparedUpdate.setString(15, String.valueOf(table.getValueAt(row, 15)));
@@ -154,5 +192,6 @@ public class Biudzetas extends IDString_n {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	}
     }
-
+    
+    
 }
