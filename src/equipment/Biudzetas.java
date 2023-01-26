@@ -80,6 +80,7 @@ public class Biudzetas extends IDString_n {
     @Override
     protected void filter() {
 	int i, db_colcount, tbl_colcount;
+        Float sum_all;
         Float[] sum;
         Object[] row;
         ResultSet resultset;
@@ -92,6 +93,7 @@ public class Biudzetas extends IDString_n {
                 db_colcount = dbCols.length;
                 tbl_colcount = tableModel.getColumnCount();
                 sum = new Float[tbl_colcount];
+                sum_all = 0F;
                 for (i = 0; i < db_colcount; i++) {
                     sum[i] = 0F;
                 }
@@ -106,9 +108,11 @@ public class Biudzetas extends IDString_n {
                 resultset.close();
                 for (i = 0; i < db_colcount; i++) {
                     row[i] = sum[i];
+                    sum_all = sum_all + sum[i];
                 }
-                row[0] = ""; row[15] = ""; row[16] = "";
+                row[0] = ""; row[15] = ""; row[16] = ""; row[18] = "";
                 row[1] = "Sumos: "; 
+                row[17] = sum_all;
                 tableModel.addRow(row);
             }
 	} catch (SQLException ex) {
