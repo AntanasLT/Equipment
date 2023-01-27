@@ -422,15 +422,22 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
             }
     }
     
-    protected Object summary_row(int n, int colcount, boolean limit) {
+    /**
+     *
+     * @param row_limit Αριθμός των σειρών
+     * @param colcount Αριθμός των στηλών
+     * @param limit Προσαρμογή του ορίου
+     * @return
+     */
+    protected Object summary_row(int row_limit, int colcount, boolean limit) {
         Object[] therow;
         therow = new Object[colcount];
         for (int i = 1; i <= colcount - 1; i++) {
             therow[i] = "";
         }
         therow[0] = "Iš viso:";
-        therow[1] = n;
-        if (n >= 50 & limit) {
+        therow[1] = row_limit;
+        if (row_limit >= 50 & limit) {
             therow[3] = "(rib. 50)";
         }
         return therow;

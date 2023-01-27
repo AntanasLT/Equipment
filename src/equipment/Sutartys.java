@@ -73,7 +73,7 @@ public class Sutartys extends TP {
 
     @Override
     protected void setConstants(){
-	select = SELECT + " ORDER BY s.RegData, k.Pavadinimas, s.Pavadinimas";
+	select = SELECT + " WHERE s.Iki > CURDATE() ORDER BY s.RegData, k.Pavadinimas, s.Pavadinimas";
         insert = INSERT ;
         tableTooltip = TABLE_TOOLTIP;
     }
@@ -330,21 +330,24 @@ public class Sutartys extends TP {
     
     @Override
     protected void filter(String query) {
-        Object[] the_row;
-	int i, colcount;
+        Object[] row;
+	int i, n, colcount;
 	tableModel.setRowCount(0);
 	ResultSet resultset;
+        n = 0;
 	try {
 	    resultset = connection.executeQuery(query);
 	    colcount = tableModel.getColumnCount();
-	    the_row = new Object[colcount];
+	    row = new Object[colcount];
 	    while (resultset.next()) {
 		for (i = 0; i <= colcount - 1; i++) {
-		    the_row[i] = resultset.getObject(i + 1);
+		    row[i] = resultset.getObject(i + 1);
 		}
-		tableModel.addRow(the_row);
+		tableModel.addRow(row);
+                n++;
 	    }
 	    resultset.close();
+            tableModel.addRow((Object[]) summary_row(n, colcount, false));
 	} catch (SQLException ex) {
 	    JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
@@ -354,9 +357,9 @@ public class Sutartys extends TP {
 // UPDATE Sutartys SET RegNr = ?, RegData = ?, Iki = ?, Pavadinimas = ?, Kontrahentas = ?, Verte = ?, Prekes = ?, Paslaugos = ?, Pastabos = ?, Renge = ? WHERE VIPISNR = ?
     @Override
     protected void update() {
-	int the_row;
-	the_row = table.getSelectedRow();
-	if (the_row >= 0) {
+	int row;
+	row = table.getSelectedRow();
+	if (row >= 0) {
             try {
                 if (preparedUpdate == null) {
                     preparedUpdate = connection.prepareStatement(UPDATE);
