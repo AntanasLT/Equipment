@@ -74,7 +74,7 @@ public class Saskaitos extends Liftu_darbai {
 
     @Override
     protected void setConstants(){
-	select = SELECT + " ORDER BY s.Data";
+	select = SELECT + "WHERE DATEDIFF(CURDATE(), s.Data) < 188 ORDER BY s.Data DESC";
         insert = INSERT ;
         tableTooltip = "";
     }
@@ -346,7 +346,7 @@ public class Saskaitos extends Liftu_darbai {
 //[{DVSNr}{Pavadinimas}{Kontrahentas (Kontrahentai.Pavadinimas)}][VIPISNR]
     private void getSutartys() {
         try {        
-            sutartys = connection.getList("Sutartys", new String[]{"RegNr", "Pavadinimas", "Kontrahentas", "VIPISNR"}, "Pavadinimas");
+            sutartys = connection.getList("Sutartys", new String[]{"RegNr", "Pavadinimas", "Kontrahentas", "VIPISNR"}, "Pavadinimas", "Iki > CURDATE()");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
         }

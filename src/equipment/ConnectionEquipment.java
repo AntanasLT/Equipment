@@ -184,6 +184,35 @@ public class ConnectionEquipment {
 	}
 	return result;
     }
+
+    public String[][] getList(String table, String[] fields, String orderByField, String condition) throws SQLException {
+	int i, l;
+        StringBuilder sb;
+	String[][] result;
+	ResultSet resultSet;
+	result = null;
+	if (myConnection != null) {
+            l = fields.length;
+	    result = new String[l][get_count(table, condition)];
+            sb = new StringBuilder("SELECT ");
+            for (int j = 0; j < l; j++) {
+                sb.append(fields[j]);
+                if (j < l-1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append(" FROM ").append(table).append(" WHERE ").append(condition).append(" ORDER BY ").append(orderByField);
+	    resultSet = statement.executeQuery(sb.toString());
+	    i = 0;
+	    while (resultSet.next()) {
+                for (int j = 0; j < l; j++) {
+                    result[j][i] = resultSet.getString(j+1);
+                }
+		i++;
+	    }
+	}
+	return result;
+    }
     
 
     public String[] getNetworks() throws SQLException {
@@ -247,6 +276,22 @@ public class ConnectionEquipment {
 	n = 0;
 	try {
 	    rs = statement.executeQuery("SELECT COUNT(*) FROM ".concat(table));
+	    if (rs.next()) {
+		n = rs.getInt(1);
+	    }
+	    rs.close();
+	} catch (SQLException | NullPointerException ex) {
+	    n = 0;
+	}
+	return n;
+    }
+
+    private int get_count(String table, String condition) {
+	int n;
+	ResultSet rs;
+	n = 0;
+	try {
+	    rs = statement.executeQuery("SELECT COUNT(*) FROM ".concat(table).concat(" WHERE ").concat(condition));
 	    if (rs.next()) {
 		n = rs.getInt(1);
 	    }

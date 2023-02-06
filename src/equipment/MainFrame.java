@@ -22,6 +22,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import zurnalasP.Help;
 
@@ -95,6 +96,8 @@ public class MainFrame extends JFrame implements ActionListener{
     public void init() {
 	password = "";
 	username = "";
+        UIManager.put("OptionPane.cancelButtonText", "Atšaukti");
+        UIManager.put("OptionPane.okButtonText", "Gerai");
 	setLayout(new BorderLayout());
 	tabbedpane = new JMyTabbedPane(fontsize);
 //	init();
