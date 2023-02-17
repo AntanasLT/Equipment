@@ -418,9 +418,9 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        if (me.getComponent().equals(table) & me.getButton() == 3) {
-            openFile(folder, (String) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
-        }
+//        if (me.getComponent().equals(table) & me.getButton() == 3) {
+//            openFile(folder, (String) table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()));
+//        }
     }
 
     @Override

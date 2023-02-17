@@ -25,7 +25,7 @@ public class About extends JFrame {
     JTextPane tpane;
     Style s, def, regular;
 
-    String[] initString = {"Versija 2.11.3\n", "2023-02-06"};
+    String[] initString = {"Versija 2.11.3\n", "2023-02-17"};
     String[] initStyles = {"caption", "regular"}; //
     
     public About () {
