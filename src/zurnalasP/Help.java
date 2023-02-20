@@ -21,20 +21,22 @@ public class Help extends JFrame {
     JScrollPane scrpane;
     JEditorPane editorPane;
     URL helpUrl;
+    String html_doc;
 //    JTextPane tpane;
 //    Style s, def, regular, italic, bold;
 //    
 //    String[] initString = {"Aprašymas\nAprašymas\nAprašymas\nAprašymas\n", "ita\t", "bold", "H1"};
 //    String[] initStyles = {"regular", "italic", "bold", "h1"};
     
-    public Help () {
+    public Help (String html) {
+        html_doc = html;
         init();
     }
     
     private void init() {
         editorPane = new JEditorPane();
         editorPane.setEditable(false);
-        helpUrl =  Help.class.getResource("Aprasymas.html");
+        helpUrl =  Help.class.getResource(html_doc);
         editorPane.setContentType("text/html;charset=UTF-8");
         if (helpUrl != null) {
             try {

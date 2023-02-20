@@ -65,7 +65,7 @@ public class MainFrame extends JFrame implements ActionListener{
 // –––––––––––––––––––––––   
     public JMenuBar menu_bar;
 // –––––––––––––––––––––––   
-    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miDoziMatav, miInventorizacija, miCloseAll, miPlatus, miAtstata, miHelp, miAbout;
+    public JMyMenuItem miConnect, miDisconnect, miBarcode, miExportIT, miLifu_prastovos, miDoziMatav, miInventorizacija, miCloseAll, miPlatus, miAtstata, miHelp, miHelp_biudzetas, miAbout;
 // –––––––––––––––––––––––
     public JMyMenu menuTabs, menuRSC, menuAtaskRSC, menuPagalbines, menuDatabase, menuIT, menuBuhalterija, menuIreginiai, menuAtaskaitos, menuLiftai, menuTinklai, menuVaizdas, menuHelp;
 //    JMenuItem dasMenuePunkt_dieKoerperangaben;
@@ -334,6 +334,10 @@ public class MainFrame extends JFrame implements ActionListener{
         miHelp.addActionListener(this);
         miHelp.setActionCommand("help");
         menuHelp.add(miHelp);
+        miHelp_biudzetas = new JMyMenuItem("Biudžetas", fontsize);
+        miHelp_biudzetas.addActionListener(this);
+        miHelp_biudzetas.setActionCommand("help_biudzetas");
+        menuHelp.add(miHelp_biudzetas);
         miAbout = new JMyMenuItem("Versija", fontsize);
         miAbout.addActionListener(this);
         miAbout.setActionCommand("about");
@@ -697,16 +701,17 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
 
-    protected void showHelp() {
-	if (frHelp == null) {
-	    frHelp = new Help();
+    protected void showHelp(String html_file) {
+	    frHelp = new Help(html_file);
 	    frHelp.setSize(600, 800);
 	    frHelp.setTitle("Aprašymas");
-	}
-	else {
-	    frHelp.setVisible(true);
-	}        
+//	if (frHelp == null) {
+//	}
+//	else {
+//	    frHelp.setVisible(true);
+//	}        
     }
+
     
     protected void showAbout() {
 	if (frAbout == null) {
@@ -1015,8 +1020,11 @@ public class MainFrame extends JFrame implements ActionListener{
                 setWindow(false);
                 break;//  Pagalba
             case "help":
-		showHelp();
+		showHelp("Aprasymas.html");
 		break;
+            case "help_biudzetas":
+		showHelp("Biudzetas.html");
+		break;            
 	    case "about":
 		showAbout();
 		break;
