@@ -36,13 +36,27 @@ public class Biudzetas extends IDString_n {
             setDate_to_search_field();
 	    setUpdateDelete();
             setInsert();
-            setSelect_filter();
 	    filter();
 	} else {
 	    JOptionPane.showMessageDialog(this, "Neprisijungta!", "Klaida!", JOptionPane.ERROR_MESSAGE);
 	}
     }
 
+    
+    @Override
+    protected void setPrepared() {
+        if (chSearch.isSelected()) {
+            try {
+                for (int i = 1; i <= dbCols.length; i++) {
+                    preparedSelect.setString(i, "%" + tfSearch.getText() + "%");
+                }
+            } catch (SQLException ex) {
+               JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+    }
+    
     @Override
     protected void setSelect_filter() {
         StringBuilder sb1;
@@ -84,21 +98,6 @@ public class Biudzetas extends IDString_n {
         tfSearch.setText(date.getYear());
     }
 
-    
-    @Override
-    protected void setPrepared() {
-        if (chSearch.isSelected()) {
-            try {
-                for (int i = 1; i <= dbCols.length; i++) {
-                    preparedSelect.setString(i, "%" + tfSearch.getText() + "%");
-                }
-            } catch (SQLException ex) {
-               JOptionPane.showMessageDialog(this, ex.toString(), "Problema!", JOptionPane.ERROR_MESSAGE);
-            }
-            
-        }
-    }
-    
     @Override
     protected void filter() {
 	int i, db_colcount, tbl_colcount, row_count;
@@ -167,21 +166,21 @@ public class Biudzetas extends IDString_n {
                         preparedInsert = connection.prepareStatement(insert);
                     }
     //System.out.println(insert);
-                    preparedInsert.setString(1, table.getValueAt(row, 0).toString());
-                    preparedInsert.setString(2, table.getValueAt(row, 1).toString());
-                    s = table.getValueAt(row, 14).toString();           // Metams
+                    preparedInsert.setString(1, table.getValueAt(row, tableModel.findColumn("Kodas")).toString());
+                    preparedInsert.setString(2, table.getValueAt(row, tableModel.findColumn("Pavadinimas")).toString());
+                    s = table.getValueAt(row, tableModel.findColumn("Metams")).toString().replace(',', '.');           // Metams
                     sum = s.isEmpty() ? 0 : Float.parseFloat(s);
                      if (sum > 0) {
                         value0 = sum / 12;
-                        for (int i = 2; i <= 14; i++) {
+                        for (int i = tableModel.findColumn("Sausis"); i <= tableModel.findColumn("Metams"); i++) {
                             preparedInsert.setFloat(i+1, value0);
                         }
                         preparedInsert.setFloat(15, sum);
 
                     } else {
                         sum = 0F;
-                        for (int i = 2; i < 14; i++) {
-                            s = table.getValueAt(row, i).toString();
+                        for (int i = tableModel.findColumn("Sausis"); i < tableModel.findColumn("Metams"); i++) {
+                            s = table.getValueAt(row, i).toString().replace(',', '.');
 //                            value0 = value != 0 ? value : value0;
                             value = Float.parseFloat(s);
 //                            value = value == 0 ? value0 : value;
@@ -190,12 +189,12 @@ public class Biudzetas extends IDString_n {
                         }
                         preparedInsert.setFloat(15, sum);
                     } 
-                    preparedInsert.setString(16, (String) table.getValueAt(row, tblCols.length - 4));
-                    preparedInsert.setString(17, (String) table.getValueAt(row, tblCols.length - 3));
+                    preparedInsert.setString(16, (String) table.getValueAt(row, tableModel.findColumn("Skyrius")));
+                    preparedInsert.setString(17, (String) table.getValueAt(row, tableModel.findColumn("Metai")));
                     if (preparedInsert.executeUpdate() == 1) {
                         filter();
                     }
-                } catch (SQLException ex) {
+                } catch (SQLException | NumberFormatException ex) {
                     JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -206,13 +205,13 @@ public class Biudzetas extends IDString_n {
     @Override
     protected void setUpdateDelete() {
         StringBuilder sb1;
-        int l;
-        l = dbCols.length;
+        int dbColCount;
+        dbColCount = dbCols.length;
         sb1 = new StringBuilder("UPDATE ");
         sb1.append(table_name).append(" SET ");
-        for (int i = 1; i < l-1; i++) {
+        for (int i = 1; i < dbColCount-1; i++) {
             sb1.append(dbCols[i]).append(" = ?");
-            if (i < l-2) {
+            if (i < dbColCount-2) {
                 sb1.append(", ");
             }
         }
@@ -222,6 +221,24 @@ public class Biudzetas extends IDString_n {
         delete = "DELETE FROM " + table_name + " WHERE Kodas = ? AND Metai = ?";
     }
     
+    @Override
+    protected void delete() {
+	int[] rows;
+	rows = table.getSelectedRows();
+        try {
+            if (preparedDelete == null) {
+                preparedDelete = connection.prepareStatement(delete);
+            }
+            for (int row : rows) {
+                preparedDelete.setString(1, (String) table.getValueAt(row, tableModel.findColumn("Kodas")));
+                preparedDelete.setString(2, (String) table.getValueAt(row, tableModel.findColumn("Metai")));
+                preparedDelete.execute();
+            }
+            filter();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
     @Override
     protected void update() {
@@ -235,8 +252,8 @@ public class Biudzetas extends IDString_n {
 		if (preparedUpdate == null) {
 		    preparedUpdate = connection.prepareStatement(update);
 		}
-                preparedUpdate.setString(1, (String) table.getValueAt(row, 1));
-                for (i = 2; i < 14; i++) {                                            //14 – M(etams)
+                preparedUpdate.setString(1, (String) table.getValueAt(row, tableModel.findColumn("Pavadinimas")));
+                for (i = tableModel.findColumn("Sausis"); i < tableModel.findColumn("Metams"); i++) {                                            //14 – M(etams)
                     s = table.getValueAt(row, i).toString();
                     value = s.isEmpty() ? 0 : Float.valueOf(s);
                     preparedUpdate.setFloat(i, value);
@@ -245,9 +262,9 @@ public class Biudzetas extends IDString_n {
                 s = table.getValueAt(row, 14).toString();
                 value = s.isEmpty() ? sum : Float.valueOf(s);
                 preparedUpdate.setString(14, String.valueOf(value));
-                preparedUpdate.setString(15, String.valueOf(table.getValueAt(row, 15)));
-                preparedUpdate.setString(16, String.valueOf(table.getValueAt(row, 0)));     //Kodas
-		preparedUpdate.setString(17, String.valueOf(table.getValueAt(row, 16)));    //Metai
+                preparedUpdate.setString(15, String.valueOf(table.getValueAt(row, tableModel.findColumn("Skyrius"))));
+                preparedUpdate.setString(16, String.valueOf(table.getValueAt(row, tableModel.findColumn("Kodas"))));     //Kodas
+		preparedUpdate.setString(17, String.valueOf(table.getValueAt(row, tableModel.findColumn("Metai"))));    //Metai
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter();
 		}

@@ -233,9 +233,7 @@ public class IDString_n extends ID_auto {
                 }
                 preparedDelete.execute();
             }
-            if (preparedDelete.execute()) {
-                filter();
-            }
+            filter();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
         }
