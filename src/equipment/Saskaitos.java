@@ -74,7 +74,7 @@ public class Saskaitos extends Liftu_darbai {
 
     @Override
     protected void setConstants(){
-	select = SELECT + "WHERE DATEDIFF(CURDATE(), s.Data) < 188 ORDER BY s.Data DESC";
+	select = SELECT + "WHERE SUBSTR(s.UzsData, 1, 4) = b.Metai AND DATEDIFF(CURDATE(), s.Data) < 188 ORDER BY s.Data DESC";
         insert = INSERT ;
         tableTooltip = "";
     }
@@ -336,8 +336,9 @@ public class Saskaitos extends Liftu_darbai {
     }
 
     private void getBiudzetas() {
-        try {        
-            biudzetas = connection.getList("Biudzetas", "Kodas", "Pavadinimas", "Pavadinimas");
+        String[] fields = {"Kodas", "Pavadinimas"};
+        try {
+            biudzetas = connection.getList("Biudzetas", fields, "Pavadinimas", "Metai = YEAR(CURDATE())");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
         }       
@@ -369,7 +370,7 @@ public class Saskaitos extends Liftu_darbai {
 	StringBuilder sb;
 	sb = new StringBuilder(SELECT);
 	if (chNr.isSelected() || chDate.isSelected() || chKontrahentas.isSelected() || chSutNr.isSelected() || chSutPavad.isSelected() || chBiuKodas.isSelected() || chBiuPavad.isSelected() || chUzsNr.isSelected() || chUzsData.isSelected() || chFilialas.isSelected() || chIT.isSelected() || chUzsPast.isSelected() || chMessage.isSelected() || chIvesta.isSelected()) {
-	    sb.append(" WHERE");
+	    sb.append(" WHERE SUBSTR(s.UzsData, 1, 4) = b.Metai AND ");
             if (chNr.isSelected()) {
 		sb.append(" s.NR LIKE ?");
             }
@@ -425,7 +426,9 @@ public class Saskaitos extends Liftu_darbai {
                 appendAND(sb);
 		sb.append(" s.Ivesta LIKE ?");
             }
-	}
+	} else {
+            sb.append("WHERE SUBSTR(s.UzsData, 1, 4) = b.Metai ");
+        }
         sb.append(" ORDER BY s.Data");
 //	System.out.println(sb.toString());
 	return sb;

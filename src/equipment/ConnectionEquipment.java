@@ -145,7 +145,7 @@ public class ConnectionEquipment {
 	result = null;
 	if (myConnection != null) {
 	    result = new String[2][get_count(table)];
-	    resultSet = statement.executeQuery("SELECT " + field1 + ", " + field2 + " FROM ".concat(table).concat(" ORDER BY ").concat(orderBy));//Pavadinimas"));
+	    resultSet = statement.executeQuery("SELECT " + field1 + ", " + field2 + " FROM ".concat(table).concat(" GROUP BY ").concat(orderBy));//Pavadinimas"));
 	    i = 0;
 	    while (resultSet.next()) {
 		result[0][i] = resultSet.getString(1);
