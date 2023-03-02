@@ -72,22 +72,26 @@ public class Biudzetas extends IDString_n {
         }
         txt = tfSearch.getText();
         if (chSearch.isSelected()) {
-            if (txt.startsWith("20")) {
-                sb1.append(", ROUND(SUM(Suma)), ROUND(SUM(Suma/M*100)) FROM Biudzetas, Saskaitos WHERE Data LIKE '%").append(txt).append("%' AND Metai = SUBSTR(Data, 1, 4) AND BiudKodas = Kodas AND Skyrius = 'VNO_440' AND (");                
+            if (txt.startsWith("202")) {
+                sb1.append(", ROUND(SUM(Suma)), ROUND(SUM(Suma/M*100)) FROM Biudzetas, Saskaitos WHERE Data LIKE '%").append(txt).append("%' AND Metai = SUBSTR(Data, 1, 4) AND BiudKodas = Kodas AND Skyrius = 'VNO_440' AND (");
             } else {
                 sb1.append(", 0, 0 FROM Biudzetas WHERE (");
                 
 //                sb1.append(", ROUND(SUM(Suma)), ROUND(SUM(Suma/M*100)) FROM Biudzetas, Saskaitos WHERE ").append(" Metai = SUBSTR(Data, 1, 4) AND BiudKodas = Kodas AND (");
             }
-           for (int i = 0; i < l; i++) {
+            for (int i = 0; i < l; i++) {
                 sb1.append(dbCols[i]).append(" LIKE ? ");
                 if (i < l-1) {
                     sb1.append("OR ");
                 }
             }
-            sb1.append(") GROUP BY Kodas");
+            sb1.append(") GROUP BY Kodas, Metai");
         } else {
-            sb1.append(", 0, 0 FROM Biudzetas");
+            if (txt.startsWith("202")) {
+                sb1.append(", 0, 0 FROM Biudzetas WHERE Metai LIKE '%").append(txt).append("%' ");
+            } else {
+                sb1.append(", 0, 0 FROM Biudzetas");
+            }
         }
 //System.out.println(sb1);
         select = sb1.toString();

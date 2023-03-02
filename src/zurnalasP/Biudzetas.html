@@ -14,8 +14,19 @@ and open the template in the editor.
         <h1>Biudžetas</h1>
 	<h2>Filtravimas („Rodyti“)</h2>
 	<ul>
-	    <li>Jei „Pieška“ nepažymėta, tai rodomi visi įrašai.</li>
-	    <li>Jei „Pieška“ pažymėta, tai rodomi įrašai, kuriems yra sąskaitos ir kurie atitinka paieškos lauke nurodytą kriterijų.</li>
+	    <li>Jei „Paieška“ pažymėta, tai:
+		<ul>
+		    <li>jei paieškos lauke tekstas prasideda reikšme 202, tai rodomi tie tų metų biudžeto įrašai, kuriems buvo sąskaitos bei sąskaitų suma kiekvienam įrašui;</li>
+		    <li>jei paieškos lauke tekstas neprasideda reikšme 202, tai rodomi įrašai, kurie atitinka paieškos lauke nurodytą kriterijų.</li>
+		</ul>
+
+	    </li>
+	    <li>Jei „Paieška“ nepažymėta, tai:
+		<ul>
+		    <li>jei paieškos lauke tekstas prasideda reikšme 202, tai rodomi visi tų metų biudžeto įrašai,</li>
+		    <li>jei paieškos lauke tekstas neprasideda reikšme 202, tai rodomi visi tų metų biudžeto įrašai;</li>
+		</ul>
+	    </li>
 	</ul>
 
         <h2>Įvedimas („Naujas“)</h2>
