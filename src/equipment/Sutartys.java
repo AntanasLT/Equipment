@@ -128,20 +128,21 @@ public class Sutartys extends TP {
 	lFilters.addMouseListener(this);
 	pFields.add(lFilters, gbc);
 
-	gbc.gridx = 1;
+	gbc.gridx = 1;			//VIPIS Nr.
         chVIPIS = new JCheckBox();
 	pFields.add(chVIPIS, gbc);
         
-	gbc.gridx = 3;
+	gbc.gridx = 3;			//DVS Nr.
         chDVS = new JCheckBox();
 	pFields.add(chDVS, gbc);
         
-	gbc.gridx = 5;
+	gbc.gridx = 5;			//Reg. data
 	chDate = new JCheckBox();
 	pFields.add(chDate, gbc);
 
-	gbc.gridx = 7;
+	gbc.gridx = 7;			//Galioja iki
 	chDataIki = new JCheckBox();
+	chDataIki.setSelected(true);
 	pFields.add(chDataIki, gbc);
         
 
@@ -265,7 +266,7 @@ public class Sutartys extends TP {
             }
             if (chDataIki.isSelected()) {
                 appendAND(sb);
-		sb.append(" s.Iki LIKE ?");
+		sb.append(" s.Iki > ?");
             }
             if (chPavad.isSelected()) {
                 appendAND(sb);
@@ -308,7 +309,11 @@ public class Sutartys extends TP {
         }
         if (chDataIki.isSelected()) {
             n++;
-            preparedFilter.setString(n, "%" + tfDataIki.getText() + "%");
+            String txt = tfDataIki.getText();
+            if (txt.isEmpty()) {
+                txt = date.getToday();
+            }
+            preparedFilter.setString(n, txt);
         }
         if (chPavad.isSelected()) {
             n++;

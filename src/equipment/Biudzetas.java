@@ -65,7 +65,7 @@ public class Biudzetas extends IDString_n {
         l = dbCols.length;
         sb1 = new StringBuilder("SELECT ");
         for (int i = 0; i < l; i++) {
-            sb1.append(dbCols[i]);
+            sb1.append("b.").append(dbCols[i]);
             if (i < l-1) {
                 sb1.append(", ");
             }
@@ -73,24 +73,24 @@ public class Biudzetas extends IDString_n {
         txt = tfSearch.getText();
         if (chSearch.isSelected()) {
             if (txt.startsWith("202")) {
-                sb1.append(", ROUND(SUM(Suma)), ROUND(SUM(Suma/M*100)) FROM Biudzetas, Saskaitos WHERE Data LIKE '%").append(txt).append("%' AND Metai = SUBSTR(Data, 1, 4) AND BiudKodas = Kodas AND Skyrius = 'VNO_440' AND (");
+                sb1.append(", ROUND(SUM(s.Suma)), ROUND(SUM(s.Suma/M*100)) FROM Biudzetas b INNER JOIN Saskaitos s ON b.Kodas = s.BiudKodas WHERE b.Metai LIKE '%").append(txt).append("%' AND b.Metai = SUBSTR(s.Data, 1, 4) AND ("); //AND Skyrius = 'VNO_440'
             } else {
-                sb1.append(", 0, 0 FROM Biudzetas WHERE (");
+                sb1.append(", 0, 0 FROM Biudzetas b WHERE (");
                 
 //                sb1.append(", ROUND(SUM(Suma)), ROUND(SUM(Suma/M*100)) FROM Biudzetas, Saskaitos WHERE ").append(" Metai = SUBSTR(Data, 1, 4) AND BiudKodas = Kodas AND (");
             }
             for (int i = 0; i < l; i++) {
-                sb1.append(dbCols[i]).append(" LIKE ? ");
+                sb1.append("b.").append(dbCols[i]).append(" LIKE ? ");
                 if (i < l-1) {
                     sb1.append("OR ");
                 }
             }
-            sb1.append(") GROUP BY Kodas, Metai");
+            sb1.append(") GROUP BY b.Kodas, b.Metai");
         } else {
             if (txt.startsWith("202")) {
-                sb1.append(", 0, 0 FROM Biudzetas WHERE Metai LIKE '%").append(txt).append("%' ");
+                sb1.append(", 0, 0 FROM Biudzetas b WHERE b.Metai LIKE '%").append(txt).append("%' ");
             } else {
-                sb1.append(", 0, 0 FROM Biudzetas");
+                sb1.append(", 0, 0 FROM Biudzetas b");
             }
         }
 //System.out.println(sb1);
