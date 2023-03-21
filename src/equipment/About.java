@@ -20,18 +20,18 @@ import javax.swing.text.StyledDocument;
  * @author a
  */
 public class About extends JFrame {
-       
+
     JScrollPane scrpane;
     JTextPane tpane;
     Style s, def, regular;
 
-    String[] initString = {"Versija 2.11.7\n", "2023-03-08"};
+    String[] initString = {"Versija 2.11.8\n", "2023-03-21"};
     String[] initStyles = {"caption", "regular"}; //
-    
-    public About () {
-        init();
+
+    public About() {
+	init();
     }
-    
+
     private void init() {
 	tpane = new JTextPane();
 	StyledDocument doc = tpane.getStyledDocument();
@@ -73,8 +73,5 @@ public class About extends JFrame {
 	StyleConstants.setBold(s, true);
 
     }
-    
-    
-    
-    
+
 }

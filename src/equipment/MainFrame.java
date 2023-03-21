@@ -83,7 +83,7 @@ public class MainFrame extends JFrame implements ActionListener{
     protected JLabelLeft labelMessage;
 // –––––––––––––––––––––––
     public int fontsize;
-    private int window_width0, window_heigth0;
+    private Dimension size0;
 // –––––––––––––––––––––––
 
     protected MainFrame(String host, int size) {
@@ -114,9 +114,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	    }
 	});
 	connect_Equipment();
-        javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.PLAIN, fontsize)));        
+	javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.PLAIN, fontsize)));
+	size0 = this.getBounds().getSize();
     }
-	
+    
     protected JMenuBar menuBar() {
 	menu_bar = new JMenuBar();
 //  _______________Duombazė_______________
@@ -810,15 +811,17 @@ public class MainFrame extends JFrame implements ActionListener{
     }
     
     private void setWindow(boolean set_wide) {
-        int w;
-        w = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        if (set_wide & window_width0 < w) {
-            window_width0 = getWidth();
-            window_heigth0 = getHeight();
-            setSize(w, getHeight());
-        } 
-        if (!set_wide) {
-            setSize(window_width0, window_heigth0);
+	int w, w0;
+	w = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+	w0 = getWidth();
+	if (set_wide) {
+	    if (w0 < w - 50) {
+		size0 = getSize();
+	    }
+
+	    setSize(w, getHeight());
+	} else {
+	    setSize(size0);
         }
     }
     

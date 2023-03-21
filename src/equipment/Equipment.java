@@ -49,15 +49,15 @@ public class Equipment {
 //            l = l > 1600 ? 1600 : l;
         l = size * 102;
         h1 = 700;
-        mainFrame.init();
-        mainFrame.pack();
+	mainFrame.init();
+//	mainFrame.pack();
         mainFrame.setMinimumSize(new Dimension(850, h1/2));
-        mainFrame.setSize(l, h1);
+	mainFrame.setSize(l, h1);
 //	    mainFrame.setMinimumSize(new Dimension(1040, 600));
         mainFrame.setJMenuBar(mainFrame.menuBar());
         mainFrame.setTitle("Žurnalas");
-        mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("/home/a/Programme/java/berufliche/Equipment/zurnalas.png"));
-        mainFrame.setVisible(true);
+	mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("/home/a/Programme/java/berufliche/Equipment/zurnalas.png"));
+	mainFrame.setVisible(true);
     }
 	
 }
