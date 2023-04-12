@@ -38,8 +38,8 @@ public class Liftu_darbai extends TP {
     String[][] elevators;
     String[]elev_nr, elev_nr_and_locations;
 
-    protected Liftu_darbai(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    protected Liftu_darbai(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
     }
 
     @Override

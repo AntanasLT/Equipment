@@ -77,8 +77,8 @@ public class Turtas extends Darbai {
     
     protected String[][] locations, codes;
 
-    protected Turtas(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    protected Turtas(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
 	fontsize = size;
     }
 

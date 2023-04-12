@@ -41,7 +41,7 @@ public class Equipment {
 //			MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 //		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {		}
         size = Integer.parseInt(args[1]);
-        MainFrame mainFrame = new MainFrame(args[0], size);
+	MainFrame mainFrame = new MainFrame(args[0], size);
         mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
 //	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);

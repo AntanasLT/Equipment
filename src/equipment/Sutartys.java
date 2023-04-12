@@ -44,8 +44,8 @@ public class Sutartys extends TP {
     
 //    String[]elev_nr, elev_nr_and_locations;
 
-    protected Sutartys(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    protected Sutartys(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
     }
 
     @Override

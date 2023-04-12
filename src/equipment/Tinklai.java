@@ -57,8 +57,8 @@ public class Tinklai extends Turtas {
 
     String[] networks;
 
-    public Tinklai(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    public Tinklai(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
     }
 
     @Override

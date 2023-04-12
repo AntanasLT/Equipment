@@ -38,7 +38,7 @@ public class MainFrameP extends MainFrame {
 	    connection = connect("Equipment");
 	}
 	if (panelWorks == null) {
-	    panelWorks = new WorksP(connection, fontsize);
+	    panelWorks = new WorksP(connection, server, fontsize);
 	}
 	
 //	if (panelWorks != null & connection != null) {

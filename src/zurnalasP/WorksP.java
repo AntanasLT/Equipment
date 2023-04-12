@@ -13,8 +13,8 @@ import equipment.*;
  */
 public class WorksP extends Darbai {
 
-    public WorksP(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    public WorksP(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
     }
 
 }

@@ -40,8 +40,8 @@ public class Saskaitos extends Liftu_darbai {
     String[][] sutartys; //[{DVSNr}{Pavadinimas}{Kontrahentas (Kontrahentai.Pavadinimas)}][VIPISNR]
 
 //    NumberFormat numberFormat = NumberFormat.getInstance(Locale.GERMAN);
-    protected Saskaitos(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    protected Saskaitos(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
     }
 
     @Override

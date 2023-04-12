@@ -5,9 +5,18 @@
  */
 package equipment;
 
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+import com.jcraft.jsch.UIKeyboardInteractive;
+import com.jcraft.jsch.UserInfo;
 import datum.Datum;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -65,6 +74,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     private static final int SUSIPAZINAU = 5;
     protected static String LIMIT = "50";
     private static final String TABLE_TOOLTIP = "Dvigubas spragtelėjimas išfiltruoja susijusius įrašus";
+    private static final String BASIC_FILE_DIR = "Zurnalas/";
 
 
     ConnectionEquipment connection;
@@ -93,7 +103,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 
     int the_row, fontsize;
     int[] table_column_width;
-    String user, message;
+    String user, message, server;
     String[][] systems, users;
     private String[][] states, worktypes;
     String[] table_columns;    
@@ -102,9 +112,10 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
  
 
 
-    protected Darbai(ConnectionEquipment the_connection, int size) {
+    protected Darbai(ConnectionEquipment the_connection, String the_server, int size) {
         fontsize = size;
 	connection = the_connection;
+	server = the_server;
     }
 
     protected void init() {
@@ -986,20 +997,21 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     }
     
     protected void openFile(String folder, String filename) {
-        if (filename != null) {
+	if (filename != null) {
             try {
                 if (filename.startsWith("http") || filename.contains("www")) {
                     Desktop.getDesktop().browse(new URL(filename).toURI());
                 } else {
                     File file = new File(folder, filename);
                     if (file.exists()) {
-    //                    if (filename.endsWith("txt")) {
-    //                        Desktop.getDesktop().edit(file);
-    //                    }
                         Desktop.getDesktop().open(file);
                     } else {
-                        throw new IOException(filename + ": nėra!");
-                    }
+			if (get_remote_file(folder, filename)) {
+			    openFile(folder, filename);
+			} else {
+			    throw new IOException(filename + ": nėra!");
+			}
+		    }
                 }
             } catch (IOException | URISyntaxException ex) {
                 JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
@@ -1007,6 +1019,64 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
         }
     }
     
+    private boolean get_remote_file(String folder, String filename) {
+//        Path path_from, path_to;
+//        path_from = Paths.get(files[0]);
+//        path_to = Paths.get("/home/a/zw/zw");
+	boolean rez;
+	Cursor cursor0;
+	UserInfo uin;
+	String msg;
+//	UserInfo ui;
+	JSch ssh;
+	rez = false;
+	Session session = null;
+	Channel channel = null;
+	ChannelSftp sftp;
+//	Vector<ChannelSftp.LsEntry> list;
+	msg = "Atnaujinta";
+	cursor0 = getCursor();
+	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	try {
+	    ssh = new JSch();
+	    session = ssh.getSession("pamain", server, 22);
+	    session.setConfig("StrictHostKeyChecking", "no");
+	    uin = new MyUserInfo();
+	    session.setUserInfo(uin);
+	    session.setPassword("Terp 38-2021".getBytes());
+	    session.connect();
+	    channel = session.openChannel("sftp");
+	    channel.connect();
+	    channel.run();
+	    sftp = (ChannelSftp) channel;
+	    sftp.cd(BASIC_FILE_DIR + folder);
+	    sftp.get(filename, folder);
+	    rez = true;
+
+	} catch (JSchException | SftpException e) {
+	    msg = "Neatnaujinta!";
+	    JOptionPane.showMessageDialog(this, e.toString(), "Klaida!", JOptionPane.ERROR_MESSAGE);
+	} finally {
+	    if (channel != null) {
+		channel.disconnect();
+	    }
+	    if (session != null) {
+		session.disconnect();
+	    }
+	    JOptionPane.showMessageDialog(this, msg, "Informacija", JOptionPane.INFORMATION_MESSAGE);
+	    super.setCursor(cursor0);
+	}
+//
+//        if (Files.exists(path_from)) {
+//            try {
+//                Files.copy(path_from, path_to);
+//            } catch (IOException ex) {
+//
+//            }
+//        }
+	return rez;
+    }
+
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -1110,5 +1180,44 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     public void mouseExited(MouseEvent me) {
 
     }
+
+    public static class MyUserInfo implements UserInfo, UIKeyboardInteractive {
+
+	@Override
+	public String getPassphrase() {
+	    return null;
+	}
+
+	@Override
+	public String getPassword() {
+	    return null;
+	}
+
+	@Override
+	public boolean promptPassphrase(String arg0) {
+	    return false;
+	}
+
+	@Override
+	public boolean promptPassword(String arg0) {
+	    return false;
+	}
+
+	@Override
+	public boolean promptYesNo(String arg0) {
+	    return false;
+	}
+
+	@Override
+	public void showMessage(String arg0) {
+	}
+
+	@Override
+	public String[] promptKeyboardInteractive(String arg0, String arg1,
+		String arg2, String[] arg3, boolean[] arg4) {
+	    return null;
+	}
+    }
+
 
 }

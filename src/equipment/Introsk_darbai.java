@@ -53,8 +53,8 @@ public class Introsk_darbai extends Darbai {
 
     String[][] tptypes;
 
-    protected Introsk_darbai(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    protected Introsk_darbai(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
         init_this();
     }
 

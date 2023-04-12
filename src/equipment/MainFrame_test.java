@@ -23,7 +23,7 @@ public class MainFrame_test extends MainFrame {
     protected ConnectionEquipment connect(String database) {
 	password = "i--Logic15325";
 	username = "Antanas";
-	connection = new ConnectionEquipment(the_host, database, username);
+	connection = new ConnectionEquipment(server, database, username);
 	try {
 	    labelMessage.setText(connection.connect(password));
 	} catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {

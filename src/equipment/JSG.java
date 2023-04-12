@@ -44,8 +44,8 @@ public class JSG extends TP {
     
     String filtras;
 
-    protected JSG(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    protected JSG(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
     }
 
     @Override

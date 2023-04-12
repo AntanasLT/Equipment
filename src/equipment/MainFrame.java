@@ -33,7 +33,7 @@ import zurnalasP.Help;
 public class MainFrame extends JFrame implements ActionListener{
     
 
-    String the_host, password, username;
+    public String server, password, username;
 
     public ConnectionEquipment connection;
 //    Message message;
@@ -88,7 +88,7 @@ public class MainFrame extends JFrame implements ActionListener{
 
     protected MainFrame(String host, int size) {
         fontsize = size;
-        the_host = host;
+	server = host;
 	connection = null;
 //	panelOutlays = new Accounts(connection);
     }
@@ -364,7 +364,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	    password = dialogPassword.bekommeKennwort()[1];
 	    username = dialogPassword.bekommeKennwort()[0];
 	}
-	connection = new ConnectionEquipment(the_host, database, username);
+	connection = new ConnectionEquipment(server, database, username);
 	try {
 	    labelMessage.setText(connection.connect(password));
 	} catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException | SQLException | IllegalAccessException ex) {
@@ -463,7 +463,7 @@ public class MainFrame extends JFrame implements ActionListener{
     public void showWorks() {
 	if (mcbWorks.isSelected()) {
             if (panelWorks == null) {
-                panelWorks = new Darbai(connection, fontsize);
+		panelWorks = new Darbai(connection, server, fontsize);
                 panelWorks.init();                
             } else {
                 panelWorks.setVisible(true);
@@ -481,7 +481,7 @@ public class MainFrame extends JFrame implements ActionListener{
     private void showIT() {
 	if (mcbIT.isSelected()) {
             if (panelIT == null) {
-                panelIT = new Turtas(connection, fontsize);
+		panelIT = new Turtas(connection, server, fontsize);
                 panelIT.init();
             } else {
                 panelIT.setVisible(true);
@@ -499,7 +499,7 @@ public class MainFrame extends JFrame implements ActionListener{
     private void showTP() {
 	if (mcbTP.isSelected()) {
             if (panelTP == null) {
-                panelTP = new TP(connection, fontsize);
+		panelTP = new TP(connection, server, fontsize);
                 panelTP.init();               
             } else {
                 panelTP.setVisible(true);
@@ -517,7 +517,7 @@ public class MainFrame extends JFrame implements ActionListener{
     private void showSaskaitos() {
 	if (mcbSaskaitos.isSelected()) {
             if (panelSaskaitos == null) {
-                panelSaskaitos = new Saskaitos(connection, fontsize);
+		panelSaskaitos = new Saskaitos(connection, server, fontsize);
                 panelSaskaitos.init();                
             } else {
                 panelSaskaitos.setVisible(true);
@@ -535,7 +535,7 @@ public class MainFrame extends JFrame implements ActionListener{
     private void showSutartys() {
 	if (mcbSutartys.isSelected()) {
             if (panelSutartys == null) {
-                panelSutartys = new Sutartys(connection, fontsize);
+		panelSutartys = new Sutartys(connection, server, fontsize);
                 panelSutartys.init();              
             } else {
                 panelSutartys.setVisible(true);
@@ -740,7 +740,7 @@ public class MainFrame extends JFrame implements ActionListener{
     
     private void showLiftu_darbai() {
 	if (panelLiftu_darbai == null & mcbLiftu_darbai.isSelected()) {
-	    panelLiftu_darbai = new Liftu_darbai(connection, fontsize);
+	    panelLiftu_darbai = new Liftu_darbai(connection, server, fontsize);
             panelLiftu_darbai.init();
 	    tabbedpane.addTab("Liftų darbai", panelLiftu_darbai);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
@@ -754,7 +754,7 @@ public class MainFrame extends JFrame implements ActionListener{
     
     private void showAdresai() {
 	if (panelAdresai == null & mcbAdresai.isSelected()) {
-	    panelAdresai = new Tinklai(connection, fontsize);
+	    panelAdresai = new Tinklai(connection, server, fontsize);
             panelAdresai.init();
 	    tabbedpane.addTab("Adresai", panelAdresai);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);
@@ -768,7 +768,7 @@ public class MainFrame extends JFrame implements ActionListener{
 
     private void showJSG() {
 	if (panelJSG == null & mcbGenerators.isSelected()) {
-	    panelJSG = new JSG(connection, fontsize);
+	    panelJSG = new JSG(connection, server, fontsize);
             panelJSG.init();
 	    tabbedpane.addTab("JSG", panelJSG);
 	    tabbedpane.setSelectedIndex(tabbedpane.getTabCount() - 1);

@@ -45,8 +45,8 @@ public class TP extends Darbai {
     
     String[][] tptypes;
 
-    protected TP(ConnectionEquipment connection, int size) {
-	super(connection, size);
+    protected TP(ConnectionEquipment connection, String server, int size) {
+	super(connection, server, size);
     }
 
     @Override
