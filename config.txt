@@ -1,0 +1,10 @@
+Για να κατεβάζετε αρχεία, που δεν υπάρχουν στον υπολογιστή, από του διακοσμιτή πρέπει μα ρυθμίσετε τα εξής:
+1) sftp στο διακοσμιτή (DB1)·
+2) δημιουργία του χρήστη pamain (/home/pamain) στο διακοσμιτή·
+3) δυμιουργία συνδέσμων στο /home/pamain: 
+	Equipment -> /home/a/Programme/java/berufliche/Equipment
+	Zurnalas -> /home/a/dasDokument/Zurnalas/
+
+Για να μπορεί ένας χρήστης anonymus (ftp) να κατεβάζει αρχεία από του διακοσμιτή, πρέπει να ρυθμίσει τα εξής:
+1) /etc/proftpd.conf (<Anonymous /home/a/Aprasymai>)
+2) δυμιουργία των φάκελων στο /home/Aprasymai: Apsaugine  PAS	Priesgaisrine

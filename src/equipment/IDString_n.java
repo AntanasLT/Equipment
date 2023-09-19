@@ -136,7 +136,7 @@ public class IDString_n extends ID_auto {
                 sb1.append(sb2);
             }
         }
-        insert = sb1.toString();
+	insert = sb1.toString();
     }
     
     @Override
@@ -170,10 +170,10 @@ public class IDString_n extends ID_auto {
 		    preparedInsert = connection.prepareStatement(insert);
 		}
                 for (i = i0; i < tblCols.length; i++) {
-                    preparedInsert.setString(i, String.valueOf(table.getValueAt(row, i)));
+		    preparedInsert.setString(i + 1, String.valueOf(table.getValueAt(row, i)));
                 }
-                if (i0 == 0) {
-                    preparedInsert.setString(i, (String) table.getValueAt(row, 0));
+		if (i0 == 0) {	    //Μη αυτόματη αύξηση
+                    preparedInsert.setString(1, (String) table.getValueAt(row, 0));
                 }
 		if (preparedInsert.executeUpdate() == 1) {
 		    filter();
