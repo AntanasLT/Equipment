@@ -144,7 +144,7 @@ public class ConnectionEquipment {
 	ResultSet resultSet;
 	result = null;
 	if (myConnection != null) {
-	    result = new String[2][get_count(table)];
+	    result = new String[2][get_count(table) + 1];
 	    resultSet = statement.executeQuery("SELECT " + field1 + ", " + field2 + " FROM ".concat(table).concat(" GROUP BY ").concat(orderBy));//Pavadinimas"));
 	    i = 0;
 	    while (resultSet.next()) {
@@ -152,6 +152,8 @@ public class ConnectionEquipment {
 		result[1][i] = resultSet.getString(2);
 		i++;
 	    }
+	    result[0][i] = "-";
+	    result[1][i] = "-";
 	}
 	return result;
     }
@@ -164,7 +166,7 @@ public class ConnectionEquipment {
 	result = null;
 	if (myConnection != null) {
             l = fields.length;
-	    result = new String[l][get_count(table)];
+	    result = new String[l][get_count(table) + 1];
             sb = new StringBuilder("SELECT ");
             for (int j = 0; j < l; j++) {
                 sb.append(fields[j]);
@@ -181,6 +183,8 @@ public class ConnectionEquipment {
                 }
 		i++;
 	    }
+	    result[0][i] = "-";
+	    result[1][i] = "-";
 	}
 	return result;
     }
@@ -193,7 +197,7 @@ public class ConnectionEquipment {
 	result = null;
 	if (myConnection != null) {
             l = fields.length;
-	    result = new String[l][get_count(table, condition)];
+	    result = new String[l][get_count(table, condition) + 1];
             sb = new StringBuilder("SELECT ");
             for (int j = 0; j < l; j++) {
                 sb.append(fields[j]);
@@ -210,6 +214,8 @@ public class ConnectionEquipment {
                 }
 		i++;
 	    }
+	    result[0][i] = "-";
+	    result[1][i] = "-";
 	}
 	return result;
     }

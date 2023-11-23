@@ -30,7 +30,7 @@ public class Biudzetas extends IDString_n {
 	    setLayout(new BorderLayout());
 	    createTable();
 	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
+	    add(pInput, BorderLayout.NORTH);
 	    add(scrTable, BorderLayout.CENTER);
 	    setVisible(true);
             setDate_to_search_field();

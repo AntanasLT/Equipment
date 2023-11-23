@@ -79,7 +79,7 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
     JMyPopupMenu menuPop;
     JMyMenuItem miHtml;
     JMyTextField tfSearch;
-    JPanel pButtons;
+    JPanel pInput;
     JScrollPane scrTable;
     JTable table;
             
@@ -107,7 +107,7 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
             table.setComponentPopupMenu(menuPop);
             table.add(menuPop);
 	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
+	    add(pInput, BorderLayout.NORTH);
 	    add(scrTable, BorderLayout.CENTER);
 	    setVisible(true);
 	    setUpdateDelete();
@@ -150,33 +150,33 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
     
     protected void createPanelButtons() {
 	chSearch = new JMyCheckBox("Paieška:", true, fontsize);
-        pButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 2, 2));
-        pButtons.add(chSearch);
+        pInput = new JPanel(new FlowLayout(FlowLayout.CENTER, 2, 2));
+        pInput.add(chSearch);
         tfSearch = new JMyTextField(20, fontsize);
         tfSearch.setActionCommand("filter");
 	tfSearch.addActionListener(this);
-	pButtons.add(tfSearch);	
+	pInput.add(tfSearch);	
         btFilter = new JMyButton("Rodyti", fontsize);
         btFilter.setToolTipText("50 paskutiniųjų");
         btFilter.setMnemonic('R');
 	btFilter.setActionCommand("filter");
 	btFilter.addActionListener(this);
- 	pButtons.add(btFilter);
-        pButtons.add(Box.createHorizontalStrut(100));
+ 	pInput.add(btFilter);
+        pInput.add(Box.createHorizontalStrut(100));
 	btEdit = new JMyButton("Pakeisti", fontsize);
         btEdit.setMnemonic('P');
  	btEdit.addActionListener(this);
 	btEdit.setActionCommand("update");
-	pButtons.add(btEdit);
+	pInput.add(btEdit);
 	btInsert = new JMyButton("Naujas", fontsize);
         btInsert.setMnemonic('N');
 	btInsert.addActionListener(this);
 	btInsert.setActionCommand("insert");
-	pButtons.add(btInsert);
+	pInput.add(btInsert);
 	btDelete = new JMyButton("Šalinti", fontsize);
 	btDelete.addActionListener(this);
 	btDelete.setActionCommand("delete");
-	pButtons.add(btDelete);
+	pInput.add(btDelete);
     }
     
     protected void setColumnsWidths() {

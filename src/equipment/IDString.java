@@ -47,7 +47,7 @@ public class IDString extends ID_auto {
 	    setLayout(new BorderLayout());
 	    createTable();
 	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
+	    add(pInput, BorderLayout.NORTH);
 	    add(scrTable, BorderLayout.CENTER);
 	    setVisible(true);
             setSelect_filter();

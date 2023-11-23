@@ -872,12 +872,17 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	i = 0;
 	found = false;
 	n = cb.getItemCount();
+	cb.setEnabled(false);
 	while (i < n & !found) {
 	    if (cbItems[i].equals(item)) {
 		found = true;
+		cb.setEnabled(true);
 		cb.setSelectedIndex(i);
 	    }
 	    i++;
+	}
+	if (!found) {
+	    cb.setSelectedIndex(n - 1);
 	}
     }
     

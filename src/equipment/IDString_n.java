@@ -51,7 +51,7 @@ public class IDString_n extends ID_auto {
 	    setLayout(new BorderLayout());
 	    createTable();
 	    createPanelButtons();
-	    add(pButtons, BorderLayout.NORTH);
+	    add(pInput, BorderLayout.NORTH);
 	    add(scrTable, BorderLayout.CENTER);
 	    setVisible(true);
 	    setUpdateDelete();
@@ -162,22 +162,23 @@ public class IDString_n extends ID_auto {
     
     @Override
     protected void insert() {
-	int row, i;
+	int row, i, n;
 	row = table.getSelectedRow();
 	if (row >= 0) {
 	    try {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(insert);
 		}
-                for (i = i0; i < tblCols.length; i++) {
-		    preparedInsert.setString(i + 1, String.valueOf(table.getValueAt(row, i)));
+		n = 1;
+		for (i = i0; i < tblCols.length; i++) { //Αυτόματη αύξηση i0=1, απενανίας, αλλώς i0=0
+		    preparedInsert.setString(n, String.valueOf(table.getValueAt(row, i)));
+		    n++;
                 }
 		if (i0 == 0) {	    //Μη αυτόματη αύξηση
                     preparedInsert.setString(1, (String) table.getValueAt(row, 0));
                 }
-		if (preparedInsert.executeUpdate() == 1) {
-		    filter();
-		}
+		preparedInsert.execute();
+		filter();
 	    } catch (SQLException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }

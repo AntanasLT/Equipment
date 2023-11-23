@@ -19,7 +19,6 @@ import com.itextpdf.layout.font.FontSet;
 import com.itextpdf.layout.properties.Property;
 import com.itextpdf.layout.properties.TextAlignment;
 import datum.Datum;
-import static equipment.Ataskaita_RSC_matavimai.FONT;
 import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -198,8 +197,8 @@ public class Ataskaita_RSC_sarasas extends Ataskaita_RSC_matavimai {
             info.setAuthor("Antanas Kvietkauskas");
             info.setSubject("Radiacinė sauga (DVS 7.35)");
             Document doc = new Document(pdfDoc);
-            set.addFont(System.getProperty("user.home") + System.getProperty("file.separator") + FONT.replace('/', System.getProperty("file.separator").charAt(0)));
-            
+	    set.addFont(System.getProperty("user.home") + System.getProperty("file.separator") + FONT.replace('/', System.getProperty("file.separator").charAt(0)));
+//	    set.addFont("fonts/Palem-nm.ttf");
             doc.setFontProvider(new FontProvider(set));
             doc.setProperty(Property.FONT, new String[]{""});
             par = new Paragraph(imone);
