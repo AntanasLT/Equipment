@@ -115,6 +115,15 @@ public class MainFrame extends JFrame implements ActionListener{
 	});
 	connect_Equipment();
 	javax.swing.UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Arial", Font.PLAIN, fontsize)));
+	int h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+	h = Math.round(h / 20 * 11);
+	int minh = Math.round(h / 20 * 16);
+	int l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+	System.out.println(System.getProperty("os.name"));
+	l = System.getProperty("os.name").contains("Linux") ? Math.round(l / 20 * 11) : Math.round(l / 20 * 13);
+	int minl = Math.round(l / 50 * 49);
+	setMinimumSize(new Dimension(minl, minh));
+	setSize(l, h);
 	size0 = this.getBounds().getSize();
     }
     
@@ -273,6 +282,8 @@ public class MainFrame extends JFrame implements ActionListener{
         mcbStates.setActionCommand("states");
 	menuPagalbines.add(mcbStates);
 	mcbLocations = new JMyCheckBoxMenuItem("Vietos", fontsize);
+	mcbLocations.addActionListener(this);
+	mcbLocations.setActionCommand("locations");
         menuPagalbines.add(mcbLocations);
 	mcbTPrusys = new JMyCheckBoxMenuItem("TP rūšys", fontsize);
 	mcbTPrusys.addActionListener(this);
@@ -685,7 +696,7 @@ public class MainFrame extends JFrame implements ActionListener{
     private ID_TextArea createTab_IDTextArea(ID_TextArea tab, JMyCheckBoxMenuItem menuItem, String dbTable, String tabName, String[] dbFields, String[] tbl_cols, int[] col_with, boolean id_auto_increment, String taField, String docFolder) {
         if (menuItem.isSelected()) {
             if (tab == null) {
-                tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField, new Dimension(70, 10), docFolder);
+		tab = new ID_TextArea(connection, fontsize, dbTable, dbFields, tbl_cols, col_with, id_auto_increment, taField, new Dimension(100, 20), docFolder);
                 tab.init();                
             } else {
                 tab.setVisible(true);               

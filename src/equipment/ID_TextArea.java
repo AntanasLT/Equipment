@@ -9,13 +9,13 @@ import datum.Datum;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import javax.swing.GroupLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,7 +28,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ID_TextArea extends ID_auto implements MouseListener {
     
-    GroupLayout groupLayout;
     JMyTextArea taText;
     JScrollPane scrPane;
     
@@ -128,8 +127,10 @@ public class ID_TextArea extends ID_auto implements MouseListener {
     
     @Override
     protected void createPanelButtons() {
-	chSearch = new JMyCheckBox("Paieška:", false, fontsize);
-//        pInput.add(chSearch);
+	pButtons = new JPanel(new GridLayout(5, 1, 0, 20));
+	pInput = new JPanel();
+	chSearch = new JMyCheckBox("Paieška", false, fontsize);
+        pButtons.add(chSearch);
         taText = new JMyTextArea(taSize.height, taSize.width, fontsize);
         taText.addMouseListener(this);
         taText.setToolTipText("Μπορεί να ανοίγει το επιλεγμένο αρχείο, που βρίσκεται στον φάκελο Ivairus");
@@ -137,36 +138,28 @@ public class ID_TextArea extends ID_auto implements MouseListener {
         taText.setWrapStyleWord(true);
         scrPane = new JScrollPane(taText);
         scrPane.setMinimumSize(taSize);
-//	pInput.add(scrPane);
+	pInput.add(scrPane);
         btFilter = new JMyButton("Rodyti", fontsize);
         btFilter.setMnemonic('R');
 	btFilter.setActionCommand("filter");
 	btFilter.addActionListener(this);
-// 	pInput.add(btFilter);
-//        pInput.add(Box.createHorizontalStrut(20));
+ 	pButtons.add(btFilter);
 	btEdit = new JMyButton("Pakeisti", fontsize);
         btEdit.setMnemonic('P');
  	btEdit.addActionListener(this);
 	btEdit.setActionCommand("update");
-//	pInput.add(btEdit);
+	pButtons.add(btEdit);
 	btInsert = new JMyButton("Naujas", fontsize);
         btInsert.setMnemonic('N');
 	btInsert.addActionListener(this);
 	btInsert.setActionCommand("insert");
-//	pInput.add(btInsert);
+	pButtons.add(btInsert);
 	btDelete = new JMyButton("Šalinti", fontsize);
 	btDelete.addActionListener(this);
 	btDelete.setActionCommand("delete");
-//	pInput.add(btDelete);
-        pInput = new JPanel();
-	groupLayout = new GroupLayout(pInput);
-	pInput.setLayout(groupLayout);
-	groupLayout.setAutoCreateGaps(true);
-	groupLayout.setAutoCreateContainerGaps(true);
-	groupLayout.setVerticalGroup(
-		groupLayout.createSequentialGroup()
-			.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-				.addComponent(btFilter).addComponent(btInsert).addComponent(btEdit).addComponent(btDelete)));
+	pButtons.add(btDelete);
+	pButtons.add(chSearch);
+	pInput.add(pButtons);
     }
     
     @Override

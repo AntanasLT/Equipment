@@ -6,7 +6,6 @@
 
 package equipment;
 
-import java.awt.Dimension;
 import java.awt.Toolkit;
 
 /**
@@ -43,16 +42,19 @@ public class Equipment {
         size = Integer.parseInt(args[1]);
 	MainFrame mainFrame = new MainFrame(args[0], size);
         mainFrame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
-//	    h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-//	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
-//	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-//            l = l > 1600 ? 1600 : l;
-        l = size * 102;
-        h1 = 700;
+//	h = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+//	h = Math.round(h/5*2);
+////	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
+//	l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+//	l = Math.round(l / 5 * 2);
+////            l = l > 1600 ? 1600 : l;
+////        l = size * 102;
+////        h1 = 700;
 	mainFrame.init();
+//	System.out.println(l + "/" + h);
 //	mainFrame.pack();
-        mainFrame.setMinimumSize(new Dimension(850, h1/2));
-	mainFrame.setSize(l, h1);
+//        mainFrame.setMinimumSize(new Dimension(l, h));
+//	mainFrame.setSize(l,h);
 //	    mainFrame.setMinimumSize(new Dimension(1040, 600));
         mainFrame.setJMenuBar(mainFrame.menuBar());
         mainFrame.setTitle("Žurnalas");

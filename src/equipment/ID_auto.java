@@ -79,7 +79,7 @@ public class ID_auto extends JPanel implements ActionListener, MouseListener {
     JMyPopupMenu menuPop;
     JMyMenuItem miHtml;
     JMyTextField tfSearch;
-    JPanel pInput;
+    JPanel pInput, pButtons;
     JScrollPane scrTable;
     JTable table;
             

@@ -14,7 +14,7 @@ import javax.swing.JButton;
  */
 public class JMyButton extends JButton {
     public JMyButton(String text, int size) {
-        setFont(new Font("Arial", Font.PLAIN, size));
+	setFont(new Font("Arial", Font.PLAIN, size));
         setText(text);
     }
     

@@ -6,7 +6,6 @@
 
 package equipment;
 
-import java.awt.Dimension;
 import java.awt.Toolkit;
 
 /**
@@ -47,12 +46,12 @@ public class Equipment_test {
 //	    h1 = h > 1280 ? 1000 : Math.round(h/3*2);
 //	    l = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 //            l = l > 1600 ? 1600 : l;
-        l = size * 102;
-        h1 = 700;
+//        l = size * 102;
+//        h1 = 700;
         mainFrame.init();
-        mainFrame.pack();
-        mainFrame.setMinimumSize(new Dimension(850, h1/2));
-        mainFrame.setSize(l, h1);
+//        mainFrame.pack();
+//        mainFrame.setMinimumSize(new Dimension(850, h1/2));
+//        mainFrame.setSize(l, h1);
 //	    mainFrame.setMinimumSize(new Dimension(1040, 600));
         mainFrame.setJMenuBar(mainFrame.menuBar());
         mainFrame.setTitle("Žurnalas");
