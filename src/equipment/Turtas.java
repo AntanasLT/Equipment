@@ -29,10 +29,10 @@ import javax.swing.JTextField;
  */
 public class Turtas extends Darbai {
 
-    private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID ORDER BY i.IT";
-    private static final String SELECT = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID";
-    private static final String PREPARE_INSERT = "INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema, Data, Vieta, Pozymis, Pastaba, Veikla) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String PREPARE_UPDATE = "UPDATE Irenginiai SET IT = ?, Nr = ?, Pavadinimas = ?, Sistema = ?, Data = ?, Vieta = ?, Pozymis = ?, Pastaba = ?, Veikla = ? WHERE ID = ?";
+    private static final String SELECT_ALL = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, i.Atsakingas, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID ORDER BY i.IT";
+    private static final String SELECT = "SELECT i.ID, i.IT, i.Nr, i.Pavadinimas, s.Pavadinimas, v.Pavadinimas, i.Pozymis, i.Pastaba, i.Data, i.Atsakingas, k.Pavadinimas FROM Irenginiai i LEFT JOIN Sistemos s ON i.Sistema = s.ID LEFT JOIN Vietos v ON i.Vieta = v.ID LEFT JOIN Veiklos k ON i.Veikla = k.ID";
+    private static final String PREPARE_INSERT = "INSERT INTO Irenginiai (IT, Nr, Pavadinimas, Sistema, Data, Atsakingas, Vieta, Pozymis, Pastaba, Veikla) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String PREPARE_UPDATE = "UPDATE Irenginiai SET IT = ?, Nr = ?, Pavadinimas = ?, Sistema = ?, Data = ?, Atsakingas = ?, Vieta = ?, Pozymis = ?, Pastaba = ?, Veikla = ? WHERE ID = ?";
     private static final String TEX_START = "\\documentclass[a4paper,12pt]{article}\n" +
  "\\usepackage[left=5mm, top=5mm, bottom=5mm, right=5mm]{geometry}\n"
 	    + "\\usepackage[utf8x]{inputenc}\n" +
@@ -54,6 +54,7 @@ public class Turtas extends Darbai {
 //    private static final String PAVADINIMAS = "Pavadinimas";
     private static final String SISTEMA = "Sistema";
     private static final String VIETA = "Vieta";
+    private static final String ATSAKINGAS = "Atsakingas";
     private static final String POZYMIS = "⊠□";
     private static final String PASTABA = "Pastaba";
     private static final String DATA = "Data";
@@ -62,12 +63,10 @@ public class Turtas extends Darbai {
     private static final String PAVADINIMAS = "Pavadinimas";
     static final String ID = "ID (auto)";
     
-    private JCheckBox chLocation, chMark, chIT, chNr, chName;
-    private JLabelRechts lMark, lIT;
-    protected JLabelRechts lName, lLocation, lNr;
+    private JCheckBox chLocation, chMark, chIT, chNr, chName, chAtsakingas;
     private JMyComboBox cbCode;
     protected JMyComboBox cbLocations;
-    private JTextField fMark, fIT, fNr;
+    private JTextField tfMark, tfIT, tfNr, tfAtsakingas;
     private JTextArea ta_Message;
     protected JPanel pButtons;
     protected JMyButton btInsert, btEdit, btDelete;
@@ -85,8 +84,8 @@ public class Turtas extends Darbai {
     @Override
     protected void init() {
         font = new Font("Arial", Font.PLAIN, fontsize);
-        table_columns = new String[]{ID, IT, NR, PAVADINIMAS, SISTEMA, VIETA, POZYMIS, PASTABA, DATA, VEIKLA};
-        table_column_width = new int[]{4*fontsize, 8*fontsize, 8*fontsize, 25*fontsize, 8*fontsize, 8*fontsize, 2*fontsize, 16*fontsize, 8*fontsize, 12*fontsize};
+        table_columns = new String[]{ID, IT, NR, PAVADINIMAS, SISTEMA, VIETA, POZYMIS, PASTABA, DATA, ATSAKINGAS, VEIKLA};
+        table_column_width = new int[]{4*fontsize, 6*fontsize, 6*fontsize, 25*fontsize, 8*fontsize, 8*fontsize, 8*fontsize, 16*fontsize, 8*fontsize, 8*fontsize, 12*fontsize};
 	if (connection != null) {
 	    setLayout(new BorderLayout());
 	    setConstants();
@@ -206,12 +205,12 @@ public class Turtas extends Darbai {
 // Μια πρώτη σειρά
 	gbc.gridx = 0;
 	gbc.gridy = 0;
-	gbc.weightx = 0.2;
-        lDate = new JLabelRechts("Data:", fontsize);
-	pFields.add(lDate, gbc);
+	gbc.weightx = 0;
+	chDate = new JCheckBox();
+	pFields.add(chDate, gbc);
 
 	gbc.gridx = 1;
-	gbc.weightx = 0;
+	gbc.weightx = 0.1;
 	tfDate = new JMyTextField(8, fontsize);
 	tfDate.addMouseListener(this);
 	tfDate.setToolTipText("Dvigubas spragtelėjimas šiandienos datai");
@@ -219,143 +218,151 @@ public class Turtas extends Darbai {
 
 	gbc.gridx = 2;
 	gbc.weightx = 0;
-	lSystem = new JLabelRechts("Sistema", fontsize);
-	pFields.add(lSystem, gbc);
+	chSystem = new JCheckBox();
+	pFields.add(chSystem, gbc);
 
 	gbc.gridx = 3;
 	gbc.weightx = 0;
 	cbIrenginys = new JMyComboBox(systems[1], fontsize);
 	pFields.add(cbIrenginys, gbc);
-//
-	gbc.gridx = 4;
-	gbc.weightx = 0;
-	lName = new JLabelRechts("Pavadinimas", fontsize);
-	pFields.add(lName, gbc);
 
+	gbc.gridx = 4;
+	chName = new JCheckBox();
+	pFields.add(chName, gbc);
+	
 	gbc.gridx = 5;
-	gbc.weightx = 0.6;
-	fName = new JMyTextField(12, fontsize);
-	fName.addMouseListener(this);
-	pFields.add(fName, gbc);
-//
+	gbc.weightx = 0;
+	gbc.weightx = 0.1;
+	tfName = new JMyTextField(12, fontsize);
+	tfName.addMouseListener(this);
+	pFields.add(tfName, gbc);
+
 	gbc.gridx = 6;
 	gbc.weightx = 0;
-	lLocation = new JLabelRechts("Vieta", fontsize);
-	pFields.add(lLocation, gbc);
+	chLocation = new JCheckBox();
+	pFields.add(chLocation, gbc);
 
 	gbc.gridx = 7;
 	gbc.weightx = 0;
 	cbLocations = new JMyComboBox(locations[1], fontsize);
 	pFields.add(cbLocations, gbc);
-//
+
 	gbc.gridx = 8;
 	gbc.weightx = 0;
-	lMark = new JLabelRechts("Žyma", fontsize);
-	pFields.add(lMark, gbc);
+	chMark = new JCheckBox();
+	pFields.add(chMark, gbc);
 
 	gbc.gridx = 9;
-	gbc.weightx = 0;
-	fMark = new JMyTextField(1, fontsize);
-	pFields.add(fMark, gbc);
+	gbc.weightx = 0.1;
+	tfMark = new JMyTextField(5, fontsize);
+	pFields.add(tfMark, gbc);
 //
 	gbc.gridx = 10;
 	gbc.weightx = 0;
-	lIT = new JLabelRechts("IT", fontsize);
-	pFields.add(lIT, gbc);
+	chIT = new JCheckBox();
+	pFields.add(chIT, gbc);
 
 	gbc.gridx = 11;
-	gbc.weightx = 0;
-	fIT = new JMyTextField(7, fontsize);
-	pFields.add(fIT, gbc);
+	gbc.weightx = 0.1;
+	tfIT = new JMyTextField(7, fontsize);
+	pFields.add(tfIT, gbc);
 //
 	gbc.gridx = 12;
 	gbc.weightx = 0;
-	lNr = new JLabelRechts("Nr.", fontsize);
-	pFields.add(lNr, gbc);
+	chNr = new JCheckBox();
+	pFields.add(chNr, gbc);
 
 	gbc.gridx = 13;
-	gbc.weightx = 0.2;
-	fNr = new JMyTextField(7, fontsize);
-	pFields.add(fNr, gbc);
+	gbc.weightx = 0.1;
+	tfNr = new JMyTextField(7, fontsize);
+	pFields.add(tfNr, gbc);
 //
 	gbc.gridx = 14;
 	gbc.weightx = 0;
-	pFields.add(new JLabelRechts("Veikla", fontsize), gbc);
-
+	chAtsakingas = new JCheckBox();
+	pFields.add(chAtsakingas, gbc);
+	
 	gbc.gridx = 15;
+	gbc.weightx = 0.1;
+	tfAtsakingas = new JMyTextField(7, fontsize);
+	pFields.add(tfAtsakingas, gbc);
+	
+	gbc.gridx = 16;
 	gbc.weightx = 0;
 	cbCode = new JMyComboBox(codes[1], fontsize);
 	pFields.add(cbCode, gbc);
 // Η δεύτερη σειρά
-	gbc.gridy = 1;
-	gbc.weightx = 0;
 	gbc.gridx = 0;
-	lFilters = new JLabelRechts("Filtrai:", fontsize);
-	lFilters.addMouseListener(this);
-	pFields.add(lFilters, gbc);
+	gbc.gridy = 1;
+	gbc.gridwidth = 2;
+	pFields.add(new JLabelLeft("Data:", fontsize), gbc);
+//	gbc.weightx = 0;
+//	lFilters = new JLabelRechts("Filtrai:", fontsize);
+//	lFilters.addMouseListener(this);
+//	pFields.add(lFilters, gbc);
 	
-	gbc.gridx = 1;
-	chDate = new JCheckBox();
-	pFields.add(chDate, gbc);
+	gbc.gridx = 2;
+	pFields.add(new JLabelLeft("Sistema", fontsize), gbc);
 
-	gbc.gridx = 3;
-	chSystem = new JCheckBox();
-	pFields.add(chSystem, gbc);
+	gbc.gridx = 4;
+	pFields.add(new JLabelLeft("Pavadinimas", fontsize), gbc);
 
-	gbc.gridx = 5;
-	chName = new JCheckBox();
-	pFields.add(chName, gbc);
-
-	gbc.gridx = 7;
-	chLocation = new JCheckBox();
-	pFields.add(chLocation, gbc);
-
-	gbc.gridx = 9;
-	chMark = new JCheckBox();
-	pFields.add(chMark, gbc);
+	gbc.gridx = 6;
+	pFields.add(new JLabelLeft("Vieta", fontsize), gbc);
 	
-	gbc.gridx = 11;
-	chIT = new JCheckBox();
-	pFields.add(chIT, gbc);
+	gbc.gridx = 8;
+	pFields.add(new JLabelLeft("Žyma", fontsize), gbc);
+
+	gbc.gridx = 10;
+	pFields.add(new JLabelLeft("IT", fontsize), gbc);
 	
-	gbc.gridx = 13;
-	chNr = new JCheckBox();
-	pFields.add(chNr, gbc);
+	gbc.gridx = 12;
+	pFields.add(new JLabelLeft("Nr.", fontsize), gbc);
+	
+	gbc.gridx = 14;
+	pFields.add(new JLabelLeft("Atsakingas", fontsize), gbc);
+	
+	gbc.gridx = 16;
+	pFields.add(new JLabelLeft("Veikla", fontsize), gbc);
 	
 // Η τρίτη σειρά
 	gbc.gridy = 2;
 	gbc.gridx = 0;
 	gbc.weightx = 0;
-	createPanelMessages();
-	pFields.add(pMessage, gbc);
-
-	gbc.gridx = 1;
-//	gbc.weightx = 1;
-        gbc.gridwidth = 15;
+	gbc.gridwidth = 16;
 	ta_Message = new JMyTextArea(3, 40, fontsize);
-	ta_Message.addMouseListener(this);
-	ta_Message.setFocusAccelerator('A');
+//	ta_Message.addMouseListener(this);
+//	ta_Message.setFocusAccelerator('A');
 	ta_Message.setLineWrap(true);
 	ta_Message.setWrapStyleWord(true);
 //	ta_Message.setToolTipText("Dvigubas spragtelėjimas ištrina tekstą iš šio lauko");
 	scrMessage = new JScrollPane(ta_Message);
 	pFields.add(scrMessage, gbc);
-        
 	
+	gbc.gridx = 16;
+	chMessage = new JMyCheckBox("Aprašymas", false, fontsize);
+	pFields.add(chMessage, gbc);
     }
 
-//    private void createPanel_Messages() {
-//	pMessage = new JPanel(new GridLayout(2, 1));
-//	lMessage = new JLabelRechts("Aprašymas");
-//	ch_Message = new JCheckBox();
-//	pMessage.add(lMessage);
-//	pMessage.add(ch_Message);
-//    }
-//
+    @Override
+    protected void createPanelMessages() {
+	pMessage = new JPanel();
+	ta_Message = new JMyTextArea(3, 120, fontsize);
+//	ta_Message.addMouseListener(this);
+//	ta_Message.setFocusAccelerator('A');
+	ta_Message.setLineWrap(true);
+	ta_Message.setWrapStyleWord(true);
+//	ta_Message.setToolTipText("Dvigubas spragtelėjimas ištrina tekstą iš šio lauko");
+	scrMessage = new JScrollPane(ta_Message);
+	chMessage = new JMyCheckBox("Aprašymas", false, fontsize);
+	pMessage.add(scrMessage);
+	pMessage.add(chMessage);
+    }
+
 
     @Override
     protected void filter() {
-        if (chDate.isSelected() || chSystem.isSelected() || chName.isSelected() || chLocation.isSelected() || chMark.isSelected() || chIT.isSelected() || chNr.isSelected()) {
+	if (chDate.isSelected() || chSystem.isSelected() || chName.isSelected() || chLocation.isSelected() || chMark.isSelected() || chIT.isSelected() || chNr.isSelected() || chAtsakingas.isSelected() || chMessage.isSelected()) {
             filter_by();
         } else {
             filter_all(SELECT_ALL);
@@ -442,6 +449,10 @@ public class Turtas extends Darbai {
             appendAND(sb);
             sb.append(" i.Nr LIKE ?");
         }
+	if (chAtsakingas.isSelected()) {
+            appendAND(sb);
+	    sb.append(" i.Atsakingas LIKE ?");
+        }
 	if (chMessage.isSelected()) {
 	    appendAND(sb);
             sb.append(" i.Pastaba LIKE ?");
@@ -458,7 +469,7 @@ public class Turtas extends Darbai {
 	i = sb.indexOf(" i.Data LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, tfDate.getText());
+	    preparedFilter.setString(n, getWildcardedTxt(tfDate));
 	}
 	i = sb.indexOf(" i.Sistema = ?");
 	if (i >= 0) {
@@ -468,7 +479,7 @@ public class Turtas extends Darbai {
 	i = sb.indexOf(" i.Pavadinimas LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, fName.getText());
+	    preparedFilter.setString(n, getWildcardedTxt(tfName));
 	}
 	i = sb.indexOf(" i.Vieta = ?");
 	if (i >= 0) {
@@ -478,22 +489,27 @@ public class Turtas extends Darbai {
 	i = sb.indexOf(" i.Pozymis LIKE");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, fMark.getText());
+	    preparedFilter.setString(n, getWildcardedTxt(tfMark));
 	}
 	i = sb.indexOf(" i.IT LIKE ?");
 	if (i >= 0) {
  	    n++;
-	    preparedFilter.setString(n, fIT.getText());
+	    preparedFilter.setString(n, getWildcardedTxt(tfIT));
 	}
 	i = sb.indexOf(" i.Nr LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, ta_Message.getText());
+	    preparedFilter.setString(n, getWildcardedTxt(tfNr));
+	}
+	i = sb.indexOf(" i.Atsakingas LIKE ?");
+	if (i >= 0) {
+ 	    n++;
+	    preparedFilter.setString(n, getWildcardedTxt(tfAtsakingas));
 	}
 	i = sb.indexOf(" i.Pastaba LIKE ?");
 	if (i >= 0) {
  	    n++;
-	    preparedFilter.setString(n, ta_Message.getText());
+	    preparedFilter.setString(n, "%" + ta_Message.getText() + "%");
 	}
 	
     }
@@ -508,21 +524,22 @@ public class Turtas extends Darbai {
 		if (preparedUpdate == null) {
 		    preparedUpdate = connection.prepareStatement(PREPARE_UPDATE);
 		}
-		preparedUpdate.setString(1, fIT.getText());
-		preparedUpdate.setString(2, fNr.getText());
-		preparedUpdate.setString(3, fName.getText());
+		preparedUpdate.setString(1, tfIT.getText());
+		preparedUpdate.setString(2, tfNr.getText());
+		preparedUpdate.setString(3, tfName.getText());
 		preparedUpdate.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
-                preparedUpdate.setString(5, tfDate.getText());
-		preparedUpdate.setInt(6, Integer.parseInt(locations[0][cbLocations.getSelectedIndex()]));
-		preparedUpdate.setString(7, fMark.getText());
-		preparedUpdate.setString(8, ta_Message.getText());
-		preparedUpdate.setInt(9, Integer.parseInt(codes[0][cbCode.getSelectedIndex()]));
-		preparedUpdate.setInt(10, (Integer) table.getValueAt(the_row, tableModel.findColumn(ID)));
+		preparedUpdate.setString(5, tfDate.getText());
+		preparedUpdate.setString(6, tfAtsakingas.getText());
+		preparedUpdate.setInt(7, Integer.parseInt(locations[0][cbLocations.getSelectedIndex()]));
+		preparedUpdate.setString(8, tfMark.getText());
+		preparedUpdate.setString(9, ta_Message.getText());
+		preparedUpdate.setInt(10, Integer.parseInt(codes[0][cbCode.getSelectedIndex()]));
+		preparedUpdate.setInt(11, (Integer) table.getValueAt(the_row, tableModel.findColumn(ID)));
 		
 		if (preparedUpdate.executeUpdate() == 1) {
 		    filter();
 		}
-	    } catch (SQLException ex) {
+	    } catch (SQLException | NumberFormatException ex) {
 		JOptionPane.showMessageDialog(this, ex.toString(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	} else {
@@ -539,20 +556,21 @@ public class Turtas extends Darbai {
 		if (preparedInsert == null) {
 		    preparedInsert = connection.prepareStatement(PREPARE_INSERT);
 		}
-		preparedInsert.setString(1, fIT.getText());
-		preparedInsert.setString(2, fNr.getText());
-		preparedInsert.setString(3, fName.getText());
+		preparedInsert.setString(1, tfIT.getText());
+		preparedInsert.setString(2, tfNr.getText());
+		preparedInsert.setString(3, tfName.getText());
 		preparedInsert.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
-                preparedInsert.setString(5, tfDate.getText());
-		preparedInsert.setInt(6, Integer.parseInt(locations[0][cbLocations.getSelectedIndex()]));
-		preparedInsert.setString(7, fMark.getText());
-		preparedInsert.setString(8, ta_Message.getText());
-		preparedInsert.setInt(9, Integer.parseInt(codes[0][cbCode.getSelectedIndex()]));
+		preparedInsert.setString(5, tfDate.getText());
+		preparedInsert.setString(6, tfAtsakingas.getText());
+		preparedInsert.setInt(7, Integer.parseInt(locations[0][cbLocations.getSelectedIndex()]));
+		preparedInsert.setString(8, tfMark.getText());
+		preparedInsert.setString(9, ta_Message.getText());
+		preparedInsert.setInt(10, Integer.parseInt(codes[0][cbCode.getSelectedIndex()]));
                 if (preparedInsert.executeUpdate() == 1) {
 		    filter();
 		}
-	    } catch (SQLException ex) {
-		JOptionPane.showMessageDialog(this, ex.getErrorCode(), "Klaida!!", JOptionPane.ERROR_MESSAGE);
+	    } catch (SQLException | NumberFormatException ex) {
+		JOptionPane.showMessageDialog(this, ex, "Klaida!!", JOptionPane.ERROR_MESSAGE);
 	    }
 	}  else {
 	    JOptionPane.showMessageDialog(this, "Nepažymėta eilutė", "Klaida!!", JOptionPane.ERROR_MESSAGE);     
@@ -743,11 +761,12 @@ public class Turtas extends Darbai {
             if (the_row >= 0) {
                 tfDate.setText(table.getValueAt(the_row, tableModel.findColumn(DATA)).toString());
                 setComboBoxItem(cbIrenginys, systems[1], (String) table.getValueAt(the_row, tableModel.findColumn(SISTEMA)));
-                fName.setText(table.getValueAt(the_row, tableModel.findColumn(PAVADINIMAS)).toString());
+                tfName.setText(table.getValueAt(the_row, tableModel.findColumn(PAVADINIMAS)).toString());
                 setComboBoxItem(cbLocations, locations[1], (String) table.getValueAt(the_row, tableModel.findColumn(VIETA)));
-                fMark.setText(table.getValueAt(the_row, tableModel.findColumn(POZYMIS)).toString());
-                fIT.setText(table.getValueAt(the_row, tableModel.findColumn(IT)).toString());
-                fNr.setText(table.getValueAt(the_row, tableModel.findColumn(NR)).toString());
+                tfMark.setText(table.getValueAt(the_row, tableModel.findColumn(POZYMIS)).toString());
+                tfIT.setText(table.getValueAt(the_row, tableModel.findColumn(IT)).toString());
+		tfNr.setText(table.getValueAt(the_row, tableModel.findColumn(NR)).toString());
+		tfAtsakingas.setText(table.getValueAt(the_row, tableModel.findColumn(ATSAKINGAS)).toString());
                 setComboBoxItem(cbCode, codes[1], (String) table.getValueAt(the_row, tableModel.findColumn(VEIKLA)));
                 ta_Message.setText(table.getValueAt(the_row, tableModel.findColumn(PASTABA)).toString());
             }

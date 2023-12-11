@@ -42,6 +42,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
@@ -86,7 +87,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
     JLabelLeft lMessage;
     JLabelRechts lDate, lDevice, lSystem, lWork, lIDpr, lFilters;
     protected JMyButton bDelete, bAdd, btChange, btAcknowl, btFilter, btUnfinished, btAll, btInfo;
-    JMyCheckBox chMessage;
+    protected JMyCheckBox chMessage;
     JMyComboBox cbWorktype, cbState;
     JMyComboBox cbIrenginys;
     protected JPanel pInput, pnFIlterButtons, pFields;
@@ -95,7 +96,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 //    JRadioButton radioButton1;
     JScrollPane scrTable, scrMessage;
     JTable table, tableElevators;
-    JMyTextField tfDate, fName, tfIDpr, tfID;
+    JMyTextField tfDate, tfName, tfIDpr, tfID;
     JMyTextArea_monospaced taMessage;
     JMyMenuItem menuItemLiftai;
     JMyPopupMenu popupLiftai;
@@ -259,16 +260,16 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
         
 	gbc.gridx = 5;
 	gbc.weightx = 0.5;
-	fName = new JMyTextField(15, fontsize);
-        fName.setToolTipText("Šiam laukui yra kontekstinis meniu (liftų sąrašas)");
-	fName.addMouseListener(this);
-	pFields.add(fName, gbc);
+	tfName = new JMyTextField(15, fontsize);
+	tfName.setToolTipText("Šiam laukui yra kontekstinis meniu (liftų sąrašas)");
+	tfName.addMouseListener(this);
+	pFields.add(tfName, gbc);
         popupLiftai = new JMyPopupMenu(fontsize);
         menuItemLiftai = new JMyMenuItem("Liftų sąrašas", fontsize);
         menuItemLiftai.setActionCommand("liftu_sarasas");
         menuItemLiftai.addActionListener(this);
         popupLiftai.add(menuItemLiftai);
-        fName.setComponentPopupMenu(popupLiftai);
+	tfName.setComponentPopupMenu(popupLiftai);
 //
 	gbc.gridx = 6;
 	gbc.weightx = 0;
@@ -631,7 +632,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	i = sb.indexOf(" d.Irenginys LIKE ?");
 	if (i >= 0) {
 	    n++;
-	    preparedFilter.setString(n, "%".concat(fName.getText().concat("%")));
+	    preparedFilter.setString(n, "%".concat(tfName.getText().concat("%")));
 	}
 	i = sb.indexOf(" d.Darbas = ?");
 	if (i >= 0) {
@@ -664,11 +665,15 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	
     }
 
+    protected String getWildcardedTxt(JTextField tf) {
+	return "%" + tf.getText() + "%";
+    }
+
 
     protected void setLikeFilter() {
 	if (chDevice.isSelected()) {
-	    if (!fName.getText().contains("%")) {
-		fName.setText("%");
+	    if (!tfName.getText().contains("%")) {
+		tfName.setText("%");
 	    }
 	}
     }
@@ -710,7 +715,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
                     preparedInsert.setInt(2, id);
                     preparedInsert.setString(3, time);
                     preparedInsert.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
-                    preparedInsert.setString(5, fName.getText());
+		    preparedInsert.setString(5, tfName.getText());
                     preparedInsert.setInt(6, Integer.parseInt(worktypes[0][cbWorktype.getSelectedIndex()]));
                     preparedInsert.setInt(7, Integer.parseInt(states[0][cbState.getSelectedIndex()]));
                     clossed = state == BAIGTA;
@@ -747,7 +752,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	    preparedInsert.setInt(2, id);
 	    preparedInsert.setString(3, date.getToday() + " " + date.getTime());
 	    preparedInsert.setInt(4, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
-	    preparedInsert.setString(5, fName.getText());
+	    preparedInsert.setString(5, tfName.getText());
 	    preparedInsert.setInt(6, Integer.parseInt(worktypes[0][cbWorktype.getSelectedIndex()]));
 	    preparedInsert.setInt(7, SUSIPAZINAU);
 	    preparedInsert.setString(8, message);
@@ -778,7 +783,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
                 preparedUpdate.setString(1, tfDate.getText());
                 preparedUpdate.setInt(2, idpr);
                 preparedUpdate.setInt(3, Integer.parseInt(systems[0][cbIrenginys.getSelectedIndex()]));
-                preparedUpdate.setString(4, fName.getText());
+		preparedUpdate.setString(4, tfName.getText());
                 preparedUpdate.setInt(5, Integer.parseInt(worktypes[0][cbWorktype.getSelectedIndex()]));
                 preparedUpdate.setInt(6, state);
                 preparedUpdate.setString(7, taMessage.getText());
@@ -979,7 +984,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
 	}
         if (JOptionPane.showConfirmDialog(this, spTable, "Parinkimas", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
             tableElevators.getSelectionModel().addListSelectionListener(elevListSelectionListener());
-            fName.setText(String.valueOf(elevatorSelectionPane.getValue()));
+	    tfName.setText(String.valueOf(elevatorSelectionPane.getValue()));
         }
         
     }
@@ -1158,7 +1163,7 @@ public class Darbai extends JPanel implements ActionListener, MouseListener {
                 tfIDpr.setText(getTableCellString(the_row, 1));
                 tfDate.setText(getTableCellString(the_row, 3));
                 setComboBoxItem(cbIrenginys, systems[1], getTableCellString(the_row, 4));
-                fName.setText(getTableCellString(the_row, 5));
+		tfName.setText(getTableCellString(the_row, 5));
                 setComboBoxItem(cbWorktype, worktypes[1], getTableCellString(the_row, 6));
                 setComboBoxItem(cbState, states[1], getTableCellString(the_row, 7));
                 taMessage.setText(message);
