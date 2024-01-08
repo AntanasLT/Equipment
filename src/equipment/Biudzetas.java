@@ -61,7 +61,7 @@ public class Biudzetas extends IDString_n {
     protected void setSelect_filter() {
         StringBuilder sb1;
         int l;
-        String txt, the_date;
+	String txt;
         l = dbCols.length;
         sb1 = new StringBuilder("SELECT ");
         for (int i = 0; i < l; i++) {
@@ -105,11 +105,10 @@ public class Biudzetas extends IDString_n {
     @Override
     protected void filter() {
 	int i, db_colcount, tbl_colcount, row_count;
-        Float sum_all, percent_avg, value;
+	Float sum_all, percent_avg;
         Float[] sum;
         Object[] row;
-        Object obj;
-        ResultSet resultset;
+	ResultSet resultset;
 	tableModel.setRowCount(0);
 	try {
             setSelect_filter();
