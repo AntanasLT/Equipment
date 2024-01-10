@@ -17,6 +17,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -392,48 +393,20 @@ public class MainFrame extends JFrame implements ActionListener{
 	    connection = null;
 	}
 	    labelMessage.setText("Nuo duomenų bazės atsijungta");
-//        else {
-//	}
-//	if (panelWorks != null) {
-//	    panelWorks.disconnect();
-//	    mcbWorks.setSelected(false);
-//	    tabbedpane.remove(panelWorks);
-//	    showWorks();
-//	}
-//	if (panelIT != null) {
-//	    panelIT.disconnect();
-//	    mcbIT.setSelected(false);
-//	    tabbedpane.remove(panelIT);
-//	    showIT();
-//	}
-//	if (panelEquipmentTypes != null) {
-//	    panelEquipmentTypes.disconnect();
-//	    mcbEquipmentTypes.setSelected(false);
-//	    tabbedpane.remove(panelEquipmentTypes);
-//	}
-//	if (panelSystems != null) {
-//	    panelSystems.disconnect();
-//	    mcbSystems.setSelected(false);
-//	    tabbedpane.remove(panelSystems);
-//	}
-//	if (panelUsers != null) {
-//	    panelUsers.disconnect();
-//	    mcbUsers.setSelected(false);
-//	    tabbedpane.remove(panelUsers);
-//	}
-//	if (panelStates != null) {
-//	    panelStates.disconnect();
-//	    mcbStates.setSelected(false);
-//	    tabbedpane.remove(panelStates);
-//	}
-//	if (panelWorktypes != null) {
-//	    panelWorktypes.disconnect();
-//	    mcbWorktypes.setSelected(false);
-//	    tabbedpane.remove(panelWorktypes);
-//	}
-//	menuTabs.setVisible(false);
 	password = "";
-        closeAll();
+	tabbedpane.removeAll();
+	uncheck_all_checkboxes();
+    }
+    
+    private void uncheck_all_checkboxes() {
+	JCheckBoxMenuItem item;
+	int itemCount = menuTabs.getItemCount();
+	for (int i = 0; i < itemCount; i++) {
+	    if (menuTabs.getItem(i) instanceof JMyCheckBoxMenuItem) {
+		item = (JMyCheckBoxMenuItem) menuTabs.getItem(i);
+		item.setSelected(false);
+	    }
+	}
     }
 
     public void setzt_dieMeldung(String dieMeldung) {
